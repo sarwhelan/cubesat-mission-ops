@@ -9,6 +9,6 @@
 
 - [ ] Raspberry Pi stuff/ground station server data stuff (Dana)
 
-### Tasks to compmlete by Thursday January 24th
+### Tasks to completed by Thursday January 24th
 Nothin' yet!
 
