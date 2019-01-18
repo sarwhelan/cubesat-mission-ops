@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    cubesat-backend
+
+    Sample SAM Template for cubesat-backend
+    
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+    Function:
+        Timeout: 3
+
+
+Resources:
+
+    TemplateGetFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: cubesat-backend/
+            Handler: template.getHandler
+            Runtime: nodejs8.10
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                HelloWorld:
+                    Type: Api
+                    Properties:
+                        Path: /template
+                        Method: get
+    TemplatePostFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: cubesat-backend/
+            Handler: template.postHandler
+            Runtime: nodejs8.10
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                HelloWorld:
+                    Type: Api
+                    Properties:
+                        Path: /template
+                        Method: post
+    TemplateDBPostFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: cubesat-backend/
+            Handler: db-template.dbPostHandler
+            Runtime: nodejs8.10
+            Policies:
+                - DynamoDBCrudPolicy:
+                    TableName: !Ref TemplateDBTable     # gives this lambda permission for all CRUD actions on TemplateDBTable
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                HelloWorld:
+                    Type: Api
+                    Properties:
+                        Path: /db-template
+                        Method: post
+    TemplateDBTable:
+        Type: AWS::Serverless::SimpleTable      # more advanced tables can be created with AWS::DynamoDB::Table
+        Properties:
+            TableName: TemplateSimpleTable
+            PrimaryKey:
+                Name: id
+                Type: String
+
+Outputs:
+
+    CubeSatApi:
+      Description: "API Gateway root URL for the Prod stage of the CubeSat API"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
