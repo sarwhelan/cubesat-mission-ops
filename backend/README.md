@@ -8,10 +8,10 @@
 
 ## Setup
 1) Run `aws configure`, which will ask you for four things:
-	- *AWS access key ID*: go to the [IAM console](https://console.aws.amazon.com/iam/home) > Users > Administrator > Security Credentials > Create Access Key, and create a new access key for yourself. Use its access key id for this.
-	- *AWS secret access key*: use the secret access key you generate above.
-	- *default region name*: use `us-east-2`
-	- *default output format*: use `json`
+	- **AWS access key ID**: go to the [IAM console](https://console.aws.amazon.com/iam/home) > Users > Administrator > Security Credentials > Create Access Key, and create a new access key for yourself. Use its access key id for this.
+	- **AWS secret access key**: use the secret access key you generate above.
+	- **default region name**: use `us-east-2`
+	- **default output format**: use `json`
 2) Make sure your drive is shared in docker (Docker > Settings > Shared Drives), otherwise `sam` will crash when you try to build.
 
 ## Builiding
