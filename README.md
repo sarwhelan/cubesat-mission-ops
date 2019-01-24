@@ -9,6 +9,18 @@
 
 - [ ] Raspberry Pi stuff/ground station server data stuff (Dana)
 
-### Tasks to completed by Thursday January 24th
-Nothin' yet!
+- [ ] Deliver update in CubeSat meeting (Tom)
+
+### Tasks to be completed by Thursday January 24th
+- [ ] Assign epics to peeps
+
+- [ ] Deliver update in CubeSat meeting (Sarah)
+
+### Tasks to be completed by Thursday January 31st
+- [ ] Try to have 1+ tasks complete within epic?
+
+- [ ] Team work period on Tuesday
+
+- [ ] Deliver update in CubeSat meeting (Dana)
+  - Come up with what we are doing to show this works, i.e. how is our fake data being created and how are we simulating data being plopped into a directory similar to what would happen during a passover data dump
 
