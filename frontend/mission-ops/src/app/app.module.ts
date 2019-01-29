@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { TelecommandsComponent } from './telecommands/telecommands.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
+import { TelecommandDetailsComponent } from './telecommand-details/telecommand-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TelecommandsComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    TelecommandDetailsComponent
   ],
   imports: [
     BrowserModule,

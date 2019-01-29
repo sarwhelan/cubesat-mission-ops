@@ -1,3 +1,9 @@
-<p>
-  telecommands works!
-</p>
+<h2>Telecommands</h2>
+<ul>
+  <li *ngFor="let telecommand of telecommands"
+  (click)="onSelect(telecommand)"
+  [class.selected]="telecommand === selectedTelecommand">
+    <span class="badge">{{telecommand.id}}</span> {{telecommand.name}}
+  </li>
+</ul>
+<app-telecommand-details [telecommand] = "selectedTelecommand"></app-telecommand-details>
