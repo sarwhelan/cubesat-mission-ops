@@ -25,5 +25,4 @@ export class TelecommandsComponent implements OnInit {
     this.telecommandService.getTelecommands()
       .subscribe(telecommands => this.telecommands = telecommands);
   }
-
 }
