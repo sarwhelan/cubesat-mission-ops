@@ -7,6 +7,8 @@ import { TelecommandsComponent } from './telecommands/telecommands.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { TelecommandDetailsComponent } from './telecommand-details/telecommand-details.component';
+import { TelecommandBatchesComponent } from './telecommand-batches/telecommand-batches.component';
+import { TelecommandBatchDetailsComponent } from './telecommand-batch-details/telecommand-batch-details.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { TelecommandDetailsComponent } from './telecommand-details/telecommand-d
     TelecommandsComponent,
     HeaderComponent,
     LoginComponent,
-    TelecommandDetailsComponent
+    TelecommandDetailsComponent,
+    TelecommandBatchesComponent,
+    TelecommandBatchDetailsComponent
   ],
   imports: [
     BrowserModule,
