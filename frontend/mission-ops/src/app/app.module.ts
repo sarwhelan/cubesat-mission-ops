@@ -14,6 +14,7 @@ import { QueuesComponent } from './queues/queues.component';
 import { ExecutionQueueComponent } from './execution-queue/execution-queue.component';
 import { TransmissionQueueComponent } from './transmission-queue/transmission-queue.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
