@@ -1,0 +1,10 @@
+<button (click)="selectExecution()">Time Tagged Execution Queue</button>
+<button (click)="selectTransmission()">TelecommandTransmission Queue</button>
+
+<div *ngIf="executionQueue">
+  <app-execution-queue></app-execution-queue>
+</div>
+<div *ngIf="transmissionQueue">
+  <app-transmission-queue></app-transmission-queue>
+</div>
+

@@ -9,6 +9,9 @@ import { LoginComponent } from './login/login.component';
 import { TelecommandDetailsComponent } from './telecommand-details/telecommand-details.component';
 import { TelecommandBatchesComponent } from './telecommand-batches/telecommand-batches.component';
 import { TelecommandBatchDetailsComponent } from './telecommand-batch-details/telecommand-batch-details.component';
+import { QueuesComponent } from './queues/queues.component';
+import { ExecutionQueueComponent } from './execution-queue/execution-queue.component';
+import { TransmissionQueueComponent } from './transmission-queue/transmission-queue.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { TelecommandBatchDetailsComponent } from './telecommand-batch-details/te
     LoginComponent,
     TelecommandDetailsComponent,
     TelecommandBatchesComponent,
-    TelecommandBatchDetailsComponent
+    TelecommandBatchDetailsComponent,
+    QueuesComponent,
+    ExecutionQueueComponent,
+    TransmissionQueueComponent
   ],
   imports: [
     BrowserModule,
