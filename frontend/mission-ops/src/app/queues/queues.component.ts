@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Pass } from '../../classes/pass';
+import { PassService } from '../services/pass/pass.service';
 
 @Component({
   selector: 'app-queues',
@@ -9,12 +11,14 @@ export class QueuesComponent implements OnInit {
 
   executionQueue: boolean;
   transmissionQueue: boolean;
+  passes: Pass[];
 
-  constructor() { }
+  constructor(private passService: PassService) { }
 
   ngOnInit() {
     this.executionQueue = true;
     this.transmissionQueue = false;
+    this.getPasses();
   }
 
   selectExecution(): void{    
@@ -25,6 +29,11 @@ export class QueuesComponent implements OnInit {
   selectTransmission(): void{    
     this.executionQueue = false;
     this.transmissionQueue = true;
+  }
+
+  getPasses() : void{    
+    this.passService.getPasses()
+      .subscribe(passes => this.passes = passes);
   }
 
 }
