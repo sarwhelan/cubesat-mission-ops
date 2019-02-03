@@ -8,5 +8,17 @@
     <label for="passwordInput">Password</label>
     <input [(ngModel)]="password" type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
   </div>
+  <div *ngIf="showAlert" class="alert alert-danger" role="alert">
+    <button (click)="showAlert = false" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div *ngIf="isDevMode; else isProdMode">
+      <h4 class="alert-heading">{{errorHeading}}</h4>
+      <p class="mb-0">{{errorBody}}</p>
+    </div>
+    <ng-template #isProdMode>
+      Incorrect Username or Password.
+    </ng-template>
+  </div>
   <button (click)="signIn()" class="btn btn-primary">Sign In</button>
 </form>
