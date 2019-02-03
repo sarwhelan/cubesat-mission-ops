@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Pass } from '../../classes/pass';
 
 @Component({
   selector: 'app-transmission-queue',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TransmissionQueueComponent implements OnInit {
 
+  @Input() passes: Pass[];
   constructor() { }
 
   ngOnInit() {
