@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
   private password: string;
 
   private showAlert: boolean = false;
-  private isDevMode: boolean;
   private errorHeading: string;
   private errorBody: string;
 
@@ -22,7 +21,6 @@ export class LoginComponent implements OnInit {
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
-    this.isDevMode = isDevMode();
   }
 
   public signIn() {
@@ -37,12 +35,18 @@ export class LoginComponent implements OnInit {
         this.processing = false;
 
         this.showAlert = true;
-        this.errorHeading = err.name;
-        this.errorBody = err.message;
+        if (isDevMode()) {
+          // Only display real error when developing to avoid information leaks
+          this.errorHeading = err.name;
+          this.errorBody = err.message;
+        } else {
+          this.errorHeading = "Error";
+          this.errorBody = "Username or Password is Incorrect.";
+        }
       },
       mfaRequired: (challengeName: any, challengeParameters: any) => {
         this.processing = false;
-        
+
         console.log('mfa required');
         console.log(challengeName);
         console.log(challengeParameters);
