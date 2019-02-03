@@ -8,8 +8,6 @@ router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
         console.log('POST TELECOMMAND');
         res.send('Success');
-        // Log telecommands
-        // Forward to the ether?
     });
 
 module.exports = router;
