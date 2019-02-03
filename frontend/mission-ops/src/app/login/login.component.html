@@ -20,5 +20,8 @@
       Incorrect Username or Password.
     </ng-template>
   </div>
-  <button (click)="signIn()" class="btn btn-primary">Sign In</button>
+  <button (click)="signIn()" class="btn btn-primary">
+    Sign In
+    <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  </button>
 </form>

@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   private errorHeading: string;
   private errorBody: string;
 
+  private processing: boolean = false;
+
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
@@ -24,16 +26,23 @@ export class LoginComponent implements OnInit {
   }
 
   public signIn() {
+    this.processing = true;
+
     this.auth.signIn(this.username, this.password, {
       onSuccess: (accessToken: string) => {
+        this.processing = false;
         console.log(`Sign in success! Access Token: ${accessToken}`);
       },
       onFailure: (err: any) => {
+        this.processing = false;
+
         this.showAlert = true;
         this.errorHeading = err.name;
         this.errorBody = err.message;
       },
       mfaRequired: (challengeName: any, challengeParameters: any) => {
+        this.processing = false;
+        
         console.log('mfa required');
         console.log(challengeName);
         console.log(challengeParameters);
