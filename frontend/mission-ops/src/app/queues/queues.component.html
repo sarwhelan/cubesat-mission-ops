@@ -2,16 +2,9 @@
 <button (click)="selectTransmission()">TelecommandTransmission Queue</button>
 
 <div *ngIf="executionQueue">
-<<<<<<< HEAD
-  <app-execution-queue></app-execution-queue>
-</div>
-<div *ngIf="transmissionQueue">
-  <app-transmission-queue></app-transmission-queue>
-=======
   <app-execution-queue [passes] = "passes"></app-execution-queue>
 </div>
 <div *ngIf="transmissionQueue">
   <app-transmission-queue [passes] = "passes"></app-transmission-queue>
->>>>>>> master
 </div>
 
