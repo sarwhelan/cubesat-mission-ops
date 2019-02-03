@@ -1,12 +1,21 @@
-<p>
-This is a header!!!
-</p>
-<nav>
-  <a routerLink="/telecommands">Telecommands</a>
-</nav>
-<nav>
-  <a routerLink="/telecommandBatches">Telecommand Batches</a>
-</nav>
-<nav>
-  <a routerLink="/queue">Telecommand Queue</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Western CubeSat</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li *ngFor="let header of headers"
+      (click)="onSelect(header)"
+      [class.active]="header == activeHeader"
+      class="nav-item">
+        <a class="nav-link" routerLink={{header.route}}>{{header.friendlyValue}}</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+    </ul>
+  </div>
 </nav>
