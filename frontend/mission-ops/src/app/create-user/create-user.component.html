@@ -1,24 +1,24 @@
-<div>
-    <h1>Create User</h1>
-    <label>
-      Username:
-      <input [(ngModel)]="username" type="text" placeholder="Username"/>
-    </label>
-    <label>
-      Password:
-      <input [(ngModel)]="password" type="password" placeholder="Password"/>
-    </label>
-    <label>
-      Confirm Password:
-      <input [(ngModel)]="confirmPassword" type="password" placeholder="Confirm Password"/>
-    </label>
-    <label>
-      Email(Optional):
-      <input [(ngModel)]="email" type="email" placeholder="Email"/>
-    </label>
-    <label>
-      Phone Number(Optional):
-      <input [(ngModel)]="phoneNumber" type="text" placeholder="Phone Number"/>
-    </label>
-    <button (click)="create()">Create</button>
+<h2>Create User</h2>
+<form>
+  <div class="form-group">
+    <label for="usernameInput">Username</label>
+    <input [(ngModel)]="username" type="text" class="form-control" id="usernameInput" placeholder="Username" name="username">
   </div>
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <input [(ngModel)]="password" type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
+  </div>
+  <div class="form-group">
+    <label for="confirmPasswordInput">Confirm Password</label>
+    <input [(ngModel)]="confirmPassword" type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm Password" name="confirmPassword">
+  </div>
+  <div class="form-group">
+    <label for="emailInput">Email (Optional)</label>
+    <input [(ngModel)]="email" type="email" class="form-control" id="emailInput" placeholder="Email" name="email">
+  </div>
+  <div class="form-group">
+    <label for="phoneNumberInput">Phone Number (Optional)</label>
+    <input [(ngModel)]="phoneNumber" type="text" class="form-control" id="phoneNumberInput" placeholder="Phone Number" name="phoneNumber">
+  </div>
+  <button (click)="create()" class="btn btn-primary">Create</button>
+</form>
