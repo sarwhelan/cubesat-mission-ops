@@ -4,7 +4,12 @@ import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetai
 export interface ISignInCallback {
   onSuccess: (accessToken: string) => void,
   onFailure: (err: any) => void,
-  mfaRequired: (challengeName: any, challengeParameters: any) => string
+  newPasswordRequired?: (userAttributes: any, requiredAttributes: any) => void,
+  mfaRequired?: (challengeName: any, challengeParameters: any) => string,
+  totpRequired?: (challengeName: any, challengeParameters: any) => void,
+  customChallenge?: (challengeParameters: any) => void,
+  mfaSetup?: (challengeName: any, challengeParameters: any) => void,
+  selectMFAType?: (challengeName: any, challengeParameters: any) => void
 }
 
 @Injectable({
@@ -60,6 +65,7 @@ export class AuthService {
     });
   }
 
+  // TODO: Support MFA and force changing password on first signin
   public signIn(username: string, password: string, callback: ISignInCallback): void {
     let authData = {
       Username: username,
