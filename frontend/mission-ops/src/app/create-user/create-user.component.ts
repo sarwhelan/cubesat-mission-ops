@@ -29,6 +29,31 @@ export class CreateUserComponent implements OnInit {
   public create(): void {
     this.processing = true;
     // TODO: validate input
+    let errorList = [];
+    if (!this.username) {
+      errorList.push('A username must be provided.');
+    }
+    if (!this.password) {
+      errorList.push('A password must be provided.');
+    }
+    if (this.password !== this.confirmPassword) {
+      errorList.push('Password and Confirm Password fields must match.');
+    }
+
+    if (errorList.length > 0) {
+      this.errorBody = '';
+      for (let i = 0; i < errorList.length; i++) {
+        this.errorBody += errorList[i];
+        if (i < errorList.length - 1) {
+          this.errorBody += ' ';
+        }
+      }
+      this.errorHeading = 'Error';
+      this.showAlert = true;
+      this.processing = false;
+
+      return; // Break out of the function before attempting to send bad info to the auth service
+    }
 
     this.auth.signUp(this.username, this.password, this.email, this.phoneNumber, {
       onSuccess: () => {
