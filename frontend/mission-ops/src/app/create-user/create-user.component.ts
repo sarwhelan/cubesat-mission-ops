@@ -28,31 +28,25 @@ export class CreateUserComponent implements OnInit {
 
   public create(): void {
     this.processing = true;
-    // TODO: validate input
+
     let errorList = [];
     if (!this.username) {
-      errorList.push('A username must be provided.');
+      errorList.push('Username field cannot be blank.');
     }
     if (!this.password) {
-      errorList.push('A password must be provided.');
+      errorList.push('Password field cannot be blank.');
+    }
+    if (!this.confirmPassword) {
+      errorList.push('Confirm Password field cannot be blank.');
     }
     if (this.password !== this.confirmPassword) {
-      errorList.push('Password and Confirm Password fields must match.');
+      errorList.push('Password field and Confirm Password field must match.');
     }
+    // TODO: Validate email and phone number formats
 
-    if (errorList.length > 0) {
-      let errorMessage = '';
-      for (let i = 0; i < errorList.length; i++) {
-        errorMessage += errorList[i];
-        if (i < errorList.length - 1) {
-          errorMessage += ' ';
-        }
-      }
-      
+    if (errorList.length > 0) {   
       this.alert.showList('Error', errorList);
-
       this.processing = false;
-
       return; // Break out of the function before attempting to send bad info to the auth service
     }
 
@@ -63,7 +57,6 @@ export class CreateUserComponent implements OnInit {
       },
       onFailure: (err: any) => {
         this.processing = false;
-
         this.alert.show(err.name, err.message);
       }
     })

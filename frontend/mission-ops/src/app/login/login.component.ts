@@ -26,6 +26,20 @@ export class LoginComponent implements OnInit {
   public signIn() {
     this.processing = true;
 
+    let errorList = [];
+    if (!this.username) {
+      errorList.push('Username field cannot be blank.');
+    }
+    if (!this.password) {
+      errorList.push('Password field cannot be blank.');
+    }
+
+    if (errorList.length > 0) {
+      this.processing = false;
+      this.alert.showList('Error', errorList);
+      return;
+    }
+
     this.auth.signIn(this.username, this.password, {
       onSuccess: (accessToken: string) => {
         this.processing = false;
