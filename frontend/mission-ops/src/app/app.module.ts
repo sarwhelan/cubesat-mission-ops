@@ -13,7 +13,7 @@ import { TelecommandBatchDetailsComponent } from './telecommand-batch-details/te
 import { QueuesComponent } from './queues/queues.component';
 import { ExecutionQueueComponent } from './execution-queue/execution-queue.component';
 import { TransmissionQueueComponent } from './transmission-queue/transmission-queue.component';
-
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { TransmissionQueueComponent } from './transmission-queue/transmission-qu
     TelecommandBatchDetailsComponent,
     QueuesComponent,
     ExecutionQueueComponent,
-    TransmissionQueueComponent
+    TransmissionQueueComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
