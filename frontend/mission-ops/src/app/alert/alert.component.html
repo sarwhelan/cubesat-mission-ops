@@ -6,7 +6,7 @@
     <ul *ngIf="listBody; else simpleBody" class="mb-0">
       <li *ngFor="let item of bodyList">{{item}}</li>
     </ul>
-    <ng-template #simplbody>
+    <ng-template #simpleBody>
         <p class="mb-0">{{body}}</p>
     </ng-template>
   </div>
