@@ -21,13 +21,7 @@
     <label for="phoneNumberInput">Phone Number (Optional)</label>
     <input [(ngModel)]="phoneNumber" type="text" class="form-control" id="phoneNumberInput" placeholder="Phone Number" name="phoneNumber">
   </div>
-  <div *ngIf="showAlert" class="alert alert-danger" role="alert">
-    <button (click)="showAlert = false" type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="alert-heading">{{errorHeading}}</h4>
-    <p class="mb-0">{{errorBody}}</p>
-  </div>
+  <app-alert [alertStyle]="'danger'"></app-alert>
   <button (click)="create()" class="btn btn-primary">
     Create
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

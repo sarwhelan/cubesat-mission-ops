@@ -1,6 +1,7 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
 
 import { AuthService } from '../services/auth/auth.service';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-create-user',
@@ -9,15 +10,14 @@ import { AuthService } from '../services/auth/auth.service';
 })
 export class CreateUserComponent implements OnInit {
 
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
+
   private username: string;
   private password: string;
   private confirmPassword: string;
   private email: string;
   private phoneNumber: string;
-
-  private showAlert: boolean = false;
-  private errorHeading: string;
-  private errorBody: string;
 
   private processing: boolean = false;
 
@@ -41,15 +41,16 @@ export class CreateUserComponent implements OnInit {
     }
 
     if (errorList.length > 0) {
-      this.errorBody = '';
+      let errorMessage = '';
       for (let i = 0; i < errorList.length; i++) {
-        this.errorBody += errorList[i];
+        errorMessage += errorList[i];
         if (i < errorList.length - 1) {
-          this.errorBody += ' ';
+          errorMessage += ' ';
         }
       }
-      this.errorHeading = 'Error';
-      this.showAlert = true;
+      
+      this.alert.showList('Error', errorList);
+
       this.processing = false;
 
       return; // Break out of the function before attempting to send bad info to the auth service
@@ -63,11 +64,7 @@ export class CreateUserComponent implements OnInit {
       onFailure: (err: any) => {
         this.processing = false;
 
-        this.showAlert = true;
-        this.errorHeading = err.name;
-        this.errorBody = err.message;
-        console.log('Sign up failed.');
-        console.log(err);
+        this.alert.show(err.name, err.message);
       }
     })
   }
