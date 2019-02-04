@@ -14,6 +14,7 @@ import { QueuesComponent } from './queues/queues.component';
 import { ExecutionQueueComponent } from './execution-queue/execution-queue.component';
 import { TransmissionQueueComponent } from './transmission-queue/transmission-queue.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CreateUserComponent } from './create-user/create-user.component';
     QueuesComponent,
     ExecutionQueueComponent,
     TransmissionQueueComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
