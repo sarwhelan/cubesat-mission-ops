@@ -83,7 +83,30 @@ Resources:
             PrimaryKey:
                 Name: id
                 Type: String
+    
+    # Authentication Resources
+    CognitoUserPool:
+        Type: AWS::Cognito::UserPool
+        Properties:
+            UserPoolName: CubeSatCognitoUserPool
 
+    CognitoUserPoolClient:
+        Type: AWS::Cognito::UserPoolClient
+        Properties:
+            ClientName: CubeSatCognitoClient
+            GenerateSecret: false
+            UserPoolId: !Ref CognitoUserPool
+    
+    CognitoIdPool:
+        Type: AWS::Cognito::IdentityPool
+        Properties:
+            IdentityPoolName: CubeSatCognitoIdentityPool
+            CognitoIdentityProviders:
+                -
+                    ClientId: !Ref CognitoUserPoolClient
+                    ProviderName: !GetAtt CognitoUserPool.ProviderName
+            AllowUnauthenticatedIdentities: false
+            
 Outputs:
 
     CubeSatApi:
