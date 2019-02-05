@@ -61,6 +61,21 @@ Resources:
                     Properties:
                         Path: /db-template
                         Method: post
+    TemplateGSPostFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: cubesat-backend/
+            Handler: gs-template.dbPostHandler
+            Runtime: nodejs8.10
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                HelloWorld:
+                    Type: Api
+                    Properties:
+                        Path: /gs-template
+                        Method: post
     TemplateDBTable:
         Type: AWS::Serverless::SimpleTable      # more advanced tables can be created with AWS::DynamoDB::Table
         Properties:
