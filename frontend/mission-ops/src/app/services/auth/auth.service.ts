@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { Observable } from 'rxjs';
 
 export interface ISignInCallback {
   onSuccess: (accessToken: string) => void,
   onFailure: (err: any) => void,
-  newPasswordRequired?: (userAttributes: any, requiredAttributes: any) => void,
+  newPasswordRequired?: (/*userAttributes: any, requiredAttributes: any*/) => Observable<string>,
   mfaRequired?: (challengeName: any, challengeParameters: any) => string,
   totpRequired?: (challengeName: any, challengeParameters: any) => void,
   customChallenge?: (challengeParameters: any) => void,
@@ -97,6 +98,13 @@ export class AuthService {
         // TODO: investigate replacing this with a promise because the user will need time to dig out MFA stuff
         let verificationCode = callback.mfaRequired(challengeName, challengeParameters);
         cognitoUser.sendMFACode(verificationCode, this);
+      },
+      newPasswordRequired: function(userAttributes: any, requiredAttributes: any) {
+        let subscription = callback.newPasswordRequired().subscribe((newPassword) => {
+          // Providing 'this' as the callback object causes this set of callbacks to handle any new callback operations
+          cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+        });
+        subscription.unsubscribe();
       }
     });
   }

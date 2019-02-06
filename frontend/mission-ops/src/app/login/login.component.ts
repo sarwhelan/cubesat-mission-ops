@@ -1,7 +1,10 @@
 import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { AuthService } from '../services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
+import { NewPasswordComponent } from '../new-password/new-password.component';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +15,8 @@ export class LoginComponent implements OnInit {
 
   @ViewChild(AlertComponent)
   private alert: AlertComponent;
+  @ViewChild(NewPasswordComponent)
+  private newPasswordComp: NewPasswordComponent;
 
   private username: string;
   private password: string;
@@ -62,6 +67,14 @@ export class LoginComponent implements OnInit {
         console.log(challengeName);
         console.log(challengeParameters);
         return '';
+      },
+      newPasswordRequired: () => {
+        this.processing = false;
+        // TODO: show the new password component
+
+        return this.newPasswordComp.getNewPassword().pipe(
+          tap(() => console.log('close the new password window in here'))
+        );
       }
     })
   }
