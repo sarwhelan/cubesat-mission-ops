@@ -17,6 +17,7 @@ import { TransmissionQueueComponent } from './transmission-queue/transmission-qu
 import { CreateUserComponent } from './create-user/create-user.component';
 import { AlertComponent } from './alert/alert.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     TransmissionQueueComponent,
     CreateUserComponent,
     AlertComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
