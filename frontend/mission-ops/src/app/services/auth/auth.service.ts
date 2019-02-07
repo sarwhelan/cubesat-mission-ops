@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export interface ISignInCallback {
   onSuccess: (accessToken: string) => void,
   onFailure: (err: any) => void,
-  newPasswordRequired?: (/*userAttributes: any, requiredAttributes: any*/) => Observable<string>,
+  newPasswordRequired?: () => Observable<string>,
   mfaRequired?: (challengeName: any, challengeParameters: any) => string,
   totpRequired?: (challengeName: any, challengeParameters: any) => void,
   customChallenge?: (challengeParameters: any) => void,
@@ -88,6 +88,8 @@ export class AuthService {
     let cognitoUser = new CognitoUser(userData);
     cognitoUser.authenticateUser(authDetails, {
       onSuccess: function(session: CognitoUserSession) {
+        console.log('success');
+        console.log(session);
         this.accessToken = session.getAccessToken().getJwtToken();
         callback.onSuccess(this.accessToken);
       },
@@ -100,11 +102,16 @@ export class AuthService {
         cognitoUser.sendMFACode(verificationCode, this);
       },
       newPasswordRequired: function(userAttributes: any, requiredAttributes: any) {
+        console.log(userAttributes);
+        console.log(requiredAttributes);
         let subscription = callback.newPasswordRequired().subscribe((newPassword) => {
           // Providing 'this' as the callback object causes this set of callbacks to handle any new callback operations
           cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+          subscription.unsubscribe();
+        },
+        (err) => {
+          this.newPasswordRequired(userAttributes, requiredAttributes);
         });
-        subscription.unsubscribe();
       }
     });
   }

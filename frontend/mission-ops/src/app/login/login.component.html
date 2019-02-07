@@ -13,4 +13,22 @@
     Sign In
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>
+  <button (click)="openModal()" class="btn btn-secondary">
+    Modal
+  </button>
 </form>
+
+<app-modal [dataSource]="pwd">
+  <ng-container modal-title>
+    New Password Required
+  </ng-container>
+  <ng-container modal-body>
+    <app-new-password #pwd></app-new-password>
+  </ng-container>
+  <ng-container modal-footer>
+      <button (click)="pwd.changePassword()" class="btn btn-primary">
+        Change Password
+        <span *ngIf="pwd.processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+  </ng-container>
+</app-modal>

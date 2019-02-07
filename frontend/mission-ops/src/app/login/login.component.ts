@@ -1,10 +1,11 @@
-import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Component, OnInit, isDevMode, ViewChild, ElementRef } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { from, Observable, of } from 'rxjs';
 
 import { AuthService } from '../services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
-import { NewPasswordComponent } from '../new-password/new-password.component';
+import { ModalComponent } from '../modal/modal.component';
+
 
 @Component({
   selector: 'app-login',
@@ -15,17 +16,26 @@ export class LoginComponent implements OnInit {
 
   @ViewChild(AlertComponent)
   private alert: AlertComponent;
-  @ViewChild(NewPasswordComponent)
-  private newPasswordComp: NewPasswordComponent;
+  @ViewChild(ModalComponent)
+  private modal: ModalComponent;
 
   private username: string;
   private password: string;
 
   private processing: boolean = false;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private modalService: NgbModal) { }
 
   ngOnInit() {
+  }
+
+  public openModal() {
+    from(this.modal.open()).subscribe((val) => {
+      console.log(`Modal closed with ${val}`);
+    },
+    (reject) => {
+      console.log(`Modal dismissed with ${reject}`);
+    });
   }
 
   public signIn() {
@@ -70,11 +80,7 @@ export class LoginComponent implements OnInit {
       },
       newPasswordRequired: () => {
         this.processing = false;
-        // TODO: show the new password component
-
-        return this.newPasswordComp.getNewPassword().pipe(
-          tap(() => console.log('close the new password window in here'))
-        );
+        return from(this.modal.open());
       }
     })
   }
