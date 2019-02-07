@@ -13,9 +13,6 @@
     Sign In
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>
-  <button (click)="openModal()" class="btn btn-secondary">
-    Modal
-  </button>
 </form>
 
 <app-modal [dataSource]="pwd">

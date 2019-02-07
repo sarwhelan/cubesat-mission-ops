@@ -29,7 +29,8 @@ export class AuthService {
     ClientId : '1jhd5ghteq1utussi99vm4h4h2'                    //CognitoUserPoolClient 
   };
 
-  private accessToken: string;
+  private cognitoUser: CognitoUser;
+  private session: CognitoUserSession;
 
   constructor() {
     this.userPool = new CognitoUserPool(this.poolData);
@@ -85,13 +86,13 @@ export class AuthService {
       Username: username,
       Pool: this.userPool
     };
-    let cognitoUser = new CognitoUser(userData);
-    cognitoUser.authenticateUser(authDetails, {
+    this.cognitoUser = new CognitoUser(userData);
+    this.cognitoUser.authenticateUser(authDetails, {
       onSuccess: function(session: CognitoUserSession) {
         console.log('success');
         console.log(session);
-        this.accessToken = session.getAccessToken().getJwtToken();
-        callback.onSuccess(this.accessToken);
+        this.session = session;
+        callback.onSuccess(this.getAccessToken());
       },
       onFailure: function(err: any) {
         callback.onFailure(err);
@@ -99,24 +100,29 @@ export class AuthService {
       mfaRequired: function(challengeName: any, challengeParameters: any) {
         // TODO: investigate replacing this with a promise because the user will need time to dig out MFA stuff
         let verificationCode = callback.mfaRequired(challengeName, challengeParameters);
-        cognitoUser.sendMFACode(verificationCode, this);
+        this.cognitoUser.sendMFACode(verificationCode, this);
       },
       newPasswordRequired: function(userAttributes: any, requiredAttributes: any) {
-        console.log(userAttributes);
-        console.log(requiredAttributes);
         let subscription = callback.newPasswordRequired().subscribe((newPassword) => {
           // Providing 'this' as the callback object causes this set of callbacks to handle any new callback operations
-          cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+          this.cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
           subscription.unsubscribe();
         },
         (err) => {
-          this.newPasswordRequired(userAttributes, requiredAttributes);
+          this.onFailure({
+            name: 'Error',
+            message: 'You must change your password.'
+          });
         });
       }
     });
   }
 
+  public signOut(): void {
+    this.cognitoUser.signOut();
+  }
+
   public getAccessToken(): string {
-    return this.accessToken;
+    return this.session.getAccessToken().getJwtToken();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, isDevMode, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { from, Observable, of } from 'rxjs';
+import { from } from 'rxjs';
 
 import { AuthService } from '../services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
@@ -27,15 +27,6 @@ export class LoginComponent implements OnInit {
   constructor(private auth: AuthService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  }
-
-  public openModal() {
-    from(this.modal.open()).subscribe((val) => {
-      console.log(`Modal closed with ${val}`);
-    },
-    (reject) => {
-      console.log(`Modal dismissed with ${reject}`);
-    });
   }
 
   public signIn() {
