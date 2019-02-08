@@ -332,9 +332,37 @@ Resources:
                     ClientId: !Ref CognitoUserPoolClient
                     ProviderName: !GetAtt CognitoUserPool.ProviderName
             AllowUnauthenticatedIdentities: false
+    
+    CognitoIAMUser:
+        Type: AWS::IAM::User
+        Properties:
+            Policies:
+                -
+                    PolicyName: CognitoListUsers
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            - 
+                                Effect: Allow
+                                Action:
+                                - cognito:ListUsers
+                                Resource: !GetAtt CognitoUserPool.Arn
+    
+    CognitoIAMUserAccessKey:
+        Type: AWS::IAM::AccessKey
+        Properties:
+            UserName: !Ref CognitoIAMUser
             
 Outputs:
 
     CubeSatApi:
       Description: "API Gateway root URL for the Prod stage of the CubeSat API"
       Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    
+    CognitoAccessKey:
+        Description: "Access key for the CognitoIAMUserAccessKey"
+        Value: !Ref CognitoIAMUserAccessKey
+
+    CognitoAccessKeySecretKey:
+        Description: "Secret key for the CognitoIAMUserAccessKey"
+        Value: !GetAtt CognitoIAMUserAccessKey.SecretAccessKey
