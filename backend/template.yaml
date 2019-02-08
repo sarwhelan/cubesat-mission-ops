@@ -345,7 +345,7 @@ Resources:
                             - 
                                 Effect: Allow
                                 Action:
-                                - cognito:ListUsers
+                                - cognito-idp:ListUsers
                                 Resource: !GetAtt CognitoUserPool.Arn
     
     CognitoIAMUserAccessKey:
