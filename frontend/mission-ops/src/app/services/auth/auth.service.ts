@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails, CognitoUserSession } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
-import * as AWS from 'aws-sdk';
 
 export interface ISignInCallback {
   onSuccess: (accessToken: string) => void,
@@ -25,6 +24,7 @@ export interface ISignUpCallback {
 export class AuthService {
 
   private userPool: any;
+  // TODO: move this configuration information somewhere appropriate
   private poolData = { 
     UserPoolId : 'us-east-2_0v71IeMge',                 //CognitoUserPool
     ClientId : '1jhd5ghteq1utussi99vm4h4h2'                    //CognitoUserPoolClient 
@@ -125,29 +125,5 @@ export class AuthService {
 
   public getAccessToken(): string {
     return this.session.getAccessToken().getJwtToken();
-  }
-
-  public getUsers() {
-    console.log('Building cognito identity service provider');
-    let cognito = new AWS.CognitoIdentityServiceProvider({
-      accessKeyId: 'AKIAITKTCDI7BY3DPTFA',
-      secretAccessKey: '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',
-      region: 'us-east-2'
-    });
-    console.log('getting list of users');
-    cognito.listUsers({
-      UserPoolId: 'us-east-2_0v71IeMge'
-      // AttributesToGet: [
-      //   'ATTRIBUTE_NAME'
-      // ]
-    }, (err, data) => {
-      if (err) {
-        console.log('Error');
-        console.log(err);
-      } else {
-        console.log('Success');
-        console.log(data);
-      }
-    })
   }
 }
