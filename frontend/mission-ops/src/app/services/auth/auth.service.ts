@@ -21,7 +21,7 @@ export class AuthService {
   private userPool: any;
   // TODO: move this configuration information somewhere appropriate
   private poolData = { 
-    UserPoolId : 'us-east-2_0v71IeMge',                 //CognitoUserPool
+    UserPoolId : 'us-east-2_eniCDFvnv',                 //CognitoUserPool
     ClientId : '1jhd5ghteq1utussi99vm4h4h2'                    //CognitoUserPoolClient 
   };
 

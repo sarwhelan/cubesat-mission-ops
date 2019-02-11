@@ -26,7 +26,7 @@ export class UsersService {
     // TODO: Validate input
 
     this.cognitoIdentityServiceProvider.adminCreateUser({
-      UserPoolId: 'us-east-2_0v71IeMge',
+      UserPoolId: 'us-east-2_eniCDFvnv',
       Username: username,
       TemporaryPassword: password,
       UserAttributes: [
@@ -57,7 +57,7 @@ export class UsersService {
 
   public getUsers(limit: number = 10, attributesToGet: Array<string> = null): void {
     this.cognitoIdentityServiceProvider.listUsers({
-      UserPoolId: 'us-east-2_0v71IeMge',
+      UserPoolId: 'us-east-2_eniCDFvnv',
       AttributesToGet: attributesToGet,
       Limit: limit
     }, (err, data) => {
