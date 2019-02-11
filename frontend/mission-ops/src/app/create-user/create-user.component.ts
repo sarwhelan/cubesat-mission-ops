@@ -13,7 +13,6 @@ export class CreateUserComponent implements OnInit {
   @ViewChild(AlertComponent)
   private alert: AlertComponent;
 
-  private password: string;
   private email: string;
   private admin: boolean;
 
@@ -26,26 +25,27 @@ export class CreateUserComponent implements OnInit {
 
   public create(): void {
     this.processing = true;
+    this.alert.hide();
 
     let errorList = [];
     if (!this.email) {
       errorList.push('Email field cannot be blank.');
     }
-    if (!this.password) {
-      errorList.push('Password field cannot be blank.');
-    }
     // TODO: Validate email format
 
-    if (errorList.length > 0) {   
-      this.alert.showList('Error', errorList);
+    if (errorList.length > 0) {
+      this.alert.showList('Error', errorList, 'danger');
       this.processing = false;
       return; // Break out of the function before attempting to send bad info to the auth service
     }
 
-    this.users.createUser(this.email, this.password, this.email, this.admin, {
+    this.users.createUser(this.email, null, this.email, this.admin, {
       onSuccess: () => {
         this.processing = false;
-        console.log('Sign up success!');
+        this.alert.show('Success!', `User ${this.email} has been created, and a welcome email has been sent to them.`, 'success');
+        
+        this.email = '';
+        this.admin = false;
       },
       onFailure: (err: any) => {
         this.processing = false;
