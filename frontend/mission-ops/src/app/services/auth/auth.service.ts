@@ -22,7 +22,7 @@ export class AuthService {
   // TODO: move this configuration information somewhere appropriate
   private poolData = { 
     UserPoolId : 'us-east-2_eniCDFvnv',                 //CognitoUserPool
-    ClientId : '1jhd5ghteq1utussi99vm4h4h2'                    //CognitoUserPoolClient 
+    ClientId : '76ofbnbo56rn63hjlheshgeate'                    //CognitoUserPoolClient 
   };
 
   private cognitoUser: CognitoUser;
@@ -59,12 +59,13 @@ export class AuthService {
       Pool: this.userPool
     };
     this.cognitoUser = new CognitoUser(userData);
+    let self = this;
     this.cognitoUser.authenticateUser(authDetails, {
       onSuccess: function(session: CognitoUserSession) {
         console.log('success');
         console.log(session);
-        this.session = session;
-        callback.onSuccess(this.getAccessToken());
+        self.session = session;
+        callback.onSuccess(self.getAccessToken());
       },
       onFailure: function(err: any) {
         callback.onFailure(err);
@@ -72,12 +73,12 @@ export class AuthService {
       mfaRequired: function(challengeName: any, challengeParameters: any) {
         // TODO: investigate replacing this with a promise because the user will need time to dig out MFA stuff
         let verificationCode = callback.mfaRequired(challengeName, challengeParameters);
-        this.cognitoUser.sendMFACode(verificationCode, this);
+        self.cognitoUser.sendMFACode(verificationCode, this);
       },
       newPasswordRequired: function(userAttributes: any, requiredAttributes: any) {
         let subscription = callback.newPasswordRequired().subscribe((newPassword) => {
           // Providing 'this' as the callback object causes this set of callbacks to handle any new callback operations
-          this.cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+          self.cognitoUser.completeNewPasswordChallenge(newPassword, requiredAttributes, this);
           subscription.unsubscribe();
         },
         (err) => {
