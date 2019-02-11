@@ -17,7 +17,38 @@ export class UsersService {
     });
   }
 
-  public getUsers(limit: number = 10, attributesToGet: Array<string> = null) {
+  public createUser(username: string, password: string, email: string, admin: boolean): void {
+    // TODO: Validate input
+
+    this.cognitoIdentityServiceProvider.adminCreateUser({
+      UserPoolId: 'us-east-2_0v71IeMge',
+      Username: username,
+      TemporaryPassword: password,
+      UserAttributes: [
+        {
+          Name: 'email',
+          Value: email
+        },
+        {
+          Name: 'custom:administrator',
+          Value: admin ? 'true' : 'false'
+        }
+      ],
+      DesiredDeliveryMediums: [
+        'EMAIL'
+      ]
+    }, (err, data) => {
+      if (err) {
+        console.log('Error creating user');
+        console.log(err);
+      } else {
+        console.log('Success creating user');
+        console.log(data);
+      }
+    });
+  }
+
+  public getUsers(limit: number = 10, attributesToGet: Array<string> = null): void {
     this.cognitoIdentityServiceProvider.listUsers({
       UserPoolId: 'us-east-2_0v71IeMge',
       AttributesToGet: attributesToGet,
