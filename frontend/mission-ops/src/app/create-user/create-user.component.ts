@@ -49,7 +49,7 @@ export class CreateUserComponent implements OnInit {
       },
       onFailure: (err: any) => {
         this.processing = false;
-        this.alert.show(err.name, err.message);
+        this.alert.show(err.name, err.message, 'danger');
       }
     })
   }
