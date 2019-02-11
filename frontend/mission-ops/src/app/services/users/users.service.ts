@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 
+export interface ICreateUserCallback {
+  onSuccess: () => void,
+  onFailure: (err: any) => void
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +22,7 @@ export class UsersService {
     });
   }
 
-  public createUser(username: string, password: string, email: string, admin: boolean): void {
+  public createUser(username: string, password: string, email: string, admin: boolean, callback: ICreateUserCallback): void {
     // TODO: Validate input
 
     this.cognitoIdentityServiceProvider.adminCreateUser({
@@ -41,9 +46,11 @@ export class UsersService {
       if (err) {
         console.log('Error creating user');
         console.log(err);
+        callback.onFailure(err);
       } else {
         console.log('Success creating user');
         console.log(data);
+        callback.onSuccess();
       }
     });
   }

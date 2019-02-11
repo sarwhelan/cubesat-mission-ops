@@ -1,6 +1,6 @@
-import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { AuthService } from '../services/auth/auth.service';
+import { UsersService } from '../services/users/users.service';
 import { AlertComponent } from '../alert/alert.component';
 
 @Component({
@@ -13,15 +13,13 @@ export class CreateUserComponent implements OnInit {
   @ViewChild(AlertComponent)
   private alert: AlertComponent;
 
-  private username: string;
   private password: string;
-  private confirmPassword: string;
   private email: string;
-  private phoneNumber: string;
+  private admin: boolean;
 
   private processing: boolean = false;
 
-  constructor(private auth: AuthService) { }
+  constructor(private users: UsersService) { }
 
   ngOnInit() {
   }
@@ -30,19 +28,13 @@ export class CreateUserComponent implements OnInit {
     this.processing = true;
 
     let errorList = [];
-    if (!this.username) {
-      errorList.push('Username field cannot be blank.');
+    if (!this.email) {
+      errorList.push('Email field cannot be blank.');
     }
     if (!this.password) {
       errorList.push('Password field cannot be blank.');
     }
-    if (!this.confirmPassword) {
-      errorList.push('Confirm Password field cannot be blank.');
-    }
-    if (this.password !== this.confirmPassword) {
-      errorList.push('Password field and Confirm Password field must match.');
-    }
-    // TODO: Validate email and phone number formats
+    // TODO: Validate email format
 
     if (errorList.length > 0) {   
       this.alert.showList('Error', errorList);
@@ -50,7 +42,7 @@ export class CreateUserComponent implements OnInit {
       return; // Break out of the function before attempting to send bad info to the auth service
     }
 
-    this.auth.signUp(this.username, this.password, this.email, this.phoneNumber, {
+    this.users.createUser(this.email, this.password, this.email, this.admin, {
       onSuccess: () => {
         this.processing = false;
         console.log('Sign up success!');
