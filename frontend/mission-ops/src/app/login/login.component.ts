@@ -1,5 +1,4 @@
-import { Component, OnInit, isDevMode, ViewChild, ElementRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
 import { from } from 'rxjs';
 
 import { AuthService } from '../services/auth/auth.service';
@@ -24,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   private processing: boolean = false;
 
-  constructor(private auth: AuthService, private modalService: NgbModal) { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
   }

@@ -13,11 +13,6 @@ export interface ISignInCallback {
   selectMFAType?: (challengeName: any, challengeParameters: any) => void
 }
 
-export interface ISignUpCallback {
-  onSuccess: () => void,
-  onFailure: (err: any) => void
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -35,30 +30,6 @@ export class AuthService {
 
   constructor() {
     this.userPool = new CognitoUserPool(this.poolData);
-  }
-
-  public signUp(username: string, password: string, email: string, phoneNumber: string, callback: ISignUpCallback): void {
-    // TODO: validate incoming data
-
-    let attributeList = [];
-
-    let attributeEmail = new CognitoUserAttribute({
-      Name: 'email',
-      Value: email
-    });
-    attributeList.push(attributeEmail);
-
-    this.userPool.signUp(username, password, attributeList, null, function(err, result) {
-      if (err) {
-        // TODO: Do something about the error
-        callback.onFailure(err);
-      } else {
-        let cognitoUser = result.user;
-        console.log(result);
-        // TODO: Do something with the user
-        callback.onSuccess();
-      }
-    });
   }
 
   public confirmSignUp(username: string, code: string): void {
