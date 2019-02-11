@@ -315,6 +315,19 @@ Resources:
         Type: AWS::Cognito::UserPool
         Properties:
             UserPoolName: CubeSatCognitoUserPool
+            Schema:
+                -  
+                    AttributeDataType: Boolean
+                    Name: administrator
+            UsernameAttributes: 
+                - email
+            EmailVerificationSubject: 'Mission Control Verification'
+            EmailVerificationMessage: 'Your verification code is {####}'
+            AdminCreateUserConfig:
+                AllowAdminCreateUserOnly: true
+                InviteMessageTemplate:
+                    EmailSubject: 'Welcome to CubeSat Mission Control'
+            MfaConfiguration: 'OFF'
 
     CognitoUserPoolClient:
         Type: AWS::Cognito::UserPoolClient
