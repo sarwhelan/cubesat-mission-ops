@@ -28,11 +28,7 @@ export class CreateUserComponent implements OnInit {
 
   constructor(private users: UsersService, private auth: AuthService) { }
 
-  ngOnInit() {
-    if (!this.auth.isAdministrator()) {
-      // TODO: redirect to some sort of forbidden page
-    }
-  }
+  ngOnInit() {  }
 
   /**
    * Creates a new user with the data specified in the form.
