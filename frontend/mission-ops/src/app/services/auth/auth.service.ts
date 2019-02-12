@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession, CognitoAccessToken, CognitoIdToken, CognitoRefreshToken } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
 
 /**
@@ -49,6 +49,11 @@ export class AuthService {
     if (!this._cognitoUser) {
       // User does not exist in memory, so try to get it from session storage
       this._cognitoUser = JSON.parse(sessionStorage.getItem('cognitoUser')) as CognitoUser;
+      if (this._cognitoUser) {
+        // Got the user object out of storage, now we need to restore all of its functions
+        // @ts-ignore Reset prototype that got removed by JSON parsing
+        this._cognitoUser.__proto__ = CognitoUser.prototype;
+      }
     }
     return this._cognitoUser;
   }
@@ -63,7 +68,19 @@ export class AuthService {
 
   private get session(): CognitoUserSession {
     if (!this._session) {
+      // Session does not exist in memeory, so try to get it from session storage
       this._session = JSON.parse(sessionStorage.getItem('cognitoSession')) as CognitoUserSession;
+      if (this._session) {
+        // Got the session object out of storage, so now we need to restore all of its functions
+        // @ts-ignore Reset prototype that got removed by JSON parsing
+        this._session.__proto__ = CognitoUserSession.prototype;
+        // @ts-ignore Reset prototype that got removed by JSON parsing
+        this._session.getAccessToken().__proto__ = CognitoAccessToken.prototype;
+        // @ts-ignore Reset prototype that got removed by JSON parsing
+        this._session.getIdToken().__proto__ = CognitoIdToken.prototype;
+        // @ts-ignore Reset prototype that got removed by JSON parsing
+        this._session.getRefreshToken().__proto__ = CognitoRefreshToken.prototype;
+      }
     }
     return this._session;
   }
@@ -92,7 +109,6 @@ export class AuthService {
   }
 
   constructor() {
-    console.log('constructing');
     this.userPool = new CognitoUserPool(this.poolData);
   }
 
@@ -124,19 +140,14 @@ export class AuthService {
       onSuccess: function(session: CognitoUserSession) {
         // Login was successful
         self.session = session;
-        console.log('signed in, getting attributes');
         // Grab user attributes to check if they're an administrator
         self.cognitoUser.getUserAttributes((err, result) => {
           if (err) {
             callback.onFailure(err);
           } else {
-            console.log('getting admin property');
             let adminProp = result.find((value) => value.getName() === 'custom:administrator');
-            console.log(adminProp);
             if (adminProp) {
               self.isAdmin = adminProp.getValue() === 'true';
-              console.log(`isAdmin? ${self.isAdmin}`);
-              console.log(self.cognitoUser);
             } else {
               self.isAdmin = false;
             }
@@ -222,10 +233,7 @@ export class AuthService {
    * @memberof AuthService
    */
   public isAdministrator(): boolean {
-    console.log('Am I an admin?');
-    console.log(this.cognitoUser);
     if (this.cognitoUser) {
-      console.log(`Admin? ${this.isAdmin}`);
       return this.isAdmin;
     } else {
       return false;
