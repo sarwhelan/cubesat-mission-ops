@@ -9,13 +9,14 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
+import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
 import { AdminGuardService } from './services/admin-guard/admin-guard.service';
 
 const routes: Routes = [
   { path : 'telecommands', component: TelecommandsComponent },
   { path : 'telecommandBatches', component: TelecommandBatchesComponent },
   { path : 'queue', component: QueuesComponent },
-  { path : 'login', component: LoginComponent },
+  { path : 'login', component: LoginComponent, canActivate: [AntiAuthGuardService] },
   { path : 'users/create', component: CreateUserComponent, canActivate: [AdminGuardService] },
   { path : 'error/access-denied', component: AccessDeniedComponent },
 ];
