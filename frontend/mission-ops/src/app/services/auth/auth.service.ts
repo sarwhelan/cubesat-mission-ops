@@ -34,7 +34,7 @@ export interface ISignInCallback {
 })
 export class AuthService {
 
-  private userPool: any;
+  private userPool: CognitoUserPool;
   // TODO: move this configuration information somewhere appropriate
   private poolData = { 
     UserPoolId : 'us-east-2_eniCDFvnv',                 //CognitoUserPool
@@ -53,6 +53,10 @@ export class AuthService {
         // Got the user object out of storage, now we need to restore all of its functions
         // @ts-ignore Reset prototype that got removed by JSON parsing
         this._cognitoUser.__proto__ = CognitoUser.prototype;
+        // @ts-ignore Reset prototype that got removed by JSON parsing
+        this._cognitoUser.pool.__proto__ = CognitoUserPool.prototype;
+        // @ts-ignore Replace storage object that got removed by JSON parsing
+        this._cognitoUser.storage = localStorage;
       }
     }
     return this._cognitoUser;
