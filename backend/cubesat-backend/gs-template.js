@@ -38,6 +38,7 @@ let response;
  */
 
 exports.postHandler = async (event, context) => {
+    console.log("triggered handler");
 	try {
         let data = JSON.parse(event.body);
         console.log(data);
@@ -48,10 +49,11 @@ exports.postHandler = async (event, context) => {
             })
         };
     } catch (err) {
-        console.log('ERRROR');
-        console.log(err);
-        return err;
+        response = {
+            'statusCode': 502,
+            'body': err
+        };
+    } finally {
+        return response;
     }
-
-    return response;
 };

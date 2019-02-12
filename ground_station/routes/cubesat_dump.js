@@ -8,7 +8,6 @@ const logger = require('../logger');
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
-    	console.log('rcvd post');
         var options = {
         	host: "127.0.0.1",
         	port: "3000",
@@ -16,11 +15,11 @@ router.route('/')
         	method: "POST",
         	headers: {
         		"Content-Type": "application/json",
-        		"Authorization": "Bearer token"
+        		"Authorization": "Bearer token",
+        		"Access-Control-Allow-Origin": "*"
         	}
         };
         var fwdReq = http.request(options, function(fwdRes) {
-        	console.log('entered cb')
         	var respStr = "";
         	fwdRes.on("data", function(data) {
         		respStr += data;
