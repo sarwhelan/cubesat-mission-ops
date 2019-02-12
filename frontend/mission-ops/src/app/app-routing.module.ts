@@ -12,7 +12,6 @@ const routes: Routes = [
   { path : 'queue', component: QueuesComponent },
   { path : 'login', component: LoginComponent },
   { path : 'users/create', component: CreateUserComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({
