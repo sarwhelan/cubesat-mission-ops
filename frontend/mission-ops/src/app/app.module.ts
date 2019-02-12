@@ -19,6 +19,7 @@ import { AlertComponent } from './alert/alert.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     AlertComponent,
     NewPasswordComponent,
     ModalComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
