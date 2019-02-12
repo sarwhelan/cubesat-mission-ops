@@ -1,4 +1,5 @@
 import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { from } from 'rxjs';
 
 import { AuthService } from '../services/auth/auth.service';
@@ -6,6 +7,13 @@ import { AlertComponent } from '../alert/alert.component';
 import { ModalComponent } from '../modal/modal.component';
 
 
+/**
+ * A component for logging a user into the application.
+ *
+ * @export
+ * @class LoginComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,13 +31,26 @@ export class LoginComponent implements OnInit {
 
   private processing: boolean = false;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
+    if (this.auth.isAuthenticated()) {
+      this.router.navigateByUrl('/');
+    }
   }
 
+  /**
+   * Signs the user into the application using the username and password
+   * provided in the input fields. Errors are displayed in a dismissable
+   * alert. If the user needs to change their password, a modal is openned
+   * to handle that.
+   *
+   * @returns
+   * @memberof LoginComponent
+   */
   public signIn() {
     this.processing = true;
+    this.alert.hide();
 
     let errorList = [];
     if (!this.username) {
@@ -46,9 +67,9 @@ export class LoginComponent implements OnInit {
     }
 
     this.auth.signIn(this.username, this.password, {
-      onSuccess: (accessToken: string) => {
+      onSuccess: () => {
         this.processing = false;
-        console.log(`Sign in success! Access Token: ${accessToken}`);
+        this.router.navigateByUrl('/');
       },
       onFailure: (err: any) => {
         this.processing = false;
@@ -61,6 +82,7 @@ export class LoginComponent implements OnInit {
         }
       },
       mfaRequired: (challengeName: any, challengeParameters: any) => {
+        // TODO: expand this to actually support MFA if needed.
         this.processing = false;
 
         console.log('mfa required');
