@@ -18,6 +18,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { AlertComponent } from './alert/alert.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { ModalComponent } from './modal/modal.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ModalComponent } from './modal/modal.component';
     CreateUserComponent,
     AlertComponent,
     NewPasswordComponent,
-    ModalComponent
+    ModalComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,
