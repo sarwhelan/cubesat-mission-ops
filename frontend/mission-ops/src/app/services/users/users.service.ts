@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import { CognitoIdentityServiceProvider, AWSError } from 'aws-sdk';
+import { Observable } from 'rxjs';
+
+import { User } from '../../../classes/user';
+import { UserList } from '../../../classes/user-list';
 
 export interface ICreateUserCallback {
   onSuccess: () => void,
@@ -81,19 +85,23 @@ export class UsersService {
    * @param {Array<string>} [attributesToGet=null] The attributes to get for each user. If unspecified, all attributes are retrieved.
    * @memberof UsersService
    */
-  public listUsers(limit: number = 10, attributesToGet: Array<string> = null): void {
-    this.cognitoIdentityServiceProvider.listUsers({
-      UserPoolId: 'us-east-2_eniCDFvnv',
-      AttributesToGet: attributesToGet,
-      Limit: limit
-    }, (err, data) => {
-      if (err) {
-        console.log('Error');
-        console.log(err);
-      } else {
-        console.log('Success');
-        console.log(data);
-      }
+  public listUsers(limit: number = 10, attributesToGet: Array<string> = null, paginationToken: string = null): Observable<UserList> {
+    const obs = new Observable<UserList>((subscriber) => {
+      this.cognitoIdentityServiceProvider.listUsers({
+        UserPoolId: 'us-east-2_eniCDFvnv',
+        AttributesToGet: attributesToGet,
+        Limit: limit,
+        PaginationToken: paginationToken
+      }, (err, data) => {
+        if (err) {
+          subscriber.error(err);
+        } else {
+          subscriber.next(new UserList(data));
+        }
+        subscriber.complete();
+      });
     });
+
+    return obs;
   }
 }

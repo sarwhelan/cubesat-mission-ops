@@ -20,6 +20,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { LogoutComponent } from './logout/logout.component';
     NewPasswordComponent,
     ModalComponent,
     AccessDeniedComponent,
-    LogoutComponent
+    LogoutComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
