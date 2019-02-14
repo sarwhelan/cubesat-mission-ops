@@ -150,14 +150,15 @@ export class AuthService {
           if (err) {
             callback.onFailure(err);
           } else {
-            self.currentUser = new User();
+            const user = new User();
             result.forEach((att) => {
               if (att.getName() === 'email') {
-                self.currentUser.email = att.getValue();
+                user.email = att.getValue();
               } else if (att.getName() === 'custom:administrator') {
-                self.currentUser.administrator = att.getValue() === 'true';
+                user.administrator = att.getValue() === 'true';
               }
             });
+            self.currentUser = user;
             callback.onSuccess(self.getAccessToken());
           }
         });
