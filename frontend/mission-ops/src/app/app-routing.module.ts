@@ -22,7 +22,7 @@ const routes: Routes = [
   { path : 'users/create', component: CreateUserComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
-  { path : 'users', component: UsersComponent/*, canActivate: [AuthGuardService, AdminGuardService]*/ },
+  { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
 ];
 
 @NgModule({

@@ -124,4 +124,30 @@ export class UsersService {
 
     return obs;
   }
+
+  /**
+   * Deletes the given user from the application, and returns an
+   * Observable that will send one result when the operation completes,
+   * or error if an error occurs.
+   *
+   * @param {User} user The user to be deleted.
+   * @returns {Observable<void>}
+   * @memberof UsersService
+   */
+  public deleteUser(user: User): Observable<void> {
+    const obs = new Observable<void>((subscriber) => {
+      this.cognitoIdentityServiceProvider.adminDeleteUser({
+        UserPoolId: 'us-east-2_eniCDFvnv',
+        Username: user.email
+      }, (err, data) => {
+        if (err) {
+          subscriber.error(err);
+        } else {
+          subscriber.next();
+        }
+        subscriber.complete();
+      });
+    });
+    return obs;
+  }
 }
