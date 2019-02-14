@@ -1,5 +1,3 @@
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
-
 import { User } from './user';
 
 export class UserList {
