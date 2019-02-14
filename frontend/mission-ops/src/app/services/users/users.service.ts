@@ -77,7 +77,6 @@ export class UsersService {
   }
 
   /**
-   * WORK IN PROGRESS
    * Gets the list of all users that exist in the user pool. Currently returns nothing,
    * but at some point will allow for accessing paginated results somehow.
    *
@@ -96,7 +95,28 @@ export class UsersService {
         if (err) {
           subscriber.error(err);
         } else {
-          subscriber.next(new UserList(data));
+          const users: Array<User> = [];
+
+          // Convert incoming user data into user objects
+          data.Users.forEach((u) => {
+            const user = new User();
+            u.Attributes.forEach((att) => {
+              if (att.Name === 'email') {
+                user.email = att.Value;
+              } else if (att.Name === 'custom:administrator') {
+                user.administrator = att.Value === 'true';
+              }
+            });
+            users.push(user);
+          });
+
+          // Build user list using incoming data
+          const userList: UserList = new UserList({
+            paginationToken: data.PaginationToken,
+            users: users
+          });
+
+          subscriber.next(userList);
         }
         subscriber.complete();
       });
