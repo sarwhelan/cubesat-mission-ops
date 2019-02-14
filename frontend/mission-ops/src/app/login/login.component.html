@@ -1,3 +1,31 @@
-<p>
-  login works!
-</p>
+<h2>Login</h2>
+<form>
+  <div class="form-group">
+    <label for="usernameInput">Username</label>
+    <input [(ngModel)]="username" type="text" class="form-control" id="usernameInput" placeholder="Username" name="username">
+  </div>
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <input [(ngModel)]="password" type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
+  </div>
+  <app-alert [alertStyle]="'danger'"></app-alert>
+  <button (click)="signIn()" class="btn btn-primary">
+    Sign In
+    <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  </button>
+</form>
+
+<app-modal [dataSource]="pwd">
+  <ng-container modal-title>
+    New Password Required
+  </ng-container>
+  <ng-container modal-body>
+    <app-new-password #pwd></app-new-password>
+  </ng-container>
+  <ng-container modal-footer>
+      <button (click)="pwd.changePassword()" class="btn btn-primary">
+        Change Password
+        <span *ngIf="pwd.processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+  </ng-container>
+</app-modal>

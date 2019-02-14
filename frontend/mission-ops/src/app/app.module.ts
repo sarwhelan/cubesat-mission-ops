@@ -14,7 +14,12 @@ import { TelecommandBatchDetailsComponent } from './telecommand-batch-details/te
 import { QueuesComponent } from './queues/queues.component';
 import { ExecutionQueueComponent } from './execution-queue/execution-queue.component';
 import { TransmissionQueueComponent } from './transmission-queue/transmission-queue.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 import { AlertComponent } from './alert/alert.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
+import { ModalComponent } from './modal/modal.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,12 @@ import { AlertComponent } from './alert/alert.component';
     QueuesComponent,
     ExecutionQueueComponent,
     TransmissionQueueComponent,
-    AlertComponent
+    CreateUserComponent,
+    AlertComponent,
+    NewPasswordComponent,
+    ModalComponent,
+    AccessDeniedComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

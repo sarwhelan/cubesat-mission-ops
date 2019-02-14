@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderItem } from '../../classes/headerItem';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
     new HeaderItem("Telecommand Batches", "/telecommandBatches"),
   ];
 
-  constructor(private router: Router) {  
+  constructor(private router: Router, private auth: AuthService) {  
     
     // This allows the active header to be selected even when the page is refreshed
     this.router.events.subscribe(val => {

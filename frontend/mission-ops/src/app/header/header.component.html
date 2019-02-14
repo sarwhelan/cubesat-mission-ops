@@ -13,9 +13,14 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <li *ngIf="!this.auth.isAuthenticated(); else alreadyAuthenticated" class="nav-item">
         <a class="nav-link" routerLink="/login">Login</a>
       </li>
+      <ng-template #alreadyAuthenticated>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/logout">Logout</a>
+        </li>
+      </ng-template>
     </ul>
   </div>
 </nav>
