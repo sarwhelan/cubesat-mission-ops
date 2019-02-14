@@ -6,9 +6,13 @@ export class UserList {
     public paginationToken: string;
     public users: Array<User>;
     
-    constructor(listUsersResponse: CognitoIdentityServiceProvider.ListUsersResponse) {
-        this.paginationToken = listUsersResponse.PaginationToken;
-        this.users = [];
-        listUsersResponse.Users.forEach((u) => this.users.push(new User(u)));
+    constructor(params: UserList = {} as UserList) {
+        let {
+            paginationToken = '',
+            users = []
+        } = params;
+
+        this.paginationToken = paginationToken;
+        this.users = users;
     }
 }
