@@ -7,11 +7,12 @@ const http = require('http');
 const logger = require('../logger');
 
 router.route('/')
+    // Forward CubeSat dump in another POST to our application server.
     .post(parseUrlencoded, parseJSON, (req, res) => {
         var options = {
-        	host: "127.0.0.1",
-        	port: "3000",
-        	path: "/gs-template",
+        	host: "httpbin.org",
+        	//port: "3000",
+        	path: "/anything",
         	method: "POST",
         	headers: {
         		"Content-Type": "application/json",
@@ -29,7 +30,7 @@ router.route('/')
         		res.send('Success');
         	});
         });
-        fwdReq.write(JSON.stringify(req.body));
+        fwdReq.write(req.body);
         fwdReq.end();
     });
 
