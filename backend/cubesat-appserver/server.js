@@ -4,7 +4,7 @@ const app = express();
 var telecommands = require('./routes/telecommands');
 var template = require('./routes/template');
 var db_template = require('./routes/db-template');
-var cubesat_dump = require('./routes/cubesat-dump');
+var cubesat_dump = require('./routes/cubesat_dump');
 
 const port = 3000;
 
