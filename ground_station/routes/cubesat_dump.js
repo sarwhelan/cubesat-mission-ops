@@ -10,9 +10,9 @@ router.route('/')
     // Forward CubeSat dump in another POST to our application server.
     .post(parseUrlencoded, parseJSON, (req, res) => {
         var options = {
-        	host: "httpbin.org",
+        	host: "http://127.0.0.1:3000",
         	//port: "3000",
-        	path: "/anything",
+        	path: "/cubesat-dump",
         	method: "POST",
         	headers: {
         		"Content-Type": "application/json",
@@ -28,7 +28,11 @@ router.route('/')
         	fwdRes.on("end", function() {
         		console.log(respStr);
         		res.send('Success');
-        	});
+			});
+			fwsRes.on("error", function(err) {
+				console.log(err);
+				res.send(err);
+			});
         });
         fwdReq.write(req.body);
         fwdReq.end();

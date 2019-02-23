@@ -7,6 +7,8 @@
 const express = require('express');
 const logger = require('./logger');
 
+var poll_cubesat_dump = require('./data_dump/poll_cubesat_dump');
+
 // Imports
 var telecommands = require('./routes/telecommands');
 var cubesat_dump = require('./routes/cubesat_dump');
