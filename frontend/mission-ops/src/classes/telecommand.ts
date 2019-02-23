@@ -1,6 +1,6 @@
 ﻿export class Telecommand {
-    id: number;
-    // component : Component;
+    telecommandID: number;
+    componentID : number;
     command: string;
     name: string;
     defaultPriorityLevel: boolean;
@@ -8,7 +8,7 @@
     powerConsumption: number;
 
     constructor(id: number, name: string) {
-        this.id = id;
+        this.componentID = id;
         this.name = name;
     }
 }
