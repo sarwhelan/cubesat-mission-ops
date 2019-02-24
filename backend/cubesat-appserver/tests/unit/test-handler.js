@@ -1,45 +1,51 @@
 'use strict';
 
-const template = require('../../routes/template.js');
+const server = require('../../server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 chai.use(chaiHttp);
 chai.should();
 
-// these are broken rip
-
 describe('Tests GET', function () {
     it('verifies successful response', (done) => {
-        const result = chai.request(template)
-        .get('/')
+        chai.request(server)
+        .get('/template')
         .end((err, res) => {
+            if (err) throw err;
             res.should.be.a('object');
             res.should.have.status(200);
-            res.body.to.be.a('string');
+            res.body.should.be.a('object');
+            res.body.should.have.property('body');
+            res.body.body.should.be.a('string');
     
-            let response = JSON.parse(result.body);
+            let response = JSON.parse(res.body.body);
     
-            response.to.be.an('object');
-            response.message.to.be.equal("This is the get route");
+            response.should.be.an('object');
+            response.should.have.property('message');
+            response.message.should.be.equal("This is the get route");
             done();
         });
     });
 });
 
-describe('Tests post handler', function () {
+describe('Tests POST', function () {
     it('verifies successful response', (done) => {
-        const result = chai.request(template)
-        .post('/')
+        chai.request(server)
+        .post('/template')
         .end((err, res) => {
+            if (err) throw err;
             res.should.be.a('object');
             res.should.have.status(200);
-            res.body.should.be.a('string');
+            res.body.should.be.a('object');
+            res.body.should.have.property('body');
+            res.body.body.should.be.a('string');
             
-            let response = JSON.parse(result.body);
+            let response = JSON.parse(res.body.body);
 
-            response.to.be.an('object');
-            response.message.to.be.equal("This is the post route");
+            response.should.be.an('object');
+            response.should.have.property('message');
+            response.message.should.be.equal("This is the post route");
             done();
         });
     });
