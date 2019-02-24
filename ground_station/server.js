@@ -6,6 +6,7 @@
 // Node modules
 const express = require('express');
 const logger = require('./logger');
+const constants = require('./constants');
 
 // Imports
 var poll_cubesat_dump = require('./data_dump/poll_cubesat_dump');
@@ -24,6 +25,6 @@ app.use(function (request, response, next) {
 app.use('/queue', queue);
 
 logger.log('info', 'App served.');
-app.listen(3700, () => console.log('App listening on 3700'));
+app.listen(constants.PORT, () => console.log(`App listening on ${constants.PORT}`));
 
 module.exports = app;

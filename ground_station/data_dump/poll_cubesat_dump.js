@@ -2,35 +2,41 @@
  * Watches for CubeSat dump, and sends outgoing POST to application server with dump contents.
  * Also copies file to an external location as a backup.
  *************/
-var path = require('path');
-var fs = require('fs');
-var Inotify = require('inotify').Inotify;
-var inotify = new Inotify();
-var http = require('http');
-var logger = require('../logger');
 
-const DUMP_DIR = '/home/dzagar/Desktop/dumptest';
-const WATCH_DIR = '/home/dzagar/Desktop/watchtest';
+// Node modules
+ const path = require('path');
+const fs = require('fs');
+const Inotify = require('inotify').Inotify; // TODO: Add to package.json
+const inotify = new Inotify();
+const http = require('http');
+
+// Imports
+const logger = require('../logger');
+const constants = require('../constants');
 
 var callback = function(event) {
+	// Get event mask to determine which event happened.
     var mask = event.mask;
     var type = '';
     if (event.name) {
         type += event.name;
     } else {
         type += 'n/a';
-    }
-	var srcFilePath = path.join(WATCH_DIR, type);
+	}
+	
+	var srcFilePath = path.join(constants.DATA_DUMP_WATCH_DIR, type);
 
     if (mask & Inotify.IN_ISDIR) {
-	logger.log('info', 'Watch directory accessed.');
+		// Watch directory has been accessed; log and return.
+		logger.log('info', 'Watch directory accessed.');
         return;
     }
     if (mask & Inotify.IN_CLOSE_WRITE) {
+		// File is done writing; save backup.
         logger.log('debug', `Received created event ${type}`);
         var date = new Date();
 		var dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-        subDirPath = path.join(DUMP_DIR, dateString);
+        subDirPath = path.join(constants.DATA_DUMP_BACKUP_DIR, dateString);
         if (!fs.existsSync(subDirPath)) {
             fs.mkdirSync(subDirPath);
         }
@@ -40,8 +46,9 @@ var callback = function(event) {
             logger.log('debug', `Copy from ${srcFilePath} to ${destPath} successful`);
         });
 
+		// Send outgoing POST with dump data to app server.
 		var options = {
-			host: "127.0.0.1",
+			host: constants.APP_SERVER_HOST,
 			port: "3000",
 			path: "/cubesat_dump",
 			method: "POST",
@@ -74,13 +81,14 @@ var callback = function(event) {
 			logger.log('error', err);
 			console.log(err);
 		});
+		// Send outgoing POST
 		fwdReq.write(jsonDump);
         fwdReq.end();
     }
 }
 
 var watch_dir = {
-    path: WATCH_DIR,
+    path: constants.DATA_DUMP_WATCH_DIR,
     callback: callback
 };
 
