@@ -51,7 +51,7 @@ var callback = function(event) {
 				"Access-Control-Allow-Origin": "*"
 			}
 		};
-		var jsonDump = fs.readFileSync(srcFilePath);
+		var jsonDump = fs.readFileSync(srcFilePath, 'utf-8');
 		var fwdReq = http.request(options, res => {
         	var respStr = "";
 			res.on('error', err => {
