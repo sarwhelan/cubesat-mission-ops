@@ -21,3 +21,5 @@ app.use('/db-template', db_template);
 app.use('/cubesat_dump', cubesat_dump);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
+
+module.exports = app;
