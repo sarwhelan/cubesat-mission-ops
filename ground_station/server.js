@@ -25,3 +25,5 @@ app.use('/queue', queue);
 
 logger.log('info', 'App served.');
 app.listen(3700, () => console.log('App listening on 3700'));
+
+module.exports = app;
