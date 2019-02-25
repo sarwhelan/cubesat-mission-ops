@@ -16,6 +16,10 @@ router.route('/')
 	.post(parseUrlencoded, parseJSON, (req, res) => {
 		try 
 		{
+			// Verify batch format.
+			if (!req.body.batch) {
+				throw new Error('Incorrect JSON format - must contain batch collection.');
+			}
 			// Write to local queue and parse back.
 			fs.writeFileSync(constants.CURR_QUEUE_PATH, JSON.stringify(req.body));
 			// Copy last saved queue for current date to external storage.
@@ -36,7 +40,7 @@ router.route('/')
 			res.send(success);
 			logger.info('POST /queue SUCCESS');
 		} catch (e) {
-			res.send(e.message);
+			res.status(500).send({error: e});
 			logger.error('POST /queue ERROR: %s', e);
 		}
 	})
@@ -48,8 +52,8 @@ router.route('/')
 	    	res.send(success);
 	    	logger.info('GET /queue SUCCESS');
     	} catch (e) {
-    		res.send(e.message)
-    		logger.error('GET /queue ERROR: %s', e);
+			res.status(500).send({error: e});
+			logger.error('GET /queue ERROR: %s', e);
     	}
     });
 
