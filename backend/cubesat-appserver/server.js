@@ -8,6 +8,7 @@ var cubesat_dump = require('./routes/cubesat_dump');
 var components = require('./routes/components');
 var componentTelemetry = require('./routes/component-telemetry');
 var telemetryData = require('./routes/telemetry-data');
+const logger = require('./logger');
 
 const port = 3000;
 
@@ -17,6 +18,8 @@ app.use(function (request, response, next) {
     response.header('Access-Control-Allow-Methods', 'POST, PATCH, GET, PUT, DELETE, OPTIONS');
     next();
 });
+
+app.use(logger);
 
 app.use('/telecommands', telecommands);
 app.use('/template', template);
