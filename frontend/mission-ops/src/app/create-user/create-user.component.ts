@@ -65,6 +65,8 @@ export class CreateUserComponent implements OnInit {
         
         this.email = '';
         this.admin = false;
+        this.phone = '';
+        this.prefContact = 'email';
       },
       onFailure: (err: any) => {
         this.processing = false;
