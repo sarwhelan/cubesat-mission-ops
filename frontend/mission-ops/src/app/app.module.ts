@@ -24,6 +24,7 @@ import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ChartComponent } from './chart/chart.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ChartComponent } from './chart/chart.component';
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
-    ChartComponent
+    ChartComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
