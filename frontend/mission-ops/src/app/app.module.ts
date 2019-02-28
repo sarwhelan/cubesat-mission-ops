@@ -21,6 +21,7 @@ import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { UsersComponent } from './users/users.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { UsersComponent } from './users/users.component';
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
-    UsersComponent
+    UsersComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
