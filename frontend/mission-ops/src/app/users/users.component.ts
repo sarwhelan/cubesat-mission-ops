@@ -5,6 +5,9 @@ import { User } from '../../classes/user';
 import { ModalComponent } from '../modal/modal.component';
 import { AuthService } from '../services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
+import { PagedList } from 'src/classes/paged-list';
+import { PageChangeEvent } from '../pagination/pagination.component';
+import { Certificate } from 'crypto';
 
 /**
  * A component for displaying the list of all users in the system.
@@ -26,7 +29,8 @@ export class UsersComponent implements OnInit {
   private deleteUserAlert: AlertComponent;
 
   private userLimit: number = 10;
-  private userList: User[];
+  private userList: PagedList<User>;
+  private pages: number = 1;
 
   private deletingUser: User;
   private deleteConfirm: string;
@@ -36,7 +40,8 @@ export class UsersComponent implements OnInit {
   constructor(private users: UsersService, private auth: AuthService) { }
 
   ngOnInit() {
-    this.initUserList();
+    // Get first page of users on start
+    this.getUsers(1);
   }
 
   /**
@@ -47,8 +52,11 @@ export class UsersComponent implements OnInit {
    * @memberof UsersComponent
    */
   private initUserList() {
-    this.users.getUsers()
-      .subscribe((userList) => this.userList = userList);
+    this.users.getUsers(this.userLimit)
+      .subscribe((pagedUserList) => {
+        this.userList = pagedUserList;
+        this.pages = Math.ceil(this.userList.total / this.userLimit);
+      });
   }
 
   /**
@@ -87,5 +95,33 @@ export class UsersComponent implements OnInit {
       sub.unsubscribe();
       this.processing = false;
     });
+  }
+
+  /**
+   * Event received from the pagination component whenever
+   * the current page is changed.
+   *
+   * @private
+   * @param {PageChangeEvent} pageData An object containing the previous page and the current page.
+   * @memberof UsersComponent
+   */
+  private pageChanged(pageData: PageChangeEvent): void {
+    this.getUsers(pageData.page);
+  }
+
+  /**
+   * Gets the given page of users, replacing the current page of users.
+   *
+   * @private
+   * @param {number} [page=1] The page of users to get. Pages are 1-indexed.
+   * @memberof UsersComponent
+   */
+  private getUsers(page: number = 1) {
+    this.userList = null;
+    this.users.getUsers(this.userLimit, page - 1)
+      .subscribe((pagedUserList) => {
+        this.userList = pagedUserList;
+        this.pages = Math.ceil(this.userList.total / this.userLimit);
+      });
   }
 }

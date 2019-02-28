@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     <ng-container *ngIf="userList; else tableSpinner">
-      <tr *ngFor="let user of userList">
+      <tr *ngFor="let user of userList.items">
         <td>{{user.email}}</td>
         <td>
           <div class="form-check">
@@ -34,6 +34,9 @@
     </ng-template>
   </tbody>
 </table>
+
+<app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
+
 <app-modal #deleteUserModal>
   <ng-container modal-title>
     <h1>Are You Sure?</h1>
