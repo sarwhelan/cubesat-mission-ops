@@ -34,9 +34,9 @@ router.route('/')
 router.route('/:componentTelemetryID')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("SELECT * FROM telemetryData WHERE componentTelemetryID = ?;", req.params.component_telemetry_id, function (error, results, fields) {
+            db.query("SELECT * FROM telemetryData WHERE componentTelemetryID = ?;", req.params.componentTelemetryID, function (error, results, fields) {
                 if (error) throw error;
-                res.send(results);
+                res.json(results);
               });
         } catch (err) {
             console.log(err);
