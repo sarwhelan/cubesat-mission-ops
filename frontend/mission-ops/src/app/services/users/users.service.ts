@@ -84,23 +84,30 @@ export class UsersService {
    * @param {ICreateUserCallback} callback An object containing the callback methods called when the operation succeeds or fails.
    * @memberof UsersService
    */
-  public createUser(username: string, password: string, email: string, admin: boolean, callback: ICreateUserCallback): void {
+  public createUser(username: string, password: string, email: string, admin: boolean, phone: string, prefContact: string, callback: ICreateUserCallback): void {
     // TODO: Validate input
+    let attributes = [{
+      Name: 'email',
+      Value: email
+    }, {
+      Name: 'custom:administrator',
+      Value: admin ? 'true' : 'false'
+    }, {
+      Name: 'custom:prefContactMethod',
+      Value: prefContact
+    }];
+    if (phone) {
+      attributes.push({
+        Name: 'phone_number',
+        Value: phone
+      });
+    }
 
     this.cognitoIdentityServiceProvider.adminCreateUser({
-      UserPoolId: 'us-east-2_eniCDFvnv',
+      UserPoolId: 'us-east-2_YZSlXzFlB',
       Username: username,
       TemporaryPassword: password,
-      UserAttributes: [
-        {
-          Name: 'email',
-          Value: email
-        },
-        {
-          Name: 'custom:administrator',
-          Value: admin ? 'true' : 'false'
-        }
-      ],
+      UserAttributes: attributes,
       DesiredDeliveryMediums: [
         'EMAIL'
       ]
@@ -125,13 +132,14 @@ export class UsersService {
   private fetchUsers(paginationToken: string = null): Observable<Array<User>> {
     const obs$ = new Observable<Array<User>>((subscriber) => {
       this.cognitoIdentityServiceProvider.listUsers({
-        UserPoolId: 'us-east-2_eniCDFvnv',
+        UserPoolId: 'us-east-2_YZSlXzFlB',
         PaginationToken: paginationToken
       }, (err, data) => {
         if (err) {
           // Something went wrong getting the users. Just pass the error along
           subscriber.error(err);
         } else {
+          console.log(data);
           const users: Array<User> = [];
 
           // Convert incoming user data into user objects
@@ -142,8 +150,15 @@ export class UsersService {
                 user.email = att.Value;
               } else if (att.Name === 'custom:administrator') {
                 user.administrator = att.Value === 'true';
+              } else if (att.Name === 'sub') {
+                user.id = att.Value;
+              } else if (att.Name === 'phone_number') {
+                user.phone = att.Value;
+              } else if (att.Name === 'custom:prefContactMethod') {
+                user.preferredContactMethod = att.Value;
               }
             });
+            user.status = u.UserStatus;
             users.push(user);
           });
 
@@ -184,7 +199,7 @@ export class UsersService {
   public deleteUser(user: User): Observable<void> {
     const obs$ = new Observable<void>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminDeleteUser({
-        UserPoolId: 'us-east-2_eniCDFvnv',
+        UserPoolId: 'us-east-2_YZSlXzFlB',
         Username: user.email
       }, (err, data) => {
         if (err) {

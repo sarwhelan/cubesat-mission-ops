@@ -38,8 +38,8 @@ export class AuthService {
   private userPool: CognitoUserPool;
   // TODO: move this configuration information somewhere appropriate
   private poolData = { 
-    UserPoolId : 'us-east-2_eniCDFvnv',                 //CognitoUserPool
-    ClientId : '76ofbnbo56rn63hjlheshgeate'                    //CognitoUserPoolClient 
+    UserPoolId : 'us-east-2_YZSlXzFlB',                 //CognitoUserPool
+    ClientId : '1bn896ocv98neen3r2djed4r7i'                    //CognitoUserPoolClient 
   };
 
   private _currentUser: User;

@@ -3,6 +3,8 @@
   <thead>
     <tr>
       <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Status</th>
       <th scope="col">Administrator</th>
       <th scope="col">Actions</th>
     </tr>
@@ -11,6 +13,8 @@
     <ng-container *ngIf="userList; else tableSpinner">
       <tr *ngFor="let user of userList.items">
         <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td>{{user.status}}</td>
         <td>
           <div class="form-check">
             <input [ngModel]="user.administrator" type="checkbox" class="form-check-input" disabled>
