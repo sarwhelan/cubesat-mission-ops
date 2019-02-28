@@ -6,8 +6,8 @@ var template = require('./routes/template');
 var db_template = require('./routes/db-template');
 var cubesat_dump = require('./routes/cubesat_dump');
 var components = require('./routes/components');
-var component_telemetry = require('./routes/component-telemetry');
-var telemetry_data = require('./routes/telemetry-data');
+var componentTelemetry = require('./routes/component-telemetry');
+var telemetryData = require('./routes/telemetry-data');
 
 const port = 3000;
 
@@ -23,8 +23,8 @@ app.use('/template', template);
 app.use('/db-template', db_template);
 app.use('/cubesat_dump', cubesat_dump);
 app.use('/components', components);
-app.use('/component_telemetry', component_telemetry);
-app.use('/telemetry_data', telemetry_data);
+app.use('/component-telemetry', componentTelemetry);
+app.use('/telemetry-data', telemetryData);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
