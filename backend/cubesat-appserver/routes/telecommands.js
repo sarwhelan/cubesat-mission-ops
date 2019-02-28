@@ -20,14 +20,12 @@ router.route('/')
     })
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            console.log(req.body);
             var insertParameters = [req.body.componentID, req.body.command, req.body.name, req.body.defaultPriorityLevel, req.body.bandwidthUsage, req.body.powerConsumption, req.body.archived];
 
             // using this pattern of using ? in our query builder does the escaping for us! No need to worry about sql injection
             db.query('INSERT INTO telecommands (componentID, command, name, defaultPriorityLevel, bandwidthUsage, powerConsumption, archived) VALUES (?, ?, ?, ?, ?, ?, ?)', insertParameters, function (error, results, fields) {
                 if (error) throw error;
 
-                console.log("insert successful!!");
                 res.json(results);
               });
         } catch (err) {
@@ -40,12 +38,10 @@ router.route('/:id')
     .delete(parseUrlencoded, parseJSON, (req, res) => {
         try {
             var telecommandToDelete = req.params.id;
-            console.log("about to delete: " + req.params.id);
             
             db.query('UPDATE telecommands SET archived = 1 WHERE telecommandID = ?', telecommandToDelete, function (error, results, fields) {
                 if (error) throw error;
 
-                console.log("archive successful!!");
                 res.json(results);
               });
         } catch (err) {

@@ -5,6 +5,7 @@ var telecommands = require('./routes/telecommands');
 var template = require('./routes/template');
 var db_template = require('./routes/db-template');
 var cubesat_dump = require('./routes/cubesat_dump');
+const logger = require('./logger');
 
 const port = 3000;
 
@@ -14,6 +15,8 @@ app.use(function (request, response, next) {
     response.header('Access-Control-Allow-Methods', 'POST, PATCH, GET, PUT, DELETE, OPTIONS');
     next();
 });
+
+app.use(logger);
 
 app.use('/telecommands', telecommands);
 app.use('/template', template);
