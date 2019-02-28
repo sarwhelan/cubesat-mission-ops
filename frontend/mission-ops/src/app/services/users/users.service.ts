@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
 import { User } from '../../../classes/user';
+import { PagedList } from '../../../classes/paged-list';
 
 export interface ICreateUserCallback {
   onSuccess: () => void,
@@ -41,11 +42,11 @@ export class UsersService {
    * the collection, and contains up to `pageSize` users.
    *
    * @param {number} [pageSize=10] The number of users returned.
-   * @param {number} [page=0] The page number of the page of users to get.
-   * @returns {Observable<Array<User>>} An observable that returns an array of User objects.
+   * @param {number} [page=0] The page number of the page of users to get. Pages are zero-indexed.
+   * @returns {Observable<PagedList<User>>} An observable that returns a PagedList of User objects.
    * @memberof UsersService
    */
-  public getUsers(pageSize: number = 10, page: number = 0): Observable<Array<User>> {
+  public getUsers(pageSize: number = 10, page: number = 0): Observable<PagedList<User>> {
     let obs$: Observable<Array<User>>;
   
     if (this.userListObs$) {
@@ -64,7 +65,11 @@ export class UsersService {
       });
     }
     return obs$.pipe(
-      map((val) => val.slice(pageSize * page, pageSize))  // Grab page of values that was requested
+      map((val) => new PagedList<User>({
+        items: val.slice(pageSize * page, pageSize * (page + 1)),
+        page: page,
+        total: this.userList.length
+      }))  // Grab page of values that was requested and convert to PagedList of Users
     );
   }
 
