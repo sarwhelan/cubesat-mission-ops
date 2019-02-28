@@ -19,7 +19,7 @@ const routes: Routes = [
   { path : 'telecommandBatches', component: TelecommandBatchesComponent },
   { path : 'queue', component: QueuesComponent },
   { path : 'login', component: LoginComponent, canActivate: [AntiAuthGuardService] },
-  { path : 'users/create', component: CreateUserComponent, canActivate: [AuthGuardService, AdminGuardService] },
+  { path : 'users/create', component: CreateUserComponent, canActivate: [] },
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },

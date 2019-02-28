@@ -334,6 +334,9 @@ Resources:
                 -  
                     AttributeDataType: Boolean
                     Name: administrator
+                -
+                    AttributeDataType: String
+                    Name: preferredContactMethod
             UsernameAttributes: 
                 - email
             EmailVerificationSubject: 'Mission Control Verification'
