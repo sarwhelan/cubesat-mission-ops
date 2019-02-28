@@ -25,6 +25,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ChartComponent } from './chart/chart.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { ComponentListComponent } from './component-list/component-list.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     AccessDeniedComponent,
     LogoutComponent,
     ChartComponent,
-    PaginationComponent
+    PaginationComponent,
+    ComponentListComponent
   ],
   imports: [
     BrowserModule,
