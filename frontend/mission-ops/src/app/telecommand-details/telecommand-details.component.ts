@@ -9,9 +9,11 @@ import { Telecommand } from '../../classes/telecommand';
 export class TelecommandDetailsComponent implements OnInit {
   
   @Input() telecommand: Telecommand;
-  constructor() { }
+  @Input() existingTelecommand: boolean;
+
+  constructor() {
+   }
 
   ngOnInit() {
   }
-
 }
