@@ -4,6 +4,7 @@ const app = express();
 var telecommands = require('./routes/telecommands');
 var template = require('./routes/template');
 var db_template = require('./routes/db-template');
+var cubesat_dump = require('./routes/cubesat_dump');
 
 const port = 3000;
 
@@ -17,5 +18,8 @@ app.use(function (request, response, next) {
 app.use('/telecommands', telecommands);
 app.use('/template', template);
 app.use('/db-template', db_template);
+app.use('/cubesat_dump', cubesat_dump);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
+
+module.exports = app;

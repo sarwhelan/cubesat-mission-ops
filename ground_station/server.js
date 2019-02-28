@@ -5,10 +5,12 @@
 
 // Node modules
 const express = require('express');
+const logger = require('./logger');
+const constants = require('./constants');
 
 // Imports
-var telecommands = require('./routes/telecommands');
-var cubesat_dump = require('./routes/cubesat_dump');
+var poll_cubesat_dump = require('./data_dump/poll_cubesat_dump');
+var queue = require('./routes/queue');
 
 // Set up serve
 const app = express();
@@ -20,7 +22,9 @@ app.use(function (request, response, next) {
     next();
 });
 
-app.use('/telecommands', telecommands);
-app.use('/cubesat_dump', cubesat_dump);
+app.use('/queue', queue);
 
-app.listen(3700, () => console.log('App listening on 3700'));
+logger.log('info', 'App served.');
+app.listen(constants.PORT, () => console.log(`App listening on ${constants.PORT}`));
+
+module.exports = app;

@@ -6,10 +6,13 @@ const parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
-        console.log('POST TELECOMMAND');
-        res.send('Success');
-        // Log telecommands
-        // Forward to the ether?
+        try {
+            console.log(req.body);
+            res.send('Success');
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
     });
 
 module.exports = router;
