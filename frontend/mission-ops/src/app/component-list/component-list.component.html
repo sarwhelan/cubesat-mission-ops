@@ -7,10 +7,12 @@
       [class.active]="component === selectedComponent"
       class="list-group-item">
         {{component.name}}
-    </li>
+      </li>
     </ul>
   </div>
   <div class = "col">
-    
+    <div *ngIf = "selectedComponent">
+        <app-component-telemetry [component] = "selectedComponent"></app-component-telemetry>
+    </div>
   </div>
 </div>

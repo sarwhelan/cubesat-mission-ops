@@ -26,6 +26,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { ChartComponent } from './chart/chart.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ComponentListComponent } from './component-list/component-list.component';
+import { ComponentTelemetryComponent } from './component-telemetry/component-telemetry.component';
+import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { ComponentListComponent } from './component-list/component-list.componen
     LogoutComponent,
     ChartComponent,
     PaginationComponent,
-    ComponentListComponent
+    ComponentListComponent,
+    ComponentTelemetryComponent,
+    TelemetryDataComponent
   ],
   imports: [
     BrowserModule,

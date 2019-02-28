@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { TelemetryData } from '../../classes/telemetry-data';
 
 @Component({
   selector: 'app-chart',
@@ -7,15 +8,29 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
+
+  private _telemetryData: TelemetryData[];
+  @Input()
+  private get telemetryData() {
+    return this._telemetryData;
+  }
+  private set telemetryData(val: TelemetryData[]) {
+    this._telemetryData = val;
+  }
+
   Highcharts = Highcharts;
-  chartOptions = {
-    series: [{
-      data: [1, 2, 3]
-    }]
-  };
+  chartOptions: any;
+
   constructor() { }
 
   ngOnInit() {
+    var values = this.telemetryData.map(x => x.telemetryValue);
+    this.chartOptions = {
+      series: [{
+        type: 'line',
+        data: values
+      }]
+    }
   }
 
 }
