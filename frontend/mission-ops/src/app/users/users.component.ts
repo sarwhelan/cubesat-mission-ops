@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { UsersService } from '../services/users/users.service';
-import { UserList } from '../../classes/user-list';
 import { User } from '../../classes/user';
 import { ModalComponent } from '../modal/modal.component';
 import { AuthService } from '../services/auth/auth.service';
@@ -27,7 +26,7 @@ export class UsersComponent implements OnInit {
   private deleteUserAlert: AlertComponent;
 
   private userLimit: number = 10;
-  private userList: UserList;
+  private userList: User[];
 
   private deletingUser: User;
   private deleteConfirm: string;
@@ -48,7 +47,7 @@ export class UsersComponent implements OnInit {
    * @memberof UsersComponent
    */
   private initUserList() {
-    this.users.listUsers(this.userLimit)
+    this.users.getUsers()
       .subscribe((userList) => this.userList = userList);
   }
 
