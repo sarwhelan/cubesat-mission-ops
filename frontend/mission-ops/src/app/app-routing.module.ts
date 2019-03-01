@@ -9,6 +9,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { UsersComponent } from './users/users.component';
+import { ModifyUserComponent } from './modify-user/modify-user.component';
 
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
+  { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminGuardService] },
 ];
 
 @NgModule({

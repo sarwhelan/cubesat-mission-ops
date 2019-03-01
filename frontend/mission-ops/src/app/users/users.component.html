@@ -21,6 +21,7 @@
           </div>
         </td>
         <td>
+          <a class="btn btn-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
           <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
         </td>
       </tr>

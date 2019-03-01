@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY, merge, forkJoin, zip } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
 import { User } from '../../../classes/user';
@@ -71,6 +71,88 @@ export class UsersService {
         total: this.userList.length
       }))  // Grab page of values that was requested and convert to PagedList of Users
     );
+  }
+
+  /**
+   * Gets the user with the given userId.
+   *
+   * @param {string} userId The userId of the user to get.
+   * @returns {Observable<User>} An observable that returns the found user.
+   * @memberof UsersService
+   */
+  public getUser(userId: string): Observable<User> {
+    const obs$ = new Observable<User>((subscriber) => {
+      this.cognitoIdentityServiceProvider.adminGetUser({
+        UserPoolId: 'us-east-2_YZSlXzFlB',
+        Username: userId
+      }, (err, data) => {
+        if (err) {
+          subscriber.error(err);
+        } else {
+          const user = new User();
+          data.UserAttributes.forEach((att) => {
+            if (att.Name === 'email') {
+              user.email = att.Value;
+            } else if (att.Name === 'custom:administrator') {
+              user.administrator = att.Value === 'true';
+            } else if (att.Name === 'sub') {
+              user.id = att.Value;
+            } else if (att.Name === 'phone_number') {
+              user.phone = att.Value;
+            } else if (att.Name === 'custom:prefContactMethod') {
+              user.preferredContactMethod = att.Value;
+            }
+          });
+          user.status = data.UserStatus;
+
+          subscriber.next(user);
+          subscriber.complete();
+        }
+      })
+    });
+
+    return obs$;
+  }
+
+  /**
+   * Applies any changes made to the given User object, saving them.
+   *
+   * @param {User} user The user to be saved.
+   * @returns {Observable<void>} An observable that will fire when the user is updated.
+   * @memberof UsersService
+   */
+  public updateUser(user: User): Observable<void> {
+    let attributes = [];
+
+    attributes.push({
+      Name: 'phone_number',
+      Value: user.phone
+    });
+    attributes.push({
+      Name: 'custom:administrator',
+      Value: user.administrator ? 'true' : 'false'
+    });
+    attributes.push({
+      Name: 'custom:prefContactMethod',
+      Value: user.preferredContactMethod
+    });
+    
+    const obs$ = new Observable<void>((subscriber) => {
+      this.cognitoIdentityServiceProvider.adminUpdateUserAttributes({
+        UserPoolId: 'us-east-2_YZSlXzFlB',
+        Username: user.id,
+        UserAttributes: attributes
+      }, (err, data) => {
+        if (err) {
+          subscriber.error(err);
+        } else {
+          subscriber.next();
+          subscriber.complete();
+        }
+      })
+    });
+
+    return obs$;
   }
 
   /**

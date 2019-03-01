@@ -23,6 +23,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { ModifyUserComponent } from './modify-user/modify-user.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     AccessDeniedComponent,
     LogoutComponent,
     UsersComponent,
-    PaginationComponent
+    PaginationComponent,
+    ModifyUserComponent
   ],
   imports: [
     BrowserModule,

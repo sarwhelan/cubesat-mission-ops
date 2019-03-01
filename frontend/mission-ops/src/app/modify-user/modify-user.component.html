@@ -1,0 +1,37 @@
+<h2>Modify User</h2>
+<form *ngIf="user; else loadingSpinner">
+  <div class="form-group">
+    <label for="emailInput">Email</label>
+    <input [ngModel]="user.email" type="email" class="form-control" id="emailInput" placeholder="Email" name="email" readonly>
+  </div>
+  <div class="form-group">
+    <label for="phoneInput">Phone</label>
+    <input [(ngModel)]="user.phone" type="text" class="form-control" id="phoneInput" placeholder="Phone" name="phone">
+  </div>
+  <div class="form-group">
+    <label for="contactSelect">Preferred Contact Method</label>
+    <select [(ngModel)]="user.preferredContactMethod" class="form-control" id="contactSelect" name="contact">
+      <option value="email">Email</option>
+      <option value="sms">SMS</option>
+    </select>
+  </div>
+  <div class="form-group form-check">
+    <input [(ngModel)]="user.administrator" type="checkbox" class="form-check-input" id="adminInput" name="admin">
+    <label class="form-check-label" for="adminInput">Administrator</label>
+  </div>
+  <app-alert [alertStyle]="'danger'"></app-alert>
+  <button (click)="saveChanges()" class="btn btn-primary">
+    Save Changes
+    <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  </button>
+  <a class="btn btn-secondary" href="/users" role="button">
+    Cancel
+  </a>
+</form>
+<ng-template #loadingSpinner>
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>
