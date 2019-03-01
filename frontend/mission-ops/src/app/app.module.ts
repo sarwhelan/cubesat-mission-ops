@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // TODO: Before deployment, maybe refine this to only the modules we need to reduce package size
 import { HttpClientModule } from '@angular/common/http'; 
 
+import { HighchartsChartModule } from 'highcharts-angular';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TelecommandsComponent } from './telecommands/telecommands.component';
@@ -21,7 +23,11 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ChartComponent } from './chart/chart.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { ComponentListComponent } from './component-list/component-list.component';
+import { ComponentTelemetryComponent } from './component-telemetry/component-telemetry.component';
+import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
 
 @NgModule({
   declarations: [
@@ -41,14 +47,19 @@ import { PaginationComponent } from './pagination/pagination.component';
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
-    PaginationComponent
+    ChartComponent,
+    PaginationComponent,
+    ComponentListComponent,
+    ComponentTelemetryComponent,
+    TelemetryDataComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]
