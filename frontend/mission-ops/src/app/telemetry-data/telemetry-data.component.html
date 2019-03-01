@@ -1,7 +1,9 @@
 <div *ngIf = "componentTelemetry">
   <div *ngIf = "telemetryData">
-    <div class = "container">
-      <app-chart [telemetryData] = "telemetryData"></app-chart>
-    </div>
+        <app-chart [values] = "telemetryValues"
+        [title] = "componentTelemetry.name"
+        [xAxis] = "'Time'"
+        [name] = "'Some Measurement'"
+        [labels] = "telemetryTimes"></app-chart>
   </div>
 </div>

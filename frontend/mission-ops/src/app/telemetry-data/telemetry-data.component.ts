@@ -22,6 +22,8 @@ export class TelemetryDataComponent implements OnInit {
   }
 
   telemetryData: TelemetryData[];
+  telemetryValues: number[];
+  telemetryTimes: string[];
 
   constructor(private telemetryDataService: ComponentTelemetryDataService) { }
 
@@ -34,6 +36,10 @@ export class TelemetryDataComponent implements OnInit {
   getTelemetryData(componentTelemetryID: number): void {
     console.log('get telemetry data from ' + componentTelemetryID);
     this.telemetryDataService.getTelemetryData(componentTelemetryID)
-      .subscribe(telemetryData => this.telemetryData = telemetryData);
+      .subscribe(telemetryData => {
+        this.telemetryData = telemetryData;
+        this.telemetryValues = this.telemetryData.map(x => x.telemetryValue);
+        this.telemetryTimes = this.telemetryData.map(x => x.collectionDateTime.toString());
+      });
   }
 }
