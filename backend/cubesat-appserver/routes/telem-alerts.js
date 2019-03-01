@@ -21,12 +21,10 @@ const twilioPhoneNum = process.env.TWILIO_NUM
 const client = require('twilio')(accountSid, twilioAuthToken);
 
 router.route('/')
-
-    // POST /telem-alerts receives a fresh batch of data from the ground station to be processed
-    .post(parseUrlencoded, parseJSON, (req, res) => {
+    .post(parseUrlencoded, parseJSON, (req, res) => { // POST /telem-alerts receives a fresh batch of data from the ground station to be processed
 
         // cycle through all new data checking for anomalies
-        res.send(req.body);
+        // res.send(req.body);
 
         // if anomaly...
         // get users subscribed to component whose telemetry item has an anomaly
@@ -59,3 +57,5 @@ router.route('/')
     .put(parseUrlencoded, parseJSON, (req, res) => {
 
     })
+
+    module.exports = router;

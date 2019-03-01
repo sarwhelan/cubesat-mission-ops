@@ -15,5 +15,7 @@ router.route('/')
     })
 
     .put(parseUrlencoded, parseJSON, (req, res) => {
-        
+
     })
+
+module.exports = router;
