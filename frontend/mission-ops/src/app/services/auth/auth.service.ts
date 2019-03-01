@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession, CognitoAccessToken, CognitoIdToken, CognitoRefreshToken } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
+import { User } from 'src/classes/user';
 
 /**
  * Callback object for the signin process.
@@ -37,13 +38,28 @@ export class AuthService {
   private userPool: CognitoUserPool;
   // TODO: move this configuration information somewhere appropriate
   private poolData = { 
-    UserPoolId : 'us-east-2_eniCDFvnv',                 //CognitoUserPool
-    ClientId : '76ofbnbo56rn63hjlheshgeate'                    //CognitoUserPoolClient 
+    UserPoolId : 'us-east-2_YZSlXzFlB',                 //CognitoUserPool
+    ClientId : '1bn896ocv98neen3r2djed4r7i'                    //CognitoUserPoolClient 
   };
 
+  private _currentUser: User;
   private _cognitoUser: CognitoUser;
   private _session: CognitoUserSession;
-  private _isAdmin: boolean;
+  
+  private get currentUser(): User {
+    if (!this._currentUser) {
+      this._currentUser = JSON.parse(sessionStorage.getItem('currentUser')) as User;
+    }
+    return this._currentUser;
+  }
+  private set currentUser(val: User) {
+    this._currentUser = val;
+    if (val) {
+      sessionStorage.setItem('currentUser', JSON.stringify(val));
+    } else {
+      sessionStorage.removeItem('currentUser');
+    }
+  }
 
   private get cognitoUser(): CognitoUser {
     if (!this._cognitoUser) {
@@ -97,21 +113,6 @@ export class AuthService {
     }
   }
 
-  private get isAdmin(): boolean {
-    if (this._isAdmin === undefined) {
-      this._isAdmin = sessionStorage.getItem('isAdmin') === 'true';
-    }
-    return this._isAdmin;
-  }
-  private set isAdmin(val: boolean) {
-    this._isAdmin = val;
-    if (val !== null && val !== undefined) {
-      sessionStorage.setItem('isAdmin', this._isAdmin ? 'true' : 'false');
-    } else {
-      sessionStorage.removeItem('isAdmin');
-    }
-  }
-
   constructor() {
     this.userPool = new CognitoUserPool(this.poolData);
   }
@@ -149,12 +150,21 @@ export class AuthService {
           if (err) {
             callback.onFailure(err);
           } else {
-            let adminProp = result.find((value) => value.getName() === 'custom:administrator');
-            if (adminProp) {
-              self.isAdmin = adminProp.getValue() === 'true';
-            } else {
-              self.isAdmin = false;
-            }
+            const user = new User();
+            result.forEach((att) => {
+              if (att.getName() === 'email') {
+                user.email = att.getValue();
+              } else if (att.getName() === 'custom:administrator') {
+                user.administrator = att.getValue() === 'true';
+              } else if (att.getName() === 'sub') {
+                user.id = att.getValue();
+              } else if (att.getName() === 'phone_number') {
+                user.phone = att.getValue();
+              } else if (att.getName() === 'custom:prefContactMethod') {
+                user.preferredContactMethod = att.getValue();
+              }
+            });
+            self.currentUser = user;
             callback.onSuccess(self.getAccessToken());
           }
         });
@@ -196,7 +206,7 @@ export class AuthService {
       this.cognitoUser.signOut();
       this.cognitoUser = null;
       this.session = null;
-      this.isAdmin = false;
+      this.currentUser = null;
     }
   }
 
@@ -238,9 +248,13 @@ export class AuthService {
    */
   public isAdministrator(): boolean {
     if (this.cognitoUser) {
-      return this.isAdmin;
+      return this.currentUser.administrator;
     } else {
       return false;
     }
+  }
+
+  public getCurrentUser(): User {
+    return this.currentUser;
   }
 }
