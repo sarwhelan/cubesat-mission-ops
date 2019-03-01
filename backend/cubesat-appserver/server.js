@@ -1,3 +1,6 @@
+// application server outlining the routes utilized by the
+// frontend web application as well as the ground station server
+
 const express = require('express');
 const app = express();
 
@@ -5,6 +8,8 @@ var telecommands = require('./routes/telecommands');
 var template = require('./routes/template');
 var db_template = require('./routes/db-template');
 var cubesat_dump = require('./routes/cubesat_dump');
+var modify_telem_limit  = require('./routes/modify-telem-limit');
+
 const logger = require('./logger');
 
 const port = 3000;
@@ -22,6 +27,7 @@ app.use('/telecommands', telecommands);
 app.use('/template', template);
 app.use('/db-template', db_template);
 app.use('/cubesat_dump', cubesat_dump);
+app.use('/modify-telem-limit', modify_telem_limit);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
