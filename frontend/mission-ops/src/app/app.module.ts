@@ -24,10 +24,12 @@ import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ChartComponent } from './chart/chart.component';
-import { PaginationComponent } from './pagination/pagination.component';
 import { ComponentListComponent } from './component-list/component-list.component';
 import { ComponentTelemetryComponent } from './component-telemetry/component-telemetry.component';
 import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
+import { UsersComponent } from './users/users.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { ModifyUserComponent } from './modify-user/modify-user.component';
 
 @NgModule({
   declarations: [
@@ -48,10 +50,12 @@ import { TelemetryDataComponent } from './telemetry-data/telemetry-data.componen
     AccessDeniedComponent,
     LogoutComponent,
     ChartComponent,
-    PaginationComponent,
     ComponentListComponent,
     ComponentTelemetryComponent,
-    TelemetryDataComponent
+    TelemetryDataComponent,
+    UsersComponent,
+    PaginationComponent,
+    ModifyUserComponent
   ],
   imports: [
     BrowserModule,
