@@ -1,7 +1,7 @@
 <div *ngIf="component">
   <ul class="list-group">
       <li *ngFor="let componentTelemetry of componentTelemetries"
-      class="list-group-item">
+      class="list-group-item" style="margin:auto">
         <app-telemetry-data [componentTelemetry] = "componentTelemetry"></app-telemetry-data>
       </li>
     </ul>
