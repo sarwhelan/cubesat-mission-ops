@@ -24,7 +24,7 @@ const routes: Routes = [
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
   { path : 'chart', component: ChartComponent },
-  { path: 'components', component: ComponentListComponent },
+  { path: 'telemetry', component: ComponentListComponent },
 ];
 
 @NgModule({
