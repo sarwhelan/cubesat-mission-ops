@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
+
+NoDataToDisplay(Highcharts);
 
 @Component({
   selector: 'app-chart',
@@ -102,7 +105,17 @@ export class ChartComponent implements OnInit {
         type: 'line',
         showInLegend: false,
         data: this.values,
-      }]
+      }],
+      lang: {
+        noData: "No data to display."
+      },
+      noData: {
+          style: {
+              fontWeight: 'bold',
+              fontSize: '15px',
+              color: '#303030'
+          }
+      }
     }
 }
 
