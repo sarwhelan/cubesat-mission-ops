@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { User } from '../../classes/user';
 import { UsersService } from '../services/users/users.service';
+import { AuthService } from '../services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
 
 @Component({
@@ -19,7 +21,7 @@ export class ModifyUserComponent implements OnInit {
 
   private processing: boolean = false;
 
-  constructor(private route: ActivatedRoute, private users: UsersService) { }
+  constructor(private route: ActivatedRoute, private users: UsersService, private auth: AuthService, private location: Location) { }
 
   ngOnInit() {
     const userId = this.route.snapshot.queryParamMap.get('id');
@@ -30,6 +32,12 @@ export class ModifyUserComponent implements OnInit {
     });
   }
 
+  /**
+   * Saves the changes made in the form, and shows the alert to show
+   * the status of the operations.
+   *
+   * @memberof ModifyUserComponent
+   */
   public saveChanges(): void {
     // TODO: validate form values
 
@@ -44,5 +52,14 @@ export class ModifyUserComponent implements OnInit {
     }, () => {
       this.processing = false;
     })
+  }
+
+  /**
+   * Routes back to the previous page.
+   *
+   * @memberof ModifyUserComponent
+   */
+  public goBack(): void {
+    this.location.back();
   }
 }

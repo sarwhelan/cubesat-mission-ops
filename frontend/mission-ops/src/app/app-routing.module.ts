@@ -14,6 +14,7 @@ import { ModifyUserComponent } from './modify-user/modify-user.component';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
 import { AdminGuardService } from './services/admin-guard/admin-guard.service';
+import { AdminOrSelfGuardService } from './services/admin-or-self-guard/admin-or-self-guard.service';
 
 const routes: Routes = [
   { path : 'telecommands', component: TelecommandsComponent },
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
-  { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminGuardService] },
+  { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminOrSelfGuardService] },
 ];
 
 @NgModule({

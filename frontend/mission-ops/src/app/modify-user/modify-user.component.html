@@ -16,7 +16,7 @@
     </select>
   </div>
   <div class="form-group form-check">
-    <input [(ngModel)]="user.administrator" type="checkbox" class="form-check-input" id="adminInput" name="admin">
+    <input [(ngModel)]="user.administrator" type="checkbox" class="form-check-input" id="adminInput" name="admin" [attr.disabled]="!auth.isAdministrator() ? '' : null">
     <label class="form-check-label" for="adminInput">Administrator</label>
   </div>
   <app-alert [alertStyle]="'danger'"></app-alert>
@@ -24,9 +24,9 @@
     Save Changes
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>
-  <a class="btn btn-secondary" href="/users" role="button">
+  <button class="btn btn-secondary" (click)="goBack()">
     Cancel
-  </a>
+  </button>
 </form>
 <ng-template #loadingSpinner>
   <div class="text-center">

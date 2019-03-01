@@ -156,6 +156,12 @@ export class AuthService {
                 user.email = att.getValue();
               } else if (att.getName() === 'custom:administrator') {
                 user.administrator = att.getValue() === 'true';
+              } else if (att.getName() === 'sub') {
+                user.id = att.getValue();
+              } else if (att.getName() === 'phone_number') {
+                user.phone = att.getValue();
+              } else if (att.getName() === 'custom:prefContactMethod') {
+                user.preferredContactMethod = att.getValue();
               }
             });
             self.currentUser = user;
