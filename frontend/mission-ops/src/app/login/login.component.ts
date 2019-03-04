@@ -143,4 +143,23 @@ export class LoginComponent implements OnInit {
       this.resetPwdAlert.show(err.name, err.message);
     });
   }
+
+  public forgotPassword(): void {
+    this.loginAlert.hide();
+    this.processing = true;
+
+    if (!this.username) {
+      this.processing = false;
+      this.loginAlert.show('Error', 'Username field cannot be blank.', 'danger');
+      return;
+    }
+
+    this.auth.forgotPassword(this.username).subscribe(() => {
+      this.processing = false;
+      this.resetPwdModal.open();
+    }, (err) => {
+      this.processing = false;
+      this.loginAlert.show(err.name, err.message, 'danger');
+    });
+  }
 }

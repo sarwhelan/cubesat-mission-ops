@@ -3,6 +3,7 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession
 import { Observable } from 'rxjs';
 import  * as CognitoUserPoolClient from 'amazon-cognito-identity-js/src/client';
 import { User } from 'src/classes/user';
+import { stringList } from 'aws-sdk/clients/datapipeline';
 
 /**
  * Callback object for the signin process.
@@ -212,10 +213,8 @@ export class AuthService {
    * @memberof AuthService
    */
   public changePassword(oldPassword: string, newPassword: string): Observable<void> {
-    let obs$;
-
-    if (this.cognitoUser) {
-      obs$ = new Observable<void>((subscriber) => {
+    const obs$ = new Observable<void>((subscriber) => {
+      if (this.cognitoUser) {
         this.cognitoUser.changePassword(oldPassword, newPassword, (err, result) => {
           if (err) {
             subscriber.error(err);
@@ -224,15 +223,10 @@ export class AuthService {
             subscriber.complete();
           }
         });
-      });
-    } else {
-      obs$ = new Observable<void>((subscriber) => {
-        subscriber.error({
-          name: 'Error',
-          message: 'No user signed in.'
-        });
-      });
-    }
+      } else {
+        subscriber.error(new Error('No user signed in.'));
+      }
+    });
 
     return obs$;
   }
@@ -262,6 +256,38 @@ export class AuthService {
       }
     });
 
+    return obs$;
+  }
+
+  /**
+   * Triggers a forgot password flow for the user with the given username.
+   * This will send an email to the user with a verification code, which can
+   * be used with resetPassword() to change their password. Until the password
+   * is reset, the old password will remain valid.
+   *
+   * @param {string} username The username of the user to reset the password on.
+   * @returns {Observable<void>} An observable that will return when the verification code has been sent.
+   * @memberof AuthService
+   */
+  public forgotPassword(username: string): Observable<void> {
+    let userData = {
+      Username: username,
+      Pool: this.userPool
+    };
+    this.cognitoUser = new CognitoUser(userData);
+
+    const obs$ = new Observable<void>((subscriber) => {
+      this.cognitoUser.forgotPassword({
+        onSuccess: (data) => {
+          subscriber.next();
+          subscriber.complete();
+        },
+        onFailure: (err: Error) => {
+          subscriber.error(err);
+        }
+      });
+    });
+    
     return obs$;
   }
 

@@ -13,6 +13,9 @@
     Sign In
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>
+  <button (click)="forgotPassword()" class="btn btn-link">
+    Forgot Password?
+  </button>
 </form>
 
 <app-modal [dataSource]="pwd" #newPwdModal>
