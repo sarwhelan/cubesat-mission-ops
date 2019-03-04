@@ -224,7 +224,6 @@ export class UsersService {
           // Something went wrong getting the users. Just pass the error along
           subscriber.error(err);
         } else {
-          console.log(data);
           const users: Array<User> = [];
 
           // Convert incoming user data into user objects
