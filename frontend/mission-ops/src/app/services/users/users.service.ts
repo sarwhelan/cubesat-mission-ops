@@ -177,6 +177,9 @@ export class UsersService {
     }, {
       Name: 'custom:prefContactMethod',
       Value: prefContact
+    }, {
+      Name: 'email_verified',
+      Value: 'true'
     }];
     if (phone) {
       attributes.push({
@@ -221,7 +224,6 @@ export class UsersService {
           // Something went wrong getting the users. Just pass the error along
           subscriber.error(err);
         } else {
-          console.log(data);
           const users: Array<User> = [];
 
           // Convert incoming user data into user objects
@@ -291,6 +293,31 @@ export class UsersService {
           subscriber.next();
         }
         subscriber.complete();
+      });
+    });
+    return obs$;
+  }
+
+  /**
+   * Resets the given user's password, forcing them to change it
+   * on their next login.
+   *
+   * @param {User} user The user to reset the password on.
+   * @returns {Observable<void>} An observable that returns when the password has been reset.
+   * @memberof UsersService
+   */
+  public resetUserPassword(user: User): Observable<void> {
+    const obs$ = new Observable<void>((subscriber) => {
+      this.cognitoIdentityServiceProvider.adminResetUserPassword({
+        UserPoolId: 'us-east-2_YZSlXzFlB',
+        Username: user.email
+      }, (err, data) => {
+        if (err) {
+          subscriber.error(err);
+        } else {
+          subscriber.next();
+          subscriber.complete();
+        }
       });
     });
     return obs$;
