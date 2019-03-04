@@ -176,7 +176,15 @@ export class PaginationComponent implements OnInit {
     this.goToPage(this.page + 1);
   }
 
+  public lastPage(): void {
+    this.goToPage(this.maxPage);
+  }
+
   public prevPage(): void {
     this.goToPage(this.page - 1);
+  }
+
+  public firstPage(): void {
+    this.goToPage(this.minPage);
   }
 }
