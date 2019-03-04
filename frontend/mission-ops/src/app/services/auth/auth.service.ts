@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession, CognitoAccessToken, CognitoIdToken, CognitoRefreshToken } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
+import  * as CognitoUserPoolClient from 'amazon-cognito-identity-js/src/client';
 import { User } from 'src/classes/user';
 
 /**
@@ -62,28 +63,19 @@ export class AuthService {
   }
 
   private get cognitoUser(): CognitoUser {
-    if (!this._cognitoUser) {
-      // User does not exist in memory, so try to get it from session storage
-      this._cognitoUser = JSON.parse(sessionStorage.getItem('cognitoUser')) as CognitoUser;
-      if (this._cognitoUser) {
-        // Got the user object out of storage, now we need to restore all of its functions
-        // @ts-ignore Reset prototype that got removed by JSON parsing
-        this._cognitoUser.__proto__ = CognitoUser.prototype;
-        // @ts-ignore Reset prototype that got removed by JSON parsing
-        this._cognitoUser.pool.__proto__ = CognitoUserPool.prototype;
-        // @ts-ignore Replace storage object that got removed by JSON parsing
-        this._cognitoUser.storage = localStorage;
-      }
+    if (!this._cognitoUser && this.currentUser) {
+      // There's no cognito user but we do have a current user, so reconstitute the cognito user from storage
+      let userData = {
+        Username: this.currentUser.email,
+        Pool: this.userPool
+      };
+      this._cognitoUser = new CognitoUser(userData);
+      this._cognitoUser.setSignInUserSession(this.session);
     }
     return this._cognitoUser;
   }
   private set cognitoUser(val: CognitoUser) {
     this._cognitoUser = val;
-    if (val) {
-      sessionStorage.setItem('cognitoUser', JSON.stringify(val));
-    } else {
-      sessionStorage.removeItem('cognitoUser');
-    }
   }
 
   private get session(): CognitoUserSession {
@@ -211,6 +203,69 @@ export class AuthService {
   }
 
   /**
+   * Changes the password of the currently signed in user. If there is no user signed in
+   * the returned observable will immediately emit an error.
+   *
+   * @param {string} oldPassword The user's old password.
+   * @param {string} newPassword The user's new password.
+   * @returns {Observable<void>} An observable that returns when the password has been changed.
+   * @memberof AuthService
+   */
+  public changePassword(oldPassword: string, newPassword: string): Observable<void> {
+    let obs$;
+
+    if (this.cognitoUser) {
+      obs$ = new Observable<void>((subscriber) => {
+        this.cognitoUser.changePassword(oldPassword, newPassword, (err, result) => {
+          if (err) {
+            subscriber.error(err);
+          } else {
+            subscriber.next();
+            subscriber.complete();
+          }
+        });
+      });
+    } else {
+      obs$ = new Observable<void>((subscriber) => {
+        subscriber.error({
+          name: 'Error',
+          message: 'No user signed in.'
+        });
+      });
+    }
+
+    return obs$;
+  }
+
+  /**
+   * Resets the user's password to the given new password.
+   *
+   * @param {string} verificationCode The verification code sent to the user by email.
+   * @param {string} newPassword The user's new password.
+   * @returns {Observable<void>} An observable that returns when the password has been reset successfully. Errors immediately if no user is signed in.
+   * @memberof AuthService
+   */
+  public resetPassword(verificationCode: string, newPassword: string): Observable<void> {
+    const obs$ = new Observable<void>((subscriber) => {
+      if (this.cognitoUser) {
+        this.cognitoUser.confirmPassword(verificationCode, newPassword, {
+          onSuccess: () => {
+            subscriber.next();
+            subscriber.complete();
+          },
+          onFailure: (err: Error) => {
+            subscriber.error(err);
+          }
+        });
+      } else {
+        subscriber.error(new Error('No user signed in.'));
+      }
+    });
+
+    return obs$;
+  }
+
+  /**
    * Gets the JSON Web Token for the current session, or null if the session does not exist.
    * This provides no guarantee that the session is valid, for that you must check isAuthenticated().
    *
@@ -247,7 +302,7 @@ export class AuthService {
    * @memberof AuthService
    */
   public isAdministrator(): boolean {
-    if (this.cognitoUser) {
+    if (this.currentUser) {
       return this.currentUser.administrator;
     } else {
       return false;

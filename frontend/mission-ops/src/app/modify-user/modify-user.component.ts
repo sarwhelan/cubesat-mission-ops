@@ -6,6 +6,7 @@ import { User } from '../../classes/user';
 import { UsersService } from '../services/users/users.service';
 import { AuthService } from '../services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-modify-user',
@@ -14,8 +15,18 @@ import { AlertComponent } from '../alert/alert.component';
 })
 export class ModifyUserComponent implements OnInit {
 
-  @ViewChild(AlertComponent)
-  private alert: AlertComponent;
+  @ViewChild('generalAlert')
+  private generalAlert: AlertComponent;
+  @ViewChild('passwordChangeAlert')
+  private passwordChangeAlert: AlertComponent;
+
+  private oldPassword: string;
+  private newPassword: string;
+  private confirmNewPassword: string;
+  private passwordProcessing: boolean = false;
+
+  @ViewChild(ModalComponent)
+  private modal: ModalComponent;
 
   private user: User;
 
@@ -41,13 +52,13 @@ export class ModifyUserComponent implements OnInit {
   public saveChanges(): void {
     // TODO: validate form values
 
-    this.alert.hide();
+    this.generalAlert.hide();
     this.processing = true;
 
     this.users.updateUser(this.user).subscribe(() => {
-      this.alert.show('Success!', 'User was updated successfully.', 'success')
+      this.generalAlert.show('Success!', 'User was updated successfully.', 'success')
     }, (err) => {
-      this.alert.show(err.name, err.message, 'danger');
+      this.generalAlert.show(err.name, err.message, 'danger');
       this.processing = false;
     }, () => {
       this.processing = false;
@@ -61,5 +72,57 @@ export class ModifyUserComponent implements OnInit {
    */
   public goBack(): void {
     this.location.back();
+  }
+
+  /**
+   * Resets the user's password.
+   *
+   * @memberof ModifyUserComponent
+   */
+  public resetPassword(): void {
+    this.generalAlert.hide();
+    this.users.resetUserPassword(this.user).subscribe(() => {
+      this.generalAlert.show('Success!', `Password has been reset. ${this.user.email} will be prompted to change their password when they next log in.`, 'success');
+    }, (err) => {
+      this.generalAlert.show(err.name, err.message, 'danger');
+    });
+  }
+
+  public promptChangePassword(): void {
+    this.modal.open();
+  }
+
+  public changePassword(): void {
+    this.passwordProcessing = true;
+    this.passwordChangeAlert.hide();
+
+    let errorList: Array<string> = [];
+    if (!this.oldPassword) {
+      errorList.push('Current Password field cannot be blank.');
+    }
+    if (!this.newPassword) {
+      errorList.push('New Password field cannot be blank.');
+    }
+    if (!this.confirmNewPassword) {
+      errorList.push('Confirm New Password field cannot be blank.');
+    }
+    if (this.newPassword !== this.confirmNewPassword) {
+      errorList.push('New Password field and Confirm New Password field must match');
+    }
+
+    if (errorList.length > 0) {
+      this.passwordChangeAlert.showList('Error', errorList);
+      this.passwordProcessing = false;
+      return;
+    }
+
+    this.auth.changePassword(this.oldPassword, this.newPassword).subscribe(() => {
+      this.passwordProcessing = false;
+      this.modal.close();
+      this.generalAlert.show('Success!', 'Your password has been changed successfully', 'success');
+    }, (err) => {
+      this.passwordChangeAlert.show(err.name, err.message);
+      this.passwordProcessing = false;
+    })
   }
 }

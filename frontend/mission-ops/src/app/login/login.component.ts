@@ -21,15 +21,24 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class LoginComponent implements OnInit {
 
-  @ViewChild(AlertComponent)
-  private alert: AlertComponent;
-  @ViewChild(ModalComponent)
-  private modal: ModalComponent;
+  @ViewChild('loginAlert')
+  private loginAlert: AlertComponent;
+  @ViewChild('newPwdModal')
+  private newPwdModal: ModalComponent;
+  @ViewChild('resetPwdAlert')
+  private resetPwdAlert: AlertComponent;
+  @ViewChild('resetPwdModal')
+  private resetPwdModal: ModalComponent;
 
   private username: string;
   private password: string;
 
   private processing: boolean = false;
+
+  private verificationCode: string;
+  private newPassword: string;
+  private confirmNewPassword: string;
+  private processingNewPassword: boolean;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -50,7 +59,7 @@ export class LoginComponent implements OnInit {
    */
   public signIn() {
     this.processing = true;
-    this.alert.hide();
+    this.loginAlert.hide();
 
     let errorList = [];
     if (!this.username) {
@@ -62,7 +71,7 @@ export class LoginComponent implements OnInit {
 
     if (errorList.length > 0) {
       this.processing = false;
-      this.alert.showList('Error', errorList);
+      this.loginAlert.showList('Error', errorList, 'danger');
       return;
     }
 
@@ -74,11 +83,14 @@ export class LoginComponent implements OnInit {
       onFailure: (err: any) => {
         this.processing = false;
 
-        if (isDevMode()) {
+        if (err.name === 'PasswordResetRequiredException') {
+          // Password reset required, time to open the reset password modal
+          this.resetPwdModal.open();
+        } else if (isDevMode()) {
           // Only display real error when developing to avoid information leaks
-          this.alert.show(err.name, err.message);
+          this.loginAlert.show(err.name, err.message, 'danger');
         } else {
-          this.alert.show('Error', 'Username or Password is Incorrect');
+          this.loginAlert.show('Error', 'Username or Password is Incorrect', 'danger');
         }
       },
       mfaRequired: (challengeName: any, challengeParameters: any) => {
@@ -92,8 +104,43 @@ export class LoginComponent implements OnInit {
       },
       newPasswordRequired: () => {
         this.processing = false;
-        return from(this.modal.open());
+        return from(this.newPwdModal.open());
       }
     })
+  }
+
+  public resetPassword(): void {
+    this.processingNewPassword = true;
+    this.resetPwdAlert.hide();
+    // TODO: validate input
+    let errorList: Array<string> = [];
+    if (!this.verificationCode) {
+      errorList.push('Verification Code field cannot be blank.');
+    }
+    if (!this.newPassword) {
+      errorList.push('New Password field cannot be blank.');
+    }
+    if (!this.confirmNewPassword) {
+      errorList.push('Confirm New Password field cannot be blank.');
+    }
+    if (this.newPassword !== this.confirmNewPassword) {
+      errorList.push('New Password field and Confirm New Password field must match');
+    }
+
+    if (errorList.length > 0) {
+      this.resetPwdAlert.showList('Error', errorList);
+      this.processingNewPassword = false;
+      return;
+    }
+
+    this.auth.resetPassword(this.verificationCode, this.newPassword).subscribe(() => {
+      this.processingNewPassword = false;
+      this.resetPwdModal.close();
+      this.loginAlert.show('Success!', 'Your password has been reset. Log in with your new password.', 'success');
+      this.password = '';
+    }, (err) => {
+      this.processingNewPassword = false;
+      this.resetPwdAlert.show(err.name, err.message);
+    });
   }
 }
