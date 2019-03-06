@@ -31,6 +31,10 @@ import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
 import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
+import { CreateSystemComponent } from './create-system/create-system.component';
+import { CreateComponentComponent } from './create-component/create-component.component';
+import { CreateComponentTelemetryComponent } from './create-component-telemetry/create-component-telemetry.component';
+import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
     UsersComponent,
     PaginationComponent,
     ModifyUserComponent,
-    TelemLimitsComponent
+    TelemLimitsComponent,
+    CreateSystemComponent,
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+    CubesatSysInputsComponent,
   ],
   imports: [
     BrowserModule,

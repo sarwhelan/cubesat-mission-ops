@@ -13,6 +13,7 @@ import { ComponentListComponent } from './component-list/component-list.componen
 import { UsersComponent } from './users/users.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
 import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
+import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
 
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminOrSelfGuardService] },
   { path : 'telem-limits', component: TelemLimitsComponent },
+  { path : 'system-inputs', component: CubesatSysInputsComponent },
 ];
 
 @NgModule({
