@@ -8,6 +8,7 @@ var cubesat_dump = require('./routes/cubesat_dump');
 var components = require('./routes/components');
 var componentTelemetry = require('./routes/component-telemetry');
 var telemetryData = require('./routes/telemetry-data');
+var telemLimits = require('./routes/telem-limits');
 const logger = require('./logger');
 
 const port = 3000;
@@ -28,6 +29,7 @@ app.use('/cubesat_dump', cubesat_dump);
 app.use('/components', components);
 app.use('/component-telemetry', componentTelemetry);
 app.use('/telemetry-data', telemetryData);
+app.use('/telem-limits', telemLimits);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
