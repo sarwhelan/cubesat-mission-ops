@@ -27,7 +27,7 @@ router.route('/')
             db.query('SELECT sys.systemID, sys.systemName as `systemName`, comp.componentID, comp.name as `componentName`, ' + 
                 'telem.upperBound, telem.lowerBound, types.name as `unit` FROM systems sys ' + 
                 'INNER JOIN components comp ON sys.systemID = comp.systemID INNER JOIN componentTelemetry telem ON ' +
-                'comp.componentID = telem.componentID INNER JOIN telemetryTypes types ON telem.telemetryTypeID = types.telemetryTypeID ' + 
+                'comp.componentID = telem.componentID INNER JON telemetryTypes types ON telem.telemetryTypeID = types.telemetryTypeID ' + 
                 'ORDER BY sys.systemID, comp.componentID', 
                 function (error, results) {
 
