@@ -17,4 +17,19 @@ export class ComponentTelemetryService {
     var getComponentUrl = this.componentTelemetryUrl + "/" + componentID;
     return this.http.get<ComponentTelemetry[]>(getComponentUrl);
   }
+
+  createComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>
+  {
+    return this.http.post<ComponentTelemetry>(this.componentTelemetryUrl, componentTelemetry);
+  }
+
+  updateComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>
+  {
+    return this.http.put<ComponentTelemetry>(this.componentTelemetryUrl, componentTelemetry);
+  }
+
+  removeComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>
+  {
+    return this.http.delete<ComponentTelemetry>(`${this.componentTelemetryUrl}/${componentTelemetry.componentTelemetryID}`);
+  }
 }

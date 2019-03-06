@@ -16,4 +16,19 @@ export class ComponentService {
   {
     return this.http.get<Component[]>(this.componentUrl);
   }
+
+  createComponent(component: Component) : Observable<Component>
+  {
+    return this.http.post<Component>(this.componentUrl, component);
+  }
+
+  updateComponent(component: Component) : Observable<Component>
+  {
+    return this.http.put<Component>(this.componentUrl, component);
+  }
+
+  removeComponent(component: Component) : Observable<Component>
+  {
+    return this.http.delete<Component>(`${this.componentUrl}/${component.componentID}`);
+  }
 }
