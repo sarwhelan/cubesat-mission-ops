@@ -11,10 +11,6 @@ const bodyParser = require('body-parser');
 const parseUrlencoded = bodyParser.urlencoded({extended: false});
 const parseJSON = bodyParser.json();
 var db = require('../database');
-const System = require('../classes/system-limits');
-const Component = require('../classes/component');
-const ComponentTelem = require('./component-telemetry');
-var Promise = require("bluebird");
 
 router.route('/')
     // PUT /telem-limits
@@ -28,8 +24,8 @@ router.route('/')
 
         try {
 
-            db.query('SELECT sys.systemID, sys.systemName as `system name`, comp.componentID, comp.name as `component name`, ' + 
-                'telem.upperBound as `upper bound`, telem.lowerBound as `lower bound`, types.name as `unit` FROM systems sys ' + 
+            db.query('SELECT sys.systemID, sys.systemName as `systemName`, comp.componentID, comp.name as `componentName`, ' + 
+                'telem.upperBound, telem.lowerBound, types.name as `unit` FROM systems sys ' + 
                 'INNER JOIN components comp ON sys.systemID = comp.systemID INNER JOIN componentTelemetry telem ON ' +
                 'comp.componentID = telem.componentID INNER JOIN telemetryTypes types ON telem.telemetryTypeID = types.telemetryTypeID ' + 
                 'ORDER BY sys.systemID, comp.componentID', 
