@@ -20,7 +20,7 @@
             <input [ngModel]="user.administrator" type="checkbox" class="form-check-input" disabled>
           </div>
         </td>
-        <td>
+        <td class="text-right">
           <a class="btn btn-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
           <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
         </td>
@@ -40,7 +40,27 @@
   </tbody>
 </table>
 
-<app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-auto">
+      <app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
+    </div>
+    <div class="col-sm-2">
+      <select [(ngModel)]="userLimit" class="form-control">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+    <div class="col-sm text-right">
+      <a class="btn btn-primary" role="button" href="/users/create">
+        New User
+      </a>
+    </div>
+  </div>
+</div>
 
 <app-modal #deleteUserModal>
   <ng-container modal-title>

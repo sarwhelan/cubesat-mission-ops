@@ -38,7 +38,7 @@ export class PaginationComponent implements OnInit {
     this.updateDisplayPages();
   }
 
-  private _maxPage: number;
+  private _maxPage: number = 1;
   /**
    * The maximum page number.
    *
@@ -52,6 +52,7 @@ export class PaginationComponent implements OnInit {
   }
   private set maxPage(val: number) {
     this._maxPage = val;
+    this.page = this.minPage;
     this.updateDisplayPages();
   }
 
@@ -175,7 +176,15 @@ export class PaginationComponent implements OnInit {
     this.goToPage(this.page + 1);
   }
 
+  public lastPage(): void {
+    this.goToPage(this.maxPage);
+  }
+
   public prevPage(): void {
     this.goToPage(this.page - 1);
+  }
+
+  public firstPage(): void {
+    this.goToPage(this.minPage);
   }
 }
