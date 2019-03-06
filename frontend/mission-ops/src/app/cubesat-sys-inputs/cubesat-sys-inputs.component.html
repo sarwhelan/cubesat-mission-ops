@@ -1,0 +1,13 @@
+<h2>CubeSat System Inputs</h2>
+<div class = "row">
+    <div class = "col-md-3">
+      <ul class="list-group">
+          <li *ngFor="let system of systems"
+          (click)="onSelect(system)"
+          [class.active]="system === selectedSystem"
+          class="list-group-item">
+            {{system.name}}
+          </li>
+        </ul>
+    </div>
+</div>
