@@ -12,9 +12,9 @@
             {{system.systemName}}
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-dark" (click)="promptAddSystem()">Add sys</button>
-        <button type="button" class="btn btn-outline-dark" (click)="promptEditSystem()">Edit sys</button>
-        <button type="button" class="btn btn-outline-dark" (click)="promptDeleteSystem()">Remove sys</button>
+        <button type="button" class="btn btn-outline-dark" (click)="promptAddSystem()">Add system</button>
+        <button type="button" class="btn btn-outline-dark" (click)="promptEditSystem()" [disabled]="!selectedSystem">Modify system</button>
+        <button type="button" class="btn btn-outline-dark" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete system</button>
     </div>
   </div>
   <div class = "col-md-3">
@@ -31,8 +31,8 @@
               </li>
             </ul>
             <button type="button" class="btn btn-outline-dark" (click)="promptAddComponent()">Add component</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptEditComponent()">Edit component</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteComponent()">Remove component</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit component</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Remove component</button>
       </div>
       <ng-template #noSystem>
         <p>
@@ -60,8 +60,8 @@
               </li>
             </ul>
             <button type="button" class="btn btn-outline-dark" (click)="promptAddCompTelem()">Add component telemetry</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptEditCompTelem()">Edit component telemetry</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteCompTelem()">Remove component telemetry</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit component telemetry</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Remove component telemetry</button>
       </div>
       <ng-template #noComponent>
         <p>
