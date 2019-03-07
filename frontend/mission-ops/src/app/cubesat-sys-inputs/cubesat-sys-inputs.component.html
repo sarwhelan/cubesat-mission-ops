@@ -12,7 +12,8 @@
             {{system.systemName}}
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-dark" (click)="addSystem('')">Add sys</button>
+        <button type="button" class="btn btn-outline-dark" (click)="addSystem()">Add sys</button>
+        <button type="button" class="btn btn-outline-dark" (click)="deleteSystem()">Remove sys</button>
     </div>
   </div>
   <div class = "col-md-3">
@@ -28,7 +29,8 @@
                 {{component.name}}
               </li>
             </ul>
-            <button type="button" class="btn btn-outline-dark" (click)="addComponent('')">Add component</button>
+            <button type="button" class="btn btn-outline-dark" (click)="addComponent()">Add component</button>
+            <button type="button" class="btn btn-outline-dark" (click)="deleteComponent()">Remove component</button>
       </div>
       <ng-template #noSystem>
         <p>
@@ -48,8 +50,15 @@
               class="list-group-item">
                 <span class="badge badge-light"> ID: {{compTelem.componentTelemetryID}}</span>
                 {{compTelem.name}}
+                <div *ngIf = "compTelem.upperBound">
+                    <span class="badge badge-warning"> UB: {{compTelem.upperBound}}</span>
+                    <span class="badge badge-warning"> LB: {{compTelem.lowerBound}}</span>
+                </div>
+                <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
               </li>
             </ul>
+            <button type="button" class="btn btn-outline-dark" (click)="addCompTelem()">Add component telemetry</button>
+            <button type="button" class="btn btn-outline-dark" (click)="deleteCompTelem()">Remove component telemetry</button>
       </div>
       <ng-template #noComponent>
         <p>
