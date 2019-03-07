@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SystemService } from '../services/system/system.service';
 import { System } from 'src/classes/system';
 import { Component as CubeSatComp } from 'src/classes/component';
@@ -7,6 +7,7 @@ import { ComponentTelemetryService } from '../services/component-telemetry/compo
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { TelemetryType } from 'src/classes/telemetry-type';
 import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
+import { ModalComponent } from '../modal/modal.component';
 
 
 @Component({
@@ -15,6 +16,10 @@ import { TelemetryTypesService } from '../services/telemetry-types/telemetry-typ
   styleUrls: ['./cubesat-sys-inputs.component.scss']
 })
 export class CubesatSysInputsComponent implements OnInit {
+
+  @ViewChild('addSysModal')
+  private addSysModal: ModalComponent;
+
   systems: System[];
   components: CubeSatComp[];
   selectedSystem: System;
@@ -22,6 +27,7 @@ export class CubesatSysInputsComponent implements OnInit {
   compTelemetries: ComponentTelemetry[];
   selectedCompTelem: ComponentTelemetry;
   telemetryTypes: TelemetryType[];
+  addingSystem: boolean;
 
   constructor(private systemService: SystemService, 
               private componentService: ComponentService,
@@ -30,9 +36,19 @@ export class CubesatSysInputsComponent implements OnInit {
               { }
 
   ngOnInit() {
+    this.addingSystem = false;
     this.getSystems();
     this.getTelemetryTypes();
   }
+
+  /**
+   * Modal stuff
+   */
+
+   promptAddSystem(): void 
+   {
+     this.addSysModal.open();
+   }
 
   /**
    * ON SELECT Methods
@@ -62,11 +78,12 @@ export class CubesatSysInputsComponent implements OnInit {
 
   addSystem(name: string) : void 
   {
-    if (name.trim() === "") return;
+    this.addingSystem = true;
+    /*if (name.trim() === "") return;
     this.systemService.createSystem(new System(name))
       .subscribe(newSys => {
         this.getSystems();
-      });
+      });*/
   }
 
   addComponent(name: string) : void

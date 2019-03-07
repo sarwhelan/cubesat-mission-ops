@@ -12,7 +12,7 @@
             {{system.systemName}}
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-dark" (click)="addSystem()">Add sys</button>
+        <button type="button" class="btn btn-outline-dark" (click)="promptAddSystem()">Add sys</button>
         <button type="button" class="btn btn-outline-dark" (click)="deleteSystem()">Remove sys</button>
     </div>
   </div>
@@ -68,3 +68,15 @@
     </div>
   </div>
 </div>
+
+<app-modal #addSysModal>
+  <ng-container modal-title>
+    <p>blah</p>
+  </ng-container>
+  <ng-container modal-body>
+    <p>blah</p>
+  </ng-container>
+  <ng-container modal-footer>
+    <p>blah</p>
+  </ng-container>
+</app-modal>
