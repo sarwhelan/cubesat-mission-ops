@@ -4,9 +4,13 @@ const bodyParser = require('body-parser');
 const parseUrlencoded = bodyParser.urlencoded({extended: false});
 const parseJSON = bodyParser.json();
 const db = require('../database');
+const anomalyDetector = require('../helpers/detect-anomalies');
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
+
+        anomalyDetector.dataDump(req.body);
+
         try {
 
             for (reading = 0; reading < req.body.length; reading++) {
