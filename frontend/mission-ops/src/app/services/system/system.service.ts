@@ -28,9 +28,9 @@ export class SystemService {
     return this.http.post<Number>(this.systemUrl, JSON.stringify(system), this.httpOptions);
   }
 
-  updateSystem(system: System): Observable<System>
+  updateSystem(system: System): Observable<Number>
   {
-    return this.http.put<System>(this.systemUrl, system);
+    return this.http.put<Number>(`${this.systemUrl}/${system.systemID}`, JSON.stringify(system), this.httpOptions);
   }
 
   removeSystem(system: System): Observable<System> 

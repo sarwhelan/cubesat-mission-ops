@@ -27,9 +27,9 @@ export class ComponentService {
     return this.http.post<Number>(this.componentUrl, component);
   }
 
-  updateComponent(component: Component) : Observable<Component>
+  updateComponent(component: Component) : Observable<Number>
   {
-    return this.http.put<Component>(this.componentUrl, component);
+    return this.http.put<Number>(`${this.componentUrl}/${component.componentID}`, component);
   }
 
   removeComponent(component: Component) : Observable<Component>
