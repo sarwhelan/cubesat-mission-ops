@@ -12,9 +12,9 @@
             {{system.systemName}}
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-dark" (click)="promptAddSystem()">Add system</button>
-        <button type="button" class="btn btn-outline-dark" (click)="promptEditSystem()" [disabled]="!selectedSystem">Modify system</button>
-        <button type="button" class="btn btn-outline-dark" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete system</button>
+        <button type="button" class="btn btn-success" (click)="promptAddSystem()">Add <i class="fa fa-plus-square"></i></button>
+        <button type="button" class="btn btn-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit <i class="fa fa-edit"></i></button>
+        <button type="button" class="btn btn-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete <i class="fa fa-trash"></i></button>
     </div>
   </div>
   <div class = "col-md-3">
@@ -30,9 +30,9 @@
                 {{component.name}}
               </li>
             </ul>
-            <button type="button" class="btn btn-outline-dark" (click)="promptAddComponent()">Add component</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit component</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Remove component</button>
+            <button type="button" class="btn btn-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
+            <button type="button" class="btn btn-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
       </div>
       <ng-template #noSystem>
         <p>
@@ -59,9 +59,9 @@
                 <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
               </li>
             </ul>
-            <button type="button" class="btn btn-outline-dark" (click)="promptAddCompTelem()">Add component telemetry</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit component telemetry</button>
-            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Remove component telemetry</button>
+            <button type="button" class="btn btn-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
+            <button type="button" class="btn btn-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
       </div>
       <ng-template #noComponent>
         <p>

@@ -17,7 +17,7 @@ import { ModalComponent } from '../modal/modal.component';
 @Component({
   selector: 'app-cubesat-sys-inputs',
   templateUrl: './cubesat-sys-inputs.component.html',
-  styleUrls: ['./cubesat-sys-inputs.component.scss']
+  styleUrls: ['./cubesat-sys-inputs.component.scss', '../../../node_modules/font-awesome/scss/font-awesome.scss']
 })
 export class CubesatSysInputsComponent implements OnInit {
   @ViewChild('deleteSystemModal')
