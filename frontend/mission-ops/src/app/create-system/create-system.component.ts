@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { System } from '../../classes/system';
 import { SystemService } from '../services/system/system.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -9,12 +9,20 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./create-system.component.scss']
 })
 export class CreateSystemComponent implements OnInit {
-  selectedSystem: System;
+  _selectedSystem: System;
   closeResult:string;
 
-  constructor(private systemService: SystemService, private modalService: NgbModal, system: System) 
+  @Input()
+  private get selectedSystem() {
+    return this._selectedSystem;
+  }
+  private set selectedSystem(val: System) {
+    this._selectedSystem = val;
+  }
+
+  constructor(private systemService: SystemService, private modalService: NgbModal) 
   {
-    this.selectedSystem = system;
+    this._selectedSystem = this._selectedSystem;
   }
 
   ngOnInit() {

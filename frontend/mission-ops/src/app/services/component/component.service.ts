@@ -17,6 +17,11 @@ export class ComponentService {
     return this.http.get<Component[]>(this.componentUrl);
   }
 
+  getComponentsFromSystem(systemId: number) : Observable<Component[]>
+  {
+    return this.http.get<Component[]>(`${this.componentUrl}/${systemId}`);
+  }
+
   createComponent(component: Component) : Observable<Component>
   {
     return this.http.post<Component>(this.componentUrl, component);
