@@ -79,6 +79,10 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [CreateSystemComponent]
+  entryComponents: [
+    CreateSystemComponent, 
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+  ]
 })
 export class AppModule { }

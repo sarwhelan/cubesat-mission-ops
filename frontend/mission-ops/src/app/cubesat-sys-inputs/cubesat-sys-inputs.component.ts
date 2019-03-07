@@ -9,6 +9,7 @@ import { TelemetryType } from 'src/classes/telemetry-type';
 import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
 import { CreateSystemComponent } from '../create-system/create-system.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateComponentComponent } from '../create-component/create-component.component';
 
 
 @Component({
@@ -51,8 +52,25 @@ export class CubesatSysInputsComponent implements OnInit {
           this.getSystems();
         });
      }).catch((error) => {
+       // Modal closed without submission
        console.log(error);
      });
+   }
+
+   promptAddComponent() : void
+   {
+     const modalRef = this.modalService.open(CreateComponentComponent);
+     console.log(this.selectedSystem);
+     modalRef.componentInstance.system = this.selectedSystem;
+     modalRef.result.then((result) => {
+       this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, result.name))
+        .subscribe(sys => {
+          this.getComponents(this.selectedSystem.systemID);
+        })
+     }).catch((error) => {
+      // Modal closed without submission
+      console.log(error);
+    });
    }
 
   /**
