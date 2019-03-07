@@ -9,6 +9,7 @@ var components = require('./routes/components');
 var componentTelemetry = require('./routes/component-telemetry');
 var telemetryData = require('./routes/telemetry-data');
 var telemLimits = require('./routes/telem-limits');
+var systems = require('./routes/systems');
 const logger = require('./logger');
 
 const port = 3000;
@@ -30,6 +31,7 @@ app.use('/components', components);
 app.use('/component-telemetry', componentTelemetry);
 app.use('/telemetry-data', telemetryData);
 app.use('/telem-limits', telemLimits);
+app.use('/systems', systems);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
