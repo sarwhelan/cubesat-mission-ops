@@ -63,7 +63,9 @@ router.route('/:ID')
                         try {
                             db.query("DELETE FROM systems WHERE systemID = ?", req.params.ID, function(error, results, fields) {
                                 if (error) throw error;
-                                res.sendStatus(200);
+                                console.log(results);
+                                res.json({byeSys: results.insertId});
+                                //res.sendStatus(200);
                             })
                         } catch (err) {
                             console.log(err);

@@ -60,7 +60,8 @@ router.route('/:ID')
                 try {
                     db.query("DELETE FROM components WHERE componentID = ?", req.params.ID, function(error, results, fields) {
                         if (error) throw error;
-                        res.sendStatus(200);
+                        res.json({byeComp: results.insertId});
+                        //res.sendStatus(200);
                     })
                 } catch(err) {
                     console.log(err);
