@@ -123,9 +123,32 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.componentInstance.system = this.selectedSystem;
      modalRef.componentInstance.component = this.selectedComponent;
      modalRef.componentInstance.telemetryTypes = this.telemetryTypes;
+     modalRef.componentInstance.isEditing = false;
      modalRef.result.then((result) => {
-       console.log(result);
        this.compTelemetriesService.createComponentTelemetry(new ComponentTelemetry(result.telemetryTypeID, this.selectedComponent.componentID, result.name, result.upperBound, result.lowerBound))
+        .subscribe(compTelem => {
+          this.getCompTelemetries(this.selectedComponent.componentID);
+        })
+     }).catch((error) => {
+       // Modal closed without submission
+       console.log(error);
+     });
+   }
+
+   promptEditCompTelem() : void
+   {
+     const modalRef = this.modalService.open(CreateComponentTelemetryComponent);
+     modalRef.componentInstance.system = this.selectedSystem;
+     modalRef.componentInstance.component = this.selectedComponent;
+     modalRef.componentInstance.telemetryTypes = this.telemetryTypes;
+     modalRef.componentInstance.isEditing = true;
+     modalRef.componentInstance.selectedCompTelem = this.selectedCompTelem;
+     modalRef.result.then((result) => {
+       this.selectedCompTelem.telemetryTypeID = result.telemetryTypeID;
+       this.selectedCompTelem.name = result.name;
+       this.selectedCompTelem.upperBound = result.upperBound;
+       this.selectedCompTelem.lowerBound = result.lowerBound;
+       this.compTelemetriesService.updateComponentTelemetry(this.selectedCompTelem)
         .subscribe(compTelem => {
           this.getCompTelemetries(this.selectedComponent.componentID);
         })

@@ -23,9 +23,9 @@ export class ComponentTelemetryService {
     return this.http.post<Number>(this.componentTelemetryUrl, componentTelemetry);
   }
 
-  updateComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>
+  updateComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<Number>
   {
-    return this.http.put<ComponentTelemetry>(this.componentTelemetryUrl, componentTelemetry);
+    return this.http.put<Number>(`${this.componentTelemetryUrl}/${componentTelemetry.componentTelemetryID}`, componentTelemetry);
   }
 
   removeComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>

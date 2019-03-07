@@ -57,7 +57,8 @@ router.route('/:ID')
             db.query("UPDATE componentTelemetry SET telemetryTypeID = ?, componentID = ?, name = ?, upperBound = ?, lowerBound = ? " +
                 "WHERE componentTelemetryID = ?", updateParams, function (error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.json({updateCompTelem:results.insertId});
+                //res.sendStatus(200);
               });
         } catch (err) {
             console.log(err);
