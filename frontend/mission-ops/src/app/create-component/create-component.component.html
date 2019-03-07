@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Add CubeSat Component</h4>
+    <h4 class="modal-title">{{modalTitle}}</h4>
     <button type="button" class="close" aria-label="Close"
      (click)="activeModal.dismiss('Cross click')">
     </button>
@@ -10,7 +10,7 @@
         <div class = "form-group">
           <label for = "system">System</label>
           <input type = "text"
-            [ngModel] = "system.systemName"
+            [value] = "system.systemName"
             class = "form-control"
             formControlName = "system"
             readonly/>
@@ -24,9 +24,9 @@
       </div>
     </div>
   <div class="modal-footer">
-    <button class = "btn btn-success"
+    <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"
       [disabled] = "!createCompForm.valid">
-      Add New Component
+      {{modalSubmit}}
     </button>
   </div>
   </form>

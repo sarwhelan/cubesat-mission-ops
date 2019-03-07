@@ -54,6 +54,7 @@ export class CubesatSysInputsComponent implements OnInit {
    promptAddSystem(): void 
    {
      const modalRef = this.modalService.open(CreateSystemComponent);
+     modalRef.componentInstance.isEditing = false;
      modalRef.result.then((result) => {
        this.systemService.createSystem(new System(result.systemName))
         .subscribe(sys => {
@@ -65,11 +66,28 @@ export class CubesatSysInputsComponent implements OnInit {
      });
    }
 
+   promptEditSystem() : void
+   {
+     const modalRef = this.modalService.open(CreateSystemComponent);
+     modalRef.componentInstance.isEditing = true;
+     modalRef.componentInstance.selectedSystem = this.selectedSystem;
+     modalRef.result.then((result) => {
+       this.selectedSystem.systemName = result.systemName;
+       this.systemService.updateSystem(this.selectedSystem)
+        .subscribe(sys => {
+          this.getSystems();
+        });
+     }).catch((error) => {
+       // Modal closed without submission
+       console.log(error);
+     })
+   }
+
    promptAddComponent() : void
    {
      const modalRef = this.modalService.open(CreateComponentComponent);
-     console.log(this.selectedSystem);
      modalRef.componentInstance.system = this.selectedSystem;
+     modalRef.componentInstance.isEditing = false;
      modalRef.result.then((result) => {
        this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, result.name))
         .subscribe(comp => {
@@ -79,6 +97,24 @@ export class CubesatSysInputsComponent implements OnInit {
       // Modal closed without submission
       console.log(error);
     });
+   }
+
+   promptEditComponent() : void
+   {
+     const modalRef = this.modalService.open(CreateComponentComponent);
+     modalRef.componentInstance.system = this.selectedSystem;
+     modalRef.componentInstance.isEditing = true;
+     modalRef.componentInstance.selectedComponent = this.selectedComponent;
+     modalRef.result.then((result) => {
+       this.selectedComponent.name = result.name;
+       this.componentService.updateComponent(this.selectedComponent)
+        .subscribe(sys => {
+          this.getComponents(this.selectedSystem.systemID);
+        });
+     }).catch((error) => {
+       // Modal closed without submission
+       console.log(error);
+     })
    }
 
    promptAddCompTelem() : void
@@ -202,6 +238,7 @@ export class CubesatSysInputsComponent implements OnInit {
         this.selectedSystem = null;
         this.selectedComponent = null;
         this.selectedCompTelem = null;
+        this.deleteSystemModal.close();
       });
    } 
 
@@ -216,6 +253,7 @@ export class CubesatSysInputsComponent implements OnInit {
         this.getComponents(this.selectedSystem.systemID);
         this.selectedComponent = null;
         this.selectedCompTelem = null;
+        this.deleteComponentModal.close();
       });
    }
 
@@ -229,6 +267,7 @@ export class CubesatSysInputsComponent implements OnInit {
       .subscribe(compTelem => {
         this.getCompTelemetries(this.selectedComponent.componentID);
         this.selectedCompTelem = null;
+        this.deleteCompTelemModal.close();
       });
    }
 }
