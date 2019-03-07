@@ -39,10 +39,11 @@ router.route('/:ID')
     // PUT /systems/:systemID updates a system name
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            var updateParams = [req.body.name, req.params.ID];
+            var updateParams = [req.body.systemName, req.params.ID];
             db.query("UPDATE systems SET systemName = ? WHERE systemID = ?", updateParams, function (error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.json({updateSys:results.insertId});
+                //res.sendStatus(200);
             })
         } catch (err) {
             console.log(err);

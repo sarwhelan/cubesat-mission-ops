@@ -39,9 +39,10 @@ router.route('/:ID')
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
             var updateParams = [req.body.systemID, req.body.name, req.params.ID];
-            db.query('UPDATE components SET systemID = ?, name = ? WHERE where componentID = ?', updateParams, (error, results, fields) => {
+            db.query('UPDATE components SET systemID = ?, name = ? WHERE componentID = ?', updateParams, (error, results, fields) => {
                 if (error) throw error;
-                res.json(200);
+                res.json({updateComp: results.insertId});
+                //res.json(200);
             })
         } catch (err) {
             console.log(err);
