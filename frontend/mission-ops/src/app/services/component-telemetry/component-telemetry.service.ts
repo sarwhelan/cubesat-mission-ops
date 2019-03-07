@@ -18,9 +18,9 @@ export class ComponentTelemetryService {
     return this.http.get<ComponentTelemetry[]>(getComponentUrl);
   }
 
-  createComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>
+  createComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<Number>
   {
-    return this.http.post<ComponentTelemetry>(this.componentTelemetryUrl, componentTelemetry);
+    return this.http.post<Number>(this.componentTelemetryUrl, componentTelemetry);
   }
 
   updateComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>

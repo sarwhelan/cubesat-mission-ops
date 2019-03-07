@@ -26,7 +26,8 @@ router.route('/')
             var insertParams = [req.body.telemetryTypeID, req.body.componentID, req.body.name, req.body.upperBound, req.body.lowerBound];
             db.query('INSERT INTO componentTelemetry (telemetryTypeID, componentID, name, upperBound, lowerBound) VALUES (?, ?, ?, ?, ?)', insertParams, (error, results, fields) => {
                 if (error) throw error;
-                res.json(200);
+                res.json({newCompTelem: results.insertId});
+                //res.json(200);
             });
         } catch (err) {
             console.log(err);

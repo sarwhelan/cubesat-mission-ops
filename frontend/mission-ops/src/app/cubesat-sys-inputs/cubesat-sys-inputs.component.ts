@@ -10,6 +10,7 @@ import { TelemetryTypesService } from '../services/telemetry-types/telemetry-typ
 import { CreateSystemComponent } from '../create-system/create-system.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateComponentComponent } from '../create-component/create-component.component';
+import { CreateComponentTelemetryComponent } from '../create-component-telemetry/create-component-telemetry.component';
 
 
 @Component({
@@ -64,13 +65,31 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.componentInstance.system = this.selectedSystem;
      modalRef.result.then((result) => {
        this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, result.name))
-        .subscribe(sys => {
+        .subscribe(comp => {
           this.getComponents(this.selectedSystem.systemID);
         })
      }).catch((error) => {
       // Modal closed without submission
       console.log(error);
     });
+   }
+
+   promptAddCompTelem() : void
+   {
+     const modalRef = this.modalService.open(CreateComponentTelemetryComponent);
+     modalRef.componentInstance.system = this.selectedSystem;
+     modalRef.componentInstance.component = this.selectedComponent;
+     modalRef.componentInstance.telemetryTypes = this.telemetryTypes;
+     modalRef.result.then((result) => {
+       console.log(result);
+       this.compTelemetriesService.createComponentTelemetry(new ComponentTelemetry(result.telemetryTypeID, this.selectedComponent.componentID, result.name, result.upperBound, result.lowerBound))
+        .subscribe(compTelem => {
+          this.getCompTelemetries(this.selectedComponent.componentID);
+        })
+     }).catch((error) => {
+       // Modal closed without submission
+       console.log(error);
+     });
    }
 
   /**

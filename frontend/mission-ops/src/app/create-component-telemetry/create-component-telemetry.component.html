@@ -1,3 +1,66 @@
-<p>
-  create-component-telemetry works!
-</p>
+<div class="modal-header">
+    <h4 class="modal-title">Add CubeSat Component Telemetry</h4>
+    <button type="button" class="close" aria-label="Close"
+     (click)="activeModal.dismiss('Cross click')">
+    </button>
+  </div>
+  <form [formGroup] = "createCompTelemForm" (ngSubmit) = "submitNewCompTelem()">
+    <div class = "modal-body">
+      <div class = "container">
+        <div class = "form-group">
+          <label for = "system">System</label>
+          <input type = "text"
+            [value] = "system.systemName"
+            class = "form-control"
+            formControlName = "system"
+            readonly/>
+        </div>
+        <div class = "form-group">
+          <label for = "component">Component</label>
+          <input type = "text"
+            [value] = "component.name"
+            class = "form-control"
+            formControlName = "component"
+            readonly/>
+        </div>
+        <div class = "form-group">
+          <label for = "name">Component Telemetry Name</label>
+          <input type = "text"
+            class = "form-control"
+            formControlName = "name"/>
+        </div>
+        <div class = "form-group">
+            <label for = "telemetryTypeID">Telemetry Type</label>
+            <select class="form-control" 
+                    id="telemetryTypeID" 
+                    formControlName="telemetryTypeID"
+                    (change) = "updateTelemetryType($event.target.value)">
+                <option *ngFor="let tt of telemetryTypes, let i = index" 
+                        [attr.selected] = "i == 0 ? true : null" 
+                        [value] = "tt.telemetryTypeID"
+                        [attr.value] = "tt.telemetryTypeID">
+                        {{tt.name}} ({{tt.telemetryUnit}})
+                        </option>
+            </select>
+        </div>
+        <div *ngIf = "selectedTelemetryType && selectedTelemetryType.hasBounds">
+            <div class = "form-group">
+                <label for = "upperBound">Upper Bound</label>
+                <input type = "number"
+                  class = "form-control"
+                  formControlName = "upperBound"/>
+                <label for = "lowerBound">Lower Bound</label>
+                <input type = "number"
+                  class = "form-control"
+                  formControlName = "lowerBound"/>
+            </div>
+        </div>
+      </div>
+    </div>
+  <div class="modal-footer">
+    <button class = "btn btn-success"
+      [disabled] = "!createCompTelemForm.valid">
+      Add New Component Telemetry
+    </button>
+  </div>
+  </form>

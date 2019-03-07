@@ -57,7 +57,7 @@
                 <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
               </li>
             </ul>
-            <button type="button" class="btn btn-outline-dark" (click)="addCompTelem()">Add component telemetry</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptAddCompTelem()">Add component telemetry</button>
             <button type="button" class="btn btn-outline-dark" (click)="deleteCompTelem()">Remove component telemetry</button>
       </div>
       <ng-template #noComponent>
