@@ -16,4 +16,24 @@ export class ComponentService {
   {
     return this.http.get<Component[]>(this.componentUrl);
   }
+
+  getComponentsFromSystem(systemId: number) : Observable<Component[]>
+  {
+    return this.http.get<Component[]>(`${this.componentUrl}/${systemId}`);
+  }
+
+  createComponent(component: Component) : Observable<Number>
+  {
+    return this.http.post<Number>(this.componentUrl, component);
+  }
+
+  updateComponent(component: Component) : Observable<Number>
+  {
+    return this.http.put<Number>(`${this.componentUrl}/${component.componentID}`, component);
+  }
+
+  removeComponent(component: Component) : Observable<Component>
+  {
+    return this.http.delete<Component>(`${this.componentUrl}/${component.componentID}`);
+  }
 }

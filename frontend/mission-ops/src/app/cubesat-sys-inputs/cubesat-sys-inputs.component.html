@@ -1,0 +1,119 @@
+<h2>CubeSat System Inputs</h2>
+<div class = "row">
+  <div class = "col-md-3">
+    <div class = "container">
+      <h4>Systems</h4>
+      <ul class="list-group">
+          <li *ngFor="let system of systems"
+          (click)="onSelectSys(system)"
+          [class.active]="system === selectedSystem"
+          class="list-group-item">
+            <span class="badge badge-light"> ID: {{system.systemID}}</span>
+            {{system.systemName}}
+          </li>
+        </ul>
+        <button type="button" class="btn btn-success" (click)="promptAddSystem()">Add <i class="fa fa-plus-square"></i></button>
+        <button type="button" class="btn btn-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit <i class="fa fa-edit"></i></button>
+        <button type="button" class="btn btn-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete <i class="fa fa-trash"></i></button>
+    </div>
+  </div>
+  <div class = "col-md-3">
+    <div class = "container">
+      <h4>Components</h4>
+      <div *ngIf = "selectedSystem; else noSystem">
+          <ul class="list-group">
+              <li *ngFor="let component of components"
+              (click)="onSelectComp(component)"
+              [class.active]="component === selectedComponent"
+              class="list-group-item">
+                <span class="badge badge-light"> ID: {{component.componentID}}</span>
+                {{component.name}}
+              </li>
+            </ul>
+            <button type="button" class="btn btn-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
+            <button type="button" class="btn btn-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
+      </div>
+      <ng-template #noSystem>
+        <p>
+          Please select a system to view, modify and delete components.
+        </p>
+      </ng-template>
+    </div>
+  </div>
+  <div class = "col-md-6">
+    <div class = "container">
+      <h4>Component Telemetries</h4>
+      <div *ngIf = "selectedComponent; else noComponent">
+          <ul class="list-group">
+              <li *ngFor="let compTelem of compTelemetries"
+              (click)="onSelectCompTelem(compTelem)"
+              [class.active]="compTelem === selectedCompTelem"
+              class="list-group-item">
+                <span class="badge badge-light"> ID: {{compTelem.componentTelemetryID}}</span>
+                {{compTelem.name}}
+                <div *ngIf = "compTelem.upperBound">
+                    <span class="badge badge-warning"> UB: {{compTelem.upperBound}}</span>
+                    <span class="badge badge-warning"> LB: {{compTelem.lowerBound}}</span>
+                </div>
+                <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
+              </li>
+            </ul>
+            <button type="button" class="btn btn-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
+            <button type="button" class="btn btn-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
+      </div>
+      <ng-template #noComponent>
+        <p>
+          Please select a component to view, modify and delete component telemetries.
+        </p>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<app-modal #deleteSystemModal>
+  <ng-container modal-title>
+    <h1>Are You Sure?</h1>
+  </ng-container>
+  <ng-container modal-body>
+    <p>Are you sure you want to delete system <span class="text-primary">{{selectedSystem?.systemName}}</span>?</p>
+    <p>It will be deleted <span class="text-danger">permanently</span> along with <span class = "text-danger">all associated components and component telemetries</span> and can never be recovered.</p>
+  </ng-container>
+  <ng-container modal-footer>
+    <button (click)="deleteSystem()" class="btn btn-danger">
+      Delete System
+    </button>
+  </ng-container>
+</app-modal>
+
+<app-modal #deleteComponentModal>
+  <ng-container modal-title>
+    <h1>Are You Sure?</h1>
+  </ng-container>
+  <ng-container modal-body>
+    <p>Are you sure you want to delete component <span class="text-primary">{{selectedComponent?.name}}</span>?</p>
+    <p>It will be deleted <span class="text-danger">permanently</span> along with <span class = "text-danger">all associated component telemetries</span> and can never be recovered.</p>
+  </ng-container>
+  <ng-container modal-footer>
+    <button (click)="deleteComponent()" class="btn btn-danger">
+      Delete Component
+    </button>
+  </ng-container>
+</app-modal>
+
+<app-modal #deleteCompTelemModal>
+    <ng-container modal-title>
+      <h1>Are You Sure?</h1>
+    </ng-container>
+    <ng-container modal-body>
+      <p>Are you sure you want to delete component telemetry <span class="text-primary">{{selectedCompTelem?.name}}</span>?</p>
+      <p>It will be deleted <span class="text-danger">permanently</span> and can never be recovered.</p>
+    </ng-container>
+    <ng-container modal-footer>
+      <button (click)="deleteCompTelem()" class="btn btn-danger">
+        Delete Component Telemetry
+      </button>
+    </ng-container>
+  </app-modal>
+  

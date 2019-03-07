@@ -25,7 +25,8 @@ router.route('/')
             var insertParams = [req.body.systemID, req.body.name];
             db.query('INSERT INTO components (systemID, name) VALUES (?, ?)', insertParams, (error, results, fields) => {
                 if (error) throw error;
-                res.json(200);
+                res.json({newComp:results.insertId});
+                //res.json(200);
             });
         } catch (err) {
             console.log(err);
@@ -38,9 +39,10 @@ router.route('/:ID')
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
             var updateParams = [req.body.systemID, req.body.name, req.params.ID];
-            db.query('UPDATE components SET systemID = ?, name = ? WHERE where componentID = ?', updateParams, (error, results, fields) => {
+            db.query('UPDATE components SET systemID = ?, name = ? WHERE componentID = ?', updateParams, (error, results, fields) => {
                 if (error) throw error;
-                res.json(200);
+                res.json({updateComp: results.insertId});
+                //res.json(200);
             })
         } catch (err) {
             console.log(err);
@@ -59,7 +61,8 @@ router.route('/:ID')
                 try {
                     db.query("DELETE FROM components WHERE componentID = ?", req.params.ID, function(error, results, fields) {
                         if (error) throw error;
-                        res.sendStatus(200);
+                        res.json({byeComp: results.insertId});
+                        //res.sendStatus(200);
                     })
                 } catch(err) {
                     console.log(err);

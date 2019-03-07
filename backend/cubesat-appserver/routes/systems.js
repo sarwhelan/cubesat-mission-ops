@@ -23,9 +23,11 @@ router.route('/')
     // POST /systems adds a new system to the systems table
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("INSERT INTO systems (systemName) VALUES (?)", req.body.name, function (error, results, fields) {
+            db.query("INSERT INTO systems (systemName) VALUES (?)", req.body.systemName, function (error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                console.log(results);
+                res.json({newSys:results.insertId});
+                //res.sendStatus(200);
             })
         } catch (err) {
             console.log(err);
@@ -37,10 +39,11 @@ router.route('/:ID')
     // PUT /systems/:systemID updates a system name
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            var updateParams = [req.body.name, req.params.ID];
+            var updateParams = [req.body.systemName, req.params.ID];
             db.query("UPDATE systems SET systemName = ? WHERE systemID = ?", updateParams, function (error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.json({updateSys:results.insertId});
+                //res.sendStatus(200);
             })
         } catch (err) {
             console.log(err);
@@ -61,7 +64,9 @@ router.route('/:ID')
                         try {
                             db.query("DELETE FROM systems WHERE systemID = ?", req.params.ID, function(error, results, fields) {
                                 if (error) throw error;
-                                res.sendStatus(200);
+                                console.log(results);
+                                res.json({byeSys: results.insertId});
+                                //res.sendStatus(200);
                             })
                         } catch (err) {
                             console.log(err);

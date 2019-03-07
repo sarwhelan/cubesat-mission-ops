@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // TODO: Before deployment, maybe refine this to only the modules we need to reduce package size
 import { HttpClientModule } from '@angular/common/http'; 
 
@@ -31,6 +31,10 @@ import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
 import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
+import { CreateSystemComponent } from './create-system/create-system.component';
+import { CreateComponentComponent } from './create-component/create-component.component';
+import { CreateComponentTelemetryComponent } from './create-component-telemetry/create-component-telemetry.component';
+import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
     UsersComponent,
     PaginationComponent,
     ModifyUserComponent,
-    TelemLimitsComponent
+    TelemLimitsComponent,
+    CreateSystemComponent,
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+    CubesatSysInputsComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,9 +73,16 @@ import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
     FormsModule,
     NgbModule,
     HttpClientModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    CreateSystemComponent, 
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+  ]
 })
 export class AppModule { }
