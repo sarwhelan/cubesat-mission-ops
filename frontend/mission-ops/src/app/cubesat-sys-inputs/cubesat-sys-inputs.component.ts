@@ -74,9 +74,7 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.result.then((result) => {
        this.selectedSystem.systemName = result.systemName;
        this.systemService.updateSystem(this.selectedSystem)
-        .subscribe(sys => {
-          this.getSystems();
-        });
+        .subscribe(sys => { });
      }).catch((error) => {
        // Modal closed without submission
        console.log(error);
@@ -91,7 +89,7 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.result.then((result) => {
        this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, result.name))
         .subscribe(comp => {
-          this.getComponents(this.selectedSystem.systemID);
+          this.getComponents(this.selectedComponent.systemID);
         })
      }).catch((error) => {
       // Modal closed without submission
@@ -108,9 +106,7 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.result.then((result) => {
        this.selectedComponent.name = result.name;
        this.componentService.updateComponent(this.selectedComponent)
-        .subscribe(sys => {
-          this.getComponents(this.selectedSystem.systemID);
-        });
+        .subscribe(sys => { });
      }).catch((error) => {
        // Modal closed without submission
        console.log(error);
@@ -126,8 +122,8 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.componentInstance.isEditing = false;
      modalRef.result.then((result) => {
        this.compTelemetriesService.createComponentTelemetry(new ComponentTelemetry(result.telemetryTypeID, this.selectedComponent.componentID, result.name, result.upperBound, result.lowerBound))
-        .subscribe(compTelem => {
-          this.getCompTelemetries(this.selectedComponent.componentID);
+        .subscribe(compTelem => { 
+          this.getCompTelemetries(this.selectedCompTelem.componentID);
         })
      }).catch((error) => {
        // Modal closed without submission
@@ -149,9 +145,7 @@ export class CubesatSysInputsComponent implements OnInit {
        this.selectedCompTelem.upperBound = result.upperBound;
        this.selectedCompTelem.lowerBound = result.lowerBound;
        this.compTelemetriesService.updateComponentTelemetry(this.selectedCompTelem)
-        .subscribe(compTelem => {
-          this.getCompTelemetries(this.selectedComponent.componentID);
-        })
+        .subscribe(compTelem => { })
      }).catch((error) => {
        // Modal closed without submission
        console.log(error);
@@ -178,12 +172,14 @@ export class CubesatSysInputsComponent implements OnInit {
   {
     this.selectedSystem = system;
     this.selectedComponent = null;
+    this.selectedCompTelem = null;
     this.getComponents(this.selectedSystem.systemID);
   }
 
   onSelectComp(component: CubeSatComp) : void
   {
     this.selectedComponent = component;
+    this.selectedCompTelem = null;
     this.getCompTelemetries(this.selectedComponent.componentID);
   }
 
@@ -193,45 +189,35 @@ export class CubesatSysInputsComponent implements OnInit {
   }
 
   /**
-   * ADD Methods
-   */
-
-  addComponent(name: string) : void
-  {
-    if (name.trim() === "") return;
-    this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, name))
-      .subscribe(newComp => {
-        this.getComponents(this.selectedSystem.systemID);
-      });
-  }
-
-  addCompTelem(telemetryTypeId: number, name: string, upperBound: number = null, lowerBound: number = null) : void
-  {
-    if (telemetryTypeId < 1 || name.trim() === "") return;
-    this.compTelemetriesService.createComponentTelemetry(new ComponentTelemetry(telemetryTypeId, this.selectedComponent.componentID, name, upperBound, lowerBound))
-      .subscribe(newCompTelem => {
-        this.getCompTelemetries(this.selectedComponent.componentID);
-      })
-  }
-
-  /**
    * GET Methods
    */
 
   getSystems(): void {
     this.systemService.getSystems()
-      .subscribe(systems => this.systems = systems);
+      .subscribe(systems => {
+        this.systems = systems;
+        this.selectedSystem = null;
+        this.selectedComponent = null;
+        this.selectedCompTelem = null;
+      });
   }
 
   getComponents(systemId: number): void {
     this.componentService.getComponentsFromSystem(systemId)
-      .subscribe(components => this.components = components);
+      .subscribe(components => {
+        this.components = components;
+        this.selectedComponent = null;
+        this.selectedCompTelem = null;
+      });
   }
 
   getCompTelemetries(componentId: number): void
   {
     this.compTelemetriesService.getComponentTelemetries(componentId)
-      .subscribe(compTelems => this.compTelemetries = compTelems);
+      .subscribe(compTelems => {
+        this.compTelemetries = compTelems;
+        this.selectedCompTelem = null;
+      });
   }
 
   getTelemetryTypes(): void
