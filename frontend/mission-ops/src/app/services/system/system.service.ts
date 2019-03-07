@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { System } from '../../../classes/system';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SystemService {
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -17,9 +23,9 @@ export class SystemService {
     return this.http.get<System[]>(this.systemUrl);
   }
 
-  createSystem(system: System): Observable<System> 
+  createSystem(system: System): Observable<Number> 
   {
-    return this.http.post<System>(this.systemUrl, system);
+    return this.http.post<Number>(this.systemUrl, JSON.stringify(system), this.httpOptions);
   }
 
   updateSystem(system: System): Observable<System>

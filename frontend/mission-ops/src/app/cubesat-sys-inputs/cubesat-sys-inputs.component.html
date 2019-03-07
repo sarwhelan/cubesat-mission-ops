@@ -7,9 +7,11 @@
           (click)="onSelectSys(system)"
           [class.active]="system === selectedSystem"
           class="list-group-item">
+            <span class="badge badge-light"> ID: {{system.systemID}}</span>
             {{system.systemName}}
           </li>
         </ul>
+        <button type="button" class="btn btn-outline-dark" (click)="addSystem('')">Add sys</button>
     </div>
   </div>
   <div class = "col-md-3">
@@ -20,6 +22,7 @@
               (click)="onSelectComp(component)"
               [class.active]="component === selectedComponent"
               class="list-group-item">
+                <span class="badge badge-light"> ID: {{component.componentID}}</span>
                 {{component.name}}
               </li>
             </ul>
@@ -39,6 +42,7 @@
               (click)="onSelectCompTelem(compTelem)"
               [class.active]="compTelem === selectedCompTelem"
               class="list-group-item">
+                <span class="badge badge-light"> ID: {{compTelem.componentTelemetryID}}</span>
                 {{compTelem.name}}
               </li>
             </ul>

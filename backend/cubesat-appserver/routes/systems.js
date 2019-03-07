@@ -23,9 +23,11 @@ router.route('/')
     // POST /systems adds a new system to the systems table
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("INSERT INTO systems (systemName) VALUES (?)", req.body.name, function (error, results, fields) {
+            db.query("INSERT INTO systems (systemName) VALUES (?)", req.body.systemName, function (error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                console.log(results);
+                res.json({newSys:results.insertId});
+                //res.sendStatus(200);
             })
         } catch (err) {
             console.log(err);

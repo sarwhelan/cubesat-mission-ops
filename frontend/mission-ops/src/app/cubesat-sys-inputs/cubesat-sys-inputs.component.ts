@@ -47,6 +47,15 @@ export class CubesatSysInputsComponent implements OnInit {
     this.selectedCompTelem = compTelem;
   }
 
+  addSystem(name: string) : void 
+  {
+    if (name.trim() === "") return;
+    this.systemService.createSystem(new System(name))
+      .subscribe(newSys => {
+        this.getSystems();
+      });
+  }
+
   getSystems(): void {
     this.systemService.getSystems()
       .subscribe(systems => this.systems = systems);
