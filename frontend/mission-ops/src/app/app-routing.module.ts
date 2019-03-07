@@ -33,7 +33,7 @@ const routes: Routes = [
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminOrSelfGuardService] },
   { path : 'telem-limits', component: TelemLimitsComponent },
-  { path : 'system-inputs', component: CubesatSysInputsComponent },
+  { path : 'system-inputs', component: CubesatSysInputsComponent, canActivate: [AuthGuardService, AdminGuardService] },
 ];
 
 @NgModule({
