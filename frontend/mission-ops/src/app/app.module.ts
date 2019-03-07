@@ -30,6 +30,7 @@ import { TelemetryDataComponent } from './telemetry-data/telemetry-data.componen
 import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
+import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ModifyUserComponent } from './modify-user/modify-user.component';
     TelemetryDataComponent,
     UsersComponent,
     PaginationComponent,
-    ModifyUserComponent
+    ModifyUserComponent,
+    TelemLimitsComponent
   ],
   imports: [
     BrowserModule,

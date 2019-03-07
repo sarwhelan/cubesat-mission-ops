@@ -7,11 +7,14 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.408.0",
+    "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
     "chai-http": "^4.2.1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "mysql": "^2.16.0",
-    "twilio": "^3.28.1"
+    "twilio": "^3.28.1",
+    "util": "^0.11.1"
   },
   "scripts": {
     "test": "mocha tests/unit/"

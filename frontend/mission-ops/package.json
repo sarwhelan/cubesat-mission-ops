@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.0.2",
     "amazon-cognito-identity-js": "^3.0.7",
     "aws-sdk": "^2.399.0",
+    "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "buffer": "^5.2.1",
     "core-js": "^2.5.4",

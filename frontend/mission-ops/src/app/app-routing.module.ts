@@ -12,6 +12,7 @@ import { ChartComponent } from './chart/chart.component';
 import { ComponentListComponent } from './component-list/component-list.component';
 import { UsersComponent } from './users/users.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
+import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
 
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
@@ -27,9 +28,10 @@ const routes: Routes = [
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
   { path : 'chart', component: ChartComponent },
-  { path: 'components', component: ComponentListComponent },
+  { path: 'telemetry', component: ComponentListComponent },
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminOrSelfGuardService] },
+  { path : 'telem-limits', component: TelemLimitsComponent },
 ];
 
 @NgModule({
