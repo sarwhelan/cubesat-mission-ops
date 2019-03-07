@@ -56,6 +56,15 @@ export class CubesatSysInputsComponent implements OnInit {
       });
   }
 
+  addComponent(name: string) : void
+  {
+    if (name.trim() === "") return;
+    this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, name))
+      .subscribe(newComp => {
+        this.getComponents(this.selectedSystem.systemID);
+      });
+  }
+
   getSystems(): void {
     this.systemService.getSystems()
       .subscribe(systems => this.systems = systems);

@@ -22,9 +22,9 @@ export class ComponentService {
     return this.http.get<Component[]>(`${this.componentUrl}/${systemId}`);
   }
 
-  createComponent(component: Component) : Observable<Component>
+  createComponent(component: Component) : Observable<Number>
   {
-    return this.http.post<Component>(this.componentUrl, component);
+    return this.http.post<Number>(this.componentUrl, component);
   }
 
   updateComponent(component: Component) : Observable<Component>

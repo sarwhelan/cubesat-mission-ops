@@ -25,7 +25,8 @@ router.route('/')
             var insertParams = [req.body.systemID, req.body.name];
             db.query('INSERT INTO components (systemID, name) VALUES (?, ?)', insertParams, (error, results, fields) => {
                 if (error) throw error;
-                res.json(200);
+                res.json({newComp:results.insertId});
+                //res.json(200);
             });
         } catch (err) {
             console.log(err);
