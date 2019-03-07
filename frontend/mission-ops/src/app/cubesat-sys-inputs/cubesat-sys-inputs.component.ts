@@ -11,6 +11,7 @@ import { CreateSystemComponent } from '../create-system/create-system.component'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateComponentComponent } from '../create-component/create-component.component';
 import { CreateComponentTelemetryComponent } from '../create-component-telemetry/create-component-telemetry.component';
+import { ModalComponent } from '../modal/modal.component';
 
 
 @Component({
@@ -19,6 +20,12 @@ import { CreateComponentTelemetryComponent } from '../create-component-telemetry
   styleUrls: ['./cubesat-sys-inputs.component.scss']
 })
 export class CubesatSysInputsComponent implements OnInit {
+  @ViewChild('deleteSystemModal')
+  private deleteSystemModal: ModalComponent;
+  @ViewChild('deleteComponentModal')
+  private deleteComponentModal: ModalComponent;
+  @ViewChild('deleteCompTelemModal')
+  private deleteCompTelemModal: ModalComponent;
 
   systems: System[];
   components: CubeSatComp[];
@@ -91,6 +98,18 @@ export class CubesatSysInputsComponent implements OnInit {
        console.log(error);
      });
    }
+
+  promptDeleteSystem(): void {
+    this.deleteSystemModal.open();
+  }
+
+  promptDeleteComponent(): void {
+    this.deleteComponentModal.open();
+  }
+
+  promptDeleteCompTelem(): void {
+    this.deleteCompTelemModal.open();
+  }
 
   /**
    * ON SELECT Methods

@@ -13,7 +13,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-outline-dark" (click)="promptAddSystem()">Add sys</button>
-        <button type="button" class="btn btn-outline-dark" (click)="deleteSystem()">Remove sys</button>
+        <button type="button" class="btn btn-outline-dark" (click)="promptDeleteSystem()">Remove sys</button>
     </div>
   </div>
   <div class = "col-md-3">
@@ -30,7 +30,7 @@
               </li>
             </ul>
             <button type="button" class="btn btn-outline-dark" (click)="promptAddComponent()">Add component</button>
-            <button type="button" class="btn btn-outline-dark" (click)="deleteComponent()">Remove component</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteComponent()">Remove component</button>
       </div>
       <ng-template #noSystem>
         <p>
@@ -58,7 +58,7 @@
               </li>
             </ul>
             <button type="button" class="btn btn-outline-dark" (click)="promptAddCompTelem()">Add component telemetry</button>
-            <button type="button" class="btn btn-outline-dark" (click)="deleteCompTelem()">Remove component telemetry</button>
+            <button type="button" class="btn btn-outline-dark" (click)="promptDeleteCompTelem()">Remove component telemetry</button>
       </div>
       <ng-template #noComponent>
         <p>
@@ -68,3 +68,49 @@
     </div>
   </div>
 </div>
+
+<app-modal #deleteSystemModal>
+  <ng-container modal-title>
+    <h1>Are You Sure?</h1>
+  </ng-container>
+  <ng-container modal-body>
+    <p>Are you sure you want to delete system <span class="text-primary">{{selectedSystem?.systemName}}</span>?</p>
+    <p>It will be deleted <span class="text-danger">permanently</span> along with <span class = "text-danger">all associated components and component telemetries</span> and can never be recovered.</p>
+  </ng-container>
+  <ng-container modal-footer>
+    <button (click)="deleteSystem()" class="btn btn-danger">
+      Delete System
+    </button>
+  </ng-container>
+</app-modal>
+
+<app-modal #deleteComponentModal>
+  <ng-container modal-title>
+    <h1>Are You Sure?</h1>
+  </ng-container>
+  <ng-container modal-body>
+    <p>Are you sure you want to delete component <span class="text-primary">{{selectedComponent?.name}}</span>?</p>
+    <p>It will be deleted <span class="text-danger">permanently</span> along with <span class = "text-danger">all associated component telemetries</span> and can never be recovered.</p>
+  </ng-container>
+  <ng-container modal-footer>
+    <button (click)="deleteComponent()" class="btn btn-danger">
+      Delete Component
+    </button>
+  </ng-container>
+</app-modal>
+
+<app-modal #deleteCompTelemModal>
+    <ng-container modal-title>
+      <h1>Are You Sure?</h1>
+    </ng-container>
+    <ng-container modal-body>
+      <p>Are you sure you want to delete component telemetry <span class="text-primary">{{selectedCompTelem?.name}}</span>?</p>
+      <p>It will be deleted <span class="text-danger">permanently</span> and can never be recovered.</p>
+    </ng-container>
+    <ng-container modal-footer>
+      <button (click)="deleteCompTelem()" class="btn btn-danger">
+        Delete Component Telemetry
+      </button>
+    </ng-container>
+  </app-modal>
+  
