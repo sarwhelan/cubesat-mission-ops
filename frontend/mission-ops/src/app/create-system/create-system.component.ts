@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { System } from '../../classes/system';
-import { SystemService } from '../services/system/system.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-create-system',
@@ -9,41 +8,33 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./create-system.component.scss']
 })
 export class CreateSystemComponent implements OnInit {
-  _selectedSystem: System;
-  closeResult:string;
 
   @Input()
-  private get selectedSystem() {
-    return this._selectedSystem;
-  }
-  private set selectedSystem(val: System) {
-    this._selectedSystem = val;
-  }
+  createSysForm: FormGroup;
 
-  constructor(private systemService: SystemService, private modalService: NgbModal) 
+  constructor(public activeModal: NgbActiveModal, 
+    private formBuilder: FormBuilder) 
   {
-    this._selectedSystem = this._selectedSystem;
+    this.createForm();
   }
 
   ngOnInit() {
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  private createForm() : void
+  {
+    this.createSysForm = this.formBuilder.group({
+      systemName: ''
     });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
+  submitNewSys() : void
+  {
+    this.activeModal.close(this.createSysForm.value);
   }
 
+  closeModal() : void
+  {
+    this.activeModal.close('closed');
+  }
 }

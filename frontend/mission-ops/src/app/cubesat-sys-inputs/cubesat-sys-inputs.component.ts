@@ -7,7 +7,8 @@ import { ComponentTelemetryService } from '../services/component-telemetry/compo
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { TelemetryType } from 'src/classes/telemetry-type';
 import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
-import { ModalComponent } from '../modal/modal.component';
+import { CreateSystemComponent } from '../create-system/create-system.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -17,9 +18,6 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class CubesatSysInputsComponent implements OnInit {
 
-  @ViewChild('addSysModal')
-  private addSysModal: ModalComponent;
-
   systems: System[];
   components: CubeSatComp[];
   selectedSystem: System;
@@ -27,16 +25,15 @@ export class CubesatSysInputsComponent implements OnInit {
   compTelemetries: ComponentTelemetry[];
   selectedCompTelem: ComponentTelemetry;
   telemetryTypes: TelemetryType[];
-  addingSystem: boolean;
 
   constructor(private systemService: SystemService, 
               private componentService: ComponentService,
               private compTelemetriesService: ComponentTelemetryService,
-              private telemetryTypesService: TelemetryTypesService) 
+              private telemetryTypesService: TelemetryTypesService,
+              private modalService: NgbModal) 
               { }
 
   ngOnInit() {
-    this.addingSystem = false;
     this.getSystems();
     this.getTelemetryTypes();
   }
@@ -47,7 +44,15 @@ export class CubesatSysInputsComponent implements OnInit {
 
    promptAddSystem(): void 
    {
-     this.addSysModal.open();
+     const modalRef = this.modalService.open(CreateSystemComponent);
+     modalRef.result.then((result) => {
+       this.systemService.createSystem(new System(result.systemName))
+        .subscribe(sys => {
+          this.getSystems();
+        });
+     }).catch((error) => {
+       console.log(error);
+     });
    }
 
   /**
@@ -75,16 +80,6 @@ export class CubesatSysInputsComponent implements OnInit {
   /**
    * ADD Methods
    */
-
-  addSystem(name: string) : void 
-  {
-    this.addingSystem = true;
-    /*if (name.trim() === "") return;
-    this.systemService.createSystem(new System(name))
-      .subscribe(newSys => {
-        this.getSystems();
-      });*/
-  }
 
   addComponent(name: string) : void
   {

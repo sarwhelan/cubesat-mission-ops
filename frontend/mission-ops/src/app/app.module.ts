@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // TODO: Before deployment, maybe refine this to only the modules we need to reduce package size
 import { HttpClientModule } from '@angular/common/http'; 
 
@@ -73,9 +73,12 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
     FormsModule,
     NgbModule,
     HttpClientModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CreateSystemComponent]
 })
 export class AppModule { }
