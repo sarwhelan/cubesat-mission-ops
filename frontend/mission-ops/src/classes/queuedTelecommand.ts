@@ -25,7 +25,6 @@ export class QueuedTelecommand {
      */
     transmissionPassID: number;
 
-
     /**
      * The user that queued the command
      *
@@ -41,7 +40,7 @@ export class QueuedTelecommand {
      * @type {Telecommand}
      * @memberof QueuedTelecommand
      */
-    telecommand: Telecommand;
+    telecommandID: number;
 
 
     /**
@@ -65,10 +64,10 @@ export class QueuedTelecommand {
     /**
      *Creates an instance of QueuedTelecommand.
      * @param {number} id The unique ID of the queuedTelecommand
-     * @param {Telecommand} command The command to be executed
+     * @param {Telecommand} telecommandID The command to be executed
      */
-    constructor(id: number, command: Telecommand) {
-        this.queuedTelecommandID = id;
-        this.telecommand = command;
+    constructor(userID: number, telecommandID: number) {
+        this.userID = userID;
+        this.telecommandID = telecommandID;
     }
 }

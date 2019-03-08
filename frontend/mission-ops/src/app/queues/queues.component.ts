@@ -35,5 +35,4 @@ export class QueuesComponent implements OnInit {
     this.passService.getPasses()
       .subscribe(passes => this.passes = passes);
   }
-
 }

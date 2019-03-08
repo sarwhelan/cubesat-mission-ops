@@ -29,6 +29,7 @@ import { ComponentTelemetryComponent } from './component-telemetry/component-tel
 import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
 import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { QueuedTelecommandComponent } from './queued-telecommand/queued-telecommand.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
 import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
 import { CreateSystemComponent } from './create-system/create-system.component';
@@ -54,6 +55,7 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
+    QueuedTelecommandComponent,
     ChartComponent,
     ComponentListComponent,
     ComponentTelemetryComponent,
