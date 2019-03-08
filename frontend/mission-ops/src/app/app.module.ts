@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // TODO: Before deployment, maybe refine this to only the modules we need to reduce package size
 import { HttpClientModule } from '@angular/common/http'; 
+
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,8 +23,19 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ChartComponent } from './chart/chart.component';
+import { ComponentListComponent } from './component-list/component-list.component';
+import { ComponentTelemetryComponent } from './component-telemetry/component-telemetry.component';
+import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
+import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { QueuedTelecommandComponent } from './queued-telecommand/queued-telecommand.component';
+import { ModifyUserComponent } from './modify-user/modify-user.component';
+import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
+import { CreateSystemComponent } from './create-system/create-system.component';
+import { CreateComponentComponent } from './create-component/create-component.component';
+import { CreateComponentTelemetryComponent } from './create-component-telemetry/create-component-telemetry.component';
+import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
 
 @NgModule({
   declarations: [
@@ -42,17 +55,36 @@ import { QueuedTelecommandComponent } from './queued-telecommand/queued-telecomm
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
-    PaginationComponent,
     QueuedTelecommandComponent
+    ChartComponent,
+    ComponentListComponent,
+    ComponentTelemetryComponent,
+    TelemetryDataComponent,
+    UsersComponent,
+    PaginationComponent,
+    ModifyUserComponent,
+    TelemLimitsComponent,
+    CreateSystemComponent,
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+    CubesatSysInputsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    HighchartsChartModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    CreateSystemComponent, 
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+  ]
 })
 export class AppModule { }

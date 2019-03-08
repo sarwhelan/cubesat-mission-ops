@@ -1,7 +1,3 @@
-echo "Building Backend..."
-sam build
-echo "Done"
-
 echo "Packaging Backend..."
 sam package --output-template-file packaged.yaml --s3-bucket western-cubesat-backend
 echo "Done"

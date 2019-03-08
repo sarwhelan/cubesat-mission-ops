@@ -1,0 +1,15 @@
+<div *ngIf="component">
+  <div *ngIf="componentTelemetries && componentTelemetries.length > 0; else noTelemetries">
+    <ul class="list-group">
+        <li *ngFor="let componentTelemetry of componentTelemetries"
+        class="list-group-item" style="margin:auto">
+          <app-telemetry-data [componentTelemetry] = "componentTelemetry"></app-telemetry-data>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noTelemetries>
+        <p>
+          No component telemetry data available.
+        </p>
+    </ng-template>
+</div>
