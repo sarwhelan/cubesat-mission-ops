@@ -55,7 +55,7 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
-    QueuedTelecommandComponent
+    QueuedTelecommandComponent,
     ChartComponent,
     ComponentListComponent,
     ComponentTelemetryComponent,

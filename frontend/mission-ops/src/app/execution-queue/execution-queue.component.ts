@@ -4,8 +4,6 @@ import { PassService } from '../services/pass/pass.service';
 import { QueuedTelecommand } from '../../classes/queuedTelecommand';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 
-const flatpickr = require("flatpickr");
-
 @Component({
   selector: 'app-execution-queue',
   templateUrl: './execution-queue.component.html',
