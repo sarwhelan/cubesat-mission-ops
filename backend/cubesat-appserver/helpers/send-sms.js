@@ -15,4 +15,4 @@ function sendSMS(phoneNum, systemName, componentName, telemetryName, value, tele
       .then(message => console.log(message.sid));
 }
 
-modules.export.sendSMS = sendSMS;
+module.exports.sendSMS = sendSMS;

@@ -6,7 +6,9 @@ async function dataDump(data) {
     }
 }
 
-function compare()
+function compare() {
+    
+}
 
 module.exports.dataDump = dataDump;
 
