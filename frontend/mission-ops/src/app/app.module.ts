@@ -22,6 +22,7 @@ import { ModalComponent } from './modal/modal.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LogoutComponent } from './logout/logout.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { QueuedTelecommandComponent } from './queued-telecommand/queued-telecommand.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
-    PaginationComponent
+    PaginationComponent,
+    QueuedTelecommandComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,13 @@
-<button (click)="selectExecution()">Time Tagged Execution Queue</button>
-<button (click)="selectTransmission()">TelecommandTransmission Queue</button>
-
-<!-- <div *ngIf="executionQueue">
-  <app-execution-queue [passes] = "passes"></app-execution-queue>
-</div>
-<div *ngIf="transmissionQueue">
-  <app-transmission-queue [passes] = "passes"></app-transmission-queue>
-</div> -->
+<ngb-tabset type="pills">
+  <ngb-tab title="Time Tagged Execution Queue">
+    <ng-template ngbTabContent>
+      <app-execution-queue [passes] = "passes"></app-execution-queue>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title = "Telecommand Transmission Queue">
+    <ng-template ngbTabContent>
+      <app-transmission-queue [passes] = "passes"></app-transmission-queue>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
 

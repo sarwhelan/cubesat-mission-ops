@@ -1,11 +1,10 @@
-﻿import { QueuedTelecommand } from './queuedTelecommand';
+﻿export class Pass {
+    passID: number;
+    passHasOccured: boolean;
+    estimatedPassDateTime : Date;
 
-export class Pass {
-    id: number;
-    queuedTelecommands : QueuedTelecommand[];
-    passDateTime : Date;
-
-    constructor(id: number) {
-        this.id = id;
+    constructor(estimatedPassDateTime) {
+        this.passHasOccured = false;
+        this.estimatedPassDateTime = estimatedPassDateTime;
     }
 }
