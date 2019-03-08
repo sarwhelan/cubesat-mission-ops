@@ -36,6 +36,8 @@ import { CreateSystemComponent } from './create-system/create-system.component';
 import { CreateComponentComponent } from './create-component/create-component.component';
 import { CreateComponentTelemetryComponent } from './create-component-telemetry/create-component-telemetry.component';
 import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
+import { CreateQueuedTelecommandComponent } from './create-queued-telecommand/create-queued-telecommand.component';
+import { DatetimePickerComponent } from './datetime-picker/datetime-picker.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
     CreateComponentComponent,
     CreateComponentTelemetryComponent,
     CubesatSysInputsComponent,
+    CreateQueuedTelecommandComponent,
+    DatetimePickerComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +89,7 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
     CreateSystemComponent, 
     CreateComponentComponent,
     CreateComponentTelemetryComponent,
+    CreateQueuedTelecommandComponent,
   ]
 })
 export class AppModule { }

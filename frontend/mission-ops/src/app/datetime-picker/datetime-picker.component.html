@@ -1,0 +1,14 @@
+<div [formGroup] = "formGroup">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+              [formControlName]="dateFormControlName" [(ngModel)]="date" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <ngb-timepicker [(ngModel)]="time" [formControlName] = "timeFormControlName"></ngb-timepicker>
+  </div>
+</div>

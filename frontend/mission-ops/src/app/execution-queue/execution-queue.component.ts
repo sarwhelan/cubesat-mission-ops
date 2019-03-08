@@ -31,7 +31,7 @@ export class ExecutionQueueComponent implements OnInit {
     this.selectedPass = pass;
     this.queuedTelecommandService.getQueuedTelecommands().subscribe(queuedTelecommands => {
       this.passQueuedTelecommands = queuedTelecommands;
-      this.passQueuedTelecommands.push(new QueuedTelecommand(1, 1))
+      //this.passQueuedTelecommands.push(new QueuedTelecommand(1, 1))
     });
   }
 
