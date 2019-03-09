@@ -11,6 +11,7 @@ export class TelecommandsComponent implements OnInit {
   telecommands: Telecommand[];
   selectedTelecommand: Telecommand;
   viewingExistingTelecommand: boolean;
+  newTelecommandErrorMessages: string[];
   
   constructor(private telecommandService: TelecommandService) { }
 
@@ -22,6 +23,7 @@ export class TelecommandsComponent implements OnInit {
   onSelect(telecommand: Telecommand): void {
     this.selectedTelecommand = telecommand;
     this.viewingExistingTelecommand = true;
+    this.newTelecommandErrorMessages = [];
   }
 
   addNewTelecommand(): void{
@@ -29,11 +31,15 @@ export class TelecommandsComponent implements OnInit {
     this.viewingExistingTelecommand = false;
     this.telecommands.push(newTelecommand);
     this.selectedTelecommand = this.telecommands[this.telecommands.length - 1];
+    this.newTelecommandErrorMessages = [];
   }  
 
   saveTelecommand() : void
   {
-    //validate that its all cool
+    // if the telecommand is not valid do not save it
+    if (!this.checkIsValidTelecommand(this.selectedTelecommand)){
+      return;
+    }
 
     // save telecommand
     this.telecommandService.createTelecommand(this.selectedTelecommand)
@@ -48,7 +54,6 @@ export class TelecommandsComponent implements OnInit {
     this.telecommandService.deleteTelecommand(this.selectedTelecommand.telecommandID)
     .subscribe(response =>
       {
-        console.log("archive done!")
         this.getTelecommands();
         this.selectedTelecommand = null;
       });
@@ -66,5 +71,58 @@ export class TelecommandsComponent implements OnInit {
           }
         }
       });
+  }
+
+  discardTelecommand(): void{    
+    this.getTelecommands();
+    this.selectedTelecommand = null;
+    this.viewingExistingTelecommand = true;
+  }
+
+  checkIsValidTelecommand(newTelecommand: Telecommand) : boolean{
+
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+
+    if (!newTelecommand.name)
+    {
+      errorMessages.push("Command must have a name.");
+    }
+
+    if (!newTelecommand.bandwidthUsage || isNaN(newTelecommand.bandwidthUsage))
+    {
+      errorMessages.push("Command must specify a bandwidth usage.");
+    }
+
+    if (!newTelecommand.powerConsumption || isNaN(newTelecommand.powerConsumption))
+    {
+      errorMessages.push("Command must specify a power consumption.");
+    }
+
+    if (!newTelecommand.command || !this.isJSON(newTelecommand.command))
+    {
+      errorMessages.push("Command must be specifed and be valid json.");
+    }
+
+    // if there is an error than display it and return false
+    if (errorMessages.length != 1)
+    {
+      this.newTelecommandErrorMessages = errorMessages;
+      return false;
+    }
+
+    this.newTelecommandErrorMessages = [];
+    return true;
+  }
+
+  isJSON(str) :boolean {  
+    try {
+      var obj = JSON.parse(str);
+      return !!obj && typeof(obj) === 'object';
+    } catch (e) {
+      /* ignore */
+    }
+  
+    return false;
   }
 }
