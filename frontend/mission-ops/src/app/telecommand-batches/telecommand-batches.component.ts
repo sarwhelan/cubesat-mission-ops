@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TelecommandBatch } from '../../classes/telecommandBatch';
 import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
+import { PresetTelecommand } from '../../classes/presetTelecommand';
+import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
 
 @Component({
   selector: 'app-telecommand-batches',
@@ -11,7 +13,8 @@ export class TelecommandBatchesComponent implements OnInit {
 
   telecommandBatches: TelecommandBatch[];
   selectedBatch: TelecommandBatch;
-  constructor(private telecommandBatchService: TelecommandBatchService) { }
+  selectedPresetTelecommands: PresetTelecommand[];
+  constructor(private telecommandBatchService: TelecommandBatchService, private presetTelecommandService: PresetTelecommandService) { }
 
   ngOnInit() {
     this.getTelecommandBatches();
@@ -19,6 +22,15 @@ export class TelecommandBatchesComponent implements OnInit {
 
   onSelect(batch: TelecommandBatch): void {
     this.selectedBatch = batch;
+    
+    // get the preset telecommands for the newly selected batch
+    this.presetTelecommandService.getPresetTelecommands(batch.batchID)
+      .subscribe(presetTelecommands => this.selectedPresetTelecommands = presetTelecommands);
+  }
+
+  deletedPresetTelecommand(){
+    this.presetTelecommandService.getPresetTelecommands(this.selectedBatch.batchID)
+      .subscribe(presetTelecommands => this.selectedPresetTelecommands = presetTelecommands);
   }
 
   getTelecommandBatches(): void {

@@ -22,6 +22,6 @@
       </div>
       <button *ngIf="!viewingExistingTelecommand" (click)="saveTelecommand()" type="button" class="btn btn-success">Save Changes</button>
       <button *ngIf="selectedTelecommand && viewingExistingTelecommand" (click)="archiveTelecommand()" type="button" class="btn btn-danger">Archive Telecommand</button>
-      <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-danger">Discard Telecommand</button>
+      <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-warning">Discard Telecommand</button>
     </div>
 </div>

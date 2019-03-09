@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { TelecommandBatch } from '../../../classes/telecommandBatch';
-import { TELECOMMANDBATCHES } from './mock-batches';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TelecommandBatchService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  private telecommandBatchesUrl = "http://localhost:3000/telecommand-batches"
 
   getTelecommandBatches() : Observable<TelecommandBatch[]>
   {
-    return of(TELECOMMANDBATCHES);
+    return this.http.get<TelecommandBatch[]>(this.telecommandBatchesUrl);
   }
 }

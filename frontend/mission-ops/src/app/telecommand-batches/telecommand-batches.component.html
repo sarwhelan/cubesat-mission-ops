@@ -1,9 +1,29 @@
 <h2>Telecommand Batches</h2>
-<ul>
-  <li *ngFor="let batch of telecommandBatches"
-  (click)="onSelect(batch)"
-  [class.selected]="batch === selectedBatch">
-    <span class="badge">{{batch.id}}</span> {{batch.name}}
-  </li>
-</ul>
-<app-telecommand-batch-details [batch] = "selectedBatch"></app-telecommand-batch-details>
+<div class="row">
+  <div class="col">
+    <button type="button"
+    class="btn btn-success"
+    (click)="addNewTelecommandBatch()">Create New Batch</button>
+    <ul class="list-group">
+      <li *ngFor="let batch of telecommandBatches"
+      (click)="onSelect(batch)"
+      [class.active]="batch === selectedBatch"
+      class="list-group-item">
+        {{batch.name}}
+      </li>
+    </ul>
+  </div>
+  <div class="col">
+
+    <div *ngIf="selectedBatch">
+        <ul class="list-group">
+            <app-preset-telecommand-details
+            class="list-group-item border border-primary"
+            *ngFor="let presetCommand of selectedPresetTelecommands"
+            [presetTelecommand]="presetCommand"
+            (deletedPresetTelecommand)="deletedPresetTelecommand($event)">
+          </app-preset-telecommand-details>
+        </ul>
+    </div>
+  </div>
+</div>

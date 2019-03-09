@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 
 var telecommands = require('./routes/telecommands');
+var presetTelecommands = require('./routes/presetTelecommands');
+var telecommandBatches = require('./routes/telecommandBatches');
 var passes = require('./routes/passes');
 var queuedTelecommands = require('./routes/queuedTelecommands');
 var template = require('./routes/template');
@@ -27,7 +29,9 @@ app.use(function (request, response, next) {
 
 app.use(logger);
 
+app.use('/preset-telecommands', presetTelecommands);
 app.use('/telecommands', telecommands);
+app.use('/telecommand-batches', telecommandBatches);
 app.use('/passes', passes);
 app.use('/queued-telecommands', queuedTelecommands);
 app.use('/template', template);
