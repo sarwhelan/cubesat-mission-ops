@@ -1,28 +1,24 @@
-<button (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
-<ng-container *ngTemplateOutlet = "queue"></ng-container>
-
-<ng-template #queue>
-  <div class = "row">
-      <div class = "col">
-        <ul class="list-group">
-            <li *ngFor="let pass of passes"
-            (click)="onSelect(pass)"
-            [class.active]="pass === selectedPass"
-            class="list-group-item">
-              Pass {{pass.passID}}
-            </li>
-          </ul> 
-      </div>
-      <div class = "col">
-        <div *ngIf = "!executionQueue; else execQ">
-          <app-transmission-queue [events] = "reloadPass.asObservable()"></app-transmission-queue>
-        </div>
-        <ng-template #execQ>
-          <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
-        </ng-template>
-      </div>
+<div class = "row">
+  <div class = "col">
+    <button class = "btn btn-primary" (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
+    <button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
+    <button class="btn btn-success" (click)="addPass()">Add New Pass</button>
+    <ul class="list-group">
+        <li *ngFor="let pass of passes"
+        (click)="onSelect(pass)"
+        [class.active]="pass === selectedPass"
+        class="list-group-item">
+          Pass {{pass.passID}}
+          <span class="badge badge-light">Est. Pass Time: {{pass.estimatedPassDateTime}}</span>
+        </li>
+      </ul> 
+  </div>
+  <div class = "col">
+    <div *ngIf = "!executionQueue; else execQ">
+      <app-transmission-queue [events] = "reloadPass.asObservable()"></app-transmission-queue>
     </div>
-</ng-template>
-
-<button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
-<button class="btn btn-success" (click)="addPass()">Add New Pass</button>
+    <ng-template #execQ>
+      <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
+    </ng-template>
+  </div>
+</div>
