@@ -6,7 +6,7 @@
   </ngb-tab>
   <ngb-tab title = "Telecommand Transmission Queue">
     <ng-template ngbTabContent>
-      <app-transmission-queue [passes] = "passes"></app-transmission-queue>
+      <app-transmission-queue [events] = "reloadPass.asObservable()" [passes] = "passes"></app-transmission-queue>
     </ng-template>
   </ngb-tab>
 </ngb-tabset>

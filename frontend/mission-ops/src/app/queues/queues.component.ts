@@ -8,6 +8,7 @@ import { Telecommand } from 'src/classes/telecommand';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { AuthService } from '../services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-queues',
@@ -20,6 +21,8 @@ export class QueuesComponent implements OnInit {
   transmissionQueue: boolean;
   passes: Pass[];
   telecommands: Telecommand[];
+
+  private reloadPass: Subject<void> = new Subject<void>();
 
   constructor(private passService: PassService,
     private modalService: NgbModal,
@@ -51,7 +54,10 @@ export class QueuesComponent implements OnInit {
 
   getPasses() : void{    
     this.passService.getPasses()
-      .subscribe(passes => this.passes = passes);
+      .subscribe(passes => {
+        this.passes = passes;
+        this.reloadPass.next();
+      });
   }
 
   getTelecommands() : void
