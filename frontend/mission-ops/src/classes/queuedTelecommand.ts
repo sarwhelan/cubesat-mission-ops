@@ -64,15 +64,21 @@ export class QueuedTelecommand {
     /**
      * Creates an instance of QueuedTelecommand.
      * @param {number} id The unique ID of the queuedTelecommand
+     * 
+     * 
      * @param {Telecommand} telecommandID The command to be executed
      * @param {Boolean} priorityLevel The assigned priority level.
      * @param {Date} executionTime The assigned execution time.
      */
     constructor(userID: number, 
+        executionPassID: number,
+        transmissionPassID: number,
         telecommandID: number, 
         priorityLevel: boolean,
         executionTime: Date) {
         this.userID = userID;
+        this.executionPassID = executionPassID;
+        this.transmissionPassID = transmissionPassID;
         this.telecommandID = telecommandID;
         this.priorityLevel = priorityLevel;
         this.executionTime = executionTime;
