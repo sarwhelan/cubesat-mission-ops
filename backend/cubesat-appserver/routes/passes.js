@@ -52,4 +52,42 @@ router.route('/:id')
         }
     });
 
+router.route('/transmission-sum')
+    .get(parseUrlencoded, parseJSON, (req, res) => {
+        try {
+            db.query('SELECT pass.passID, SUM(bandwidthUsage), SUM(powerConsumption)' + 
+                'FROM cubesat.passes as pass' +
+                'RIGHT JOIN cubesat.queuedTelecommands as qtc' +
+                'ON pass.passID = qtc.transmissionPassID' +
+                'LEFT JOIN cubesat.telecommands as tc' + 
+                'ON qtc.telecommandID = tc.telecommandID' + 
+                'GROUP BY pass.passID;', function (error, results, fields){
+                if (error) throw error;
+                res.json(results);
+            })
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
+    });
+
+router.route('/execution-sum')
+    .get(parseUrlencoded, parseJSON, (req, res) => {
+        try {
+            db.query('SELECT pass.passID, SUM(bandwidthUsage), SUM(powerConsumption)' + 
+                'FROM cubesat.passes as pass' +
+                'RIGHT JOIN cubesat.queuedTelecommands as qtc' +
+                'ON pass.passID = qtc.executionPassID' +
+                'LEFT JOIN cubesat.telecommands as tc' + 
+                'ON qtc.telecommandID = tc.telecommandID' + 
+                'GROUP BY pass.passID;', function (error, results, fields){
+                if (error) throw error;
+                res.json(results);
+            })
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
+    });
+
 module.exports = router;
