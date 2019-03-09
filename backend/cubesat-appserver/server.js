@@ -14,6 +14,7 @@ var telemLimits = require('./routes/telem-limits');
 var systems = require('./routes/systems');
 var telemetryTypes = require('./routes/telemetry-types');
 var transmissionQueue = require('./routes/transmission-queue');
+var passLimits = require('./routes/pass-limits');
 const logger = require('./logger');
 
 const port = 3000;
@@ -40,6 +41,7 @@ app.use('/telem-limits', telemLimits);
 app.use('/systems', systems);
 app.use('/telemetry-types', telemetryTypes);
 app.use('/transmission-queue', transmissionQueue);
+app.use('/pass-limits', passLimits);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
