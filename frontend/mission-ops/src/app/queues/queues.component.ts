@@ -34,6 +34,11 @@ export class QueuesComponent implements OnInit {
     this.getTelecommands();
   }
 
+  addPass() : void{
+    this.passService.createPass(new Pass(new Date()))
+      .subscribe(pass => this.getPasses());
+  }
+
   selectExecution(): void{    
     this.executionQueue = true;
     this.transmissionQueue = false;
@@ -96,7 +101,7 @@ export class QueuesComponent implements OnInit {
    */
   calculateTransmissionPassID() : number
   {
-    var activePasses = this.passes.filter(x => !x.passHasOccured);
+    var activePasses = this.passes.filter(x => !x.passHasOccurred);
     // TODO: Need more information in Pass - has it reached capacity?
     return activePasses[0].passID;
   }

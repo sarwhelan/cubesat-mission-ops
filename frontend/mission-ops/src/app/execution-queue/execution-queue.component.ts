@@ -22,7 +22,7 @@ export class ExecutionQueueComponent implements OnInit {
   private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
   
-  constructor(private passService: PassService, private queuedTelecommandService: QueuedTelecommandService) { }
+  constructor(private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
   }
@@ -33,9 +33,5 @@ export class ExecutionQueueComponent implements OnInit {
       this.passQueuedTelecommands = queuedTelecommands;
       //this.passQueuedTelecommands.push(new QueuedTelecommand(1, 1))
     });
-  }
-
-  addPass() :void{
-    this.passService.createPass(new Pass(new Date()));
   }
 }

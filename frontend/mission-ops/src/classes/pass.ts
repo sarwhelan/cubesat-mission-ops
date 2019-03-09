@@ -1,10 +1,10 @@
 ﻿export class Pass {
     passID: number;
-    passHasOccured: boolean;
+    passHasOccurred: boolean;
     estimatedPassDateTime : Date;
 
-    constructor(estimatedPassDateTime) {
-        this.passHasOccured = false;
+    constructor(estimatedPassDateTime : Date) {
+        this.passHasOccurred = false;
         this.estimatedPassDateTime = estimatedPassDateTime;
     }
 }
