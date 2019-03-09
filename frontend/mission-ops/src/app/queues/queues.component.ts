@@ -9,6 +9,7 @@ import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-t
 import { AuthService } from '../services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Subject } from 'rxjs';
+import { ExecutionQueueComponent } from '../execution-queue/execution-queue.component';
 
 @Component({
   selector: 'app-queues',
@@ -21,8 +22,9 @@ export class QueuesComponent implements OnInit {
   transmissionQueue: boolean;
   passes: Pass[];
   telecommands: Telecommand[];
+  selectedPass: Pass;
 
-  private reloadPass: Subject<void> = new Subject<void>();
+  private reloadPass: Subject<Pass> = new Subject<Pass>();
 
   constructor(private passService: PassService,
     private modalService: NgbModal,
@@ -38,25 +40,45 @@ export class QueuesComponent implements OnInit {
   }
 
   addPass() : void{
-    this.passService.createPass(new Pass(new Date()))
-      .subscribe(pass => this.getPasses());
+    var newPass = new Pass(new Date());
+    this.passService.createPass(newPass)
+      .subscribe(pass => {
+        this.getPasses();
+        this.reloadPass.next(newPass);
+      });
   }
 
-  selectExecution(): void{    
+  toggleActiveQueue() : void
+  {
+    this.executionQueue = !this.executionQueue;
+    this.reloadPass.next(this.selectedPass);
+  }
+
+  selectExecution(): void{  
+    console.log('exec');
     this.executionQueue = true;
     this.transmissionQueue = false;
   }
 
-  selectTransmission(): void{    
+  selectTransmission(): void{  
+    console.log('trans');
     this.executionQueue = false;
     this.transmissionQueue = true;
   }
 
-  getPasses() : void{    
+  onSelect(pass: Pass) : void
+  {
+    this.selectedPass = pass;
+    this.reloadPass.next(pass);
+  }
+
+  getPasses(pass?: Pass) : void{    
     this.passService.getPasses()
       .subscribe(passes => {
         this.passes = passes;
-        this.reloadPass.next();
+        if (pass) {
+          this.reloadPass.next(pass);
+        }
       });
   }
 
@@ -84,7 +106,6 @@ export class QueuesComponent implements OnInit {
       ));
       var executionPassID = this.calculateExecutionPassID(executionTime);
       var transmissionPassID = this.calculateTransmissionPassID();
-      console.log(`${userID} ${executionTime} ${executionPassID} ${transmissionPassID}`)
       this.queuedTelecommandService.createQueuedTelecommands(
         new QueuedTelecommand(
           parseInt(userID),
@@ -94,12 +115,17 @@ export class QueuesComponent implements OnInit {
           result.priorityLevel,
           executionTime
         )
-      ).subscribe(qtc => this.getPasses());
+      ).subscribe(qtc => {
+        if (this.transmissionQueue) {
+          this.getPasses(this.passes.find(x => x.passID == transmissionPassID));
+        } else {
+          this.getPasses(this.passes.find(x => x.passID == executionPassID));
+        }
+      });
     }).catch((error) => {
       // Modal closed without submission
       console.log(error);
     });
-    
   }
 
   /**

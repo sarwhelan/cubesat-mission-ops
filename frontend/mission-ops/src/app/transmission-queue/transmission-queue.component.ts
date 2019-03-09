@@ -18,11 +18,9 @@ export class TransmissionQueueComponent implements OnInit {
    * @type {Pass[]}
    * @memberof TransmissionQueueComponent
    */
-  @Input() 
-  passes: Pass[];
 
   @Input()
-  events: Observable<void>;
+  events: Observable<Pass>;
   private selectedPass: Pass;
   private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
@@ -32,16 +30,12 @@ export class TransmissionQueueComponent implements OnInit {
   constructor(private passService: PassService, private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
-    this.reloadPassSubscription = this.events.subscribe(() => this.onPassReload());
-  }
-
-  onPassReload() : void
-  {
-    this.selectedPass = null;
+    this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
   }
 
   onSelect(pass: Pass) : void
   {
+    if (!pass) return;
     this.selectedPass = pass;
     this.queuedTelecommandService.getQueuedTelecommandsTransmission(this.selectedPass)
       .subscribe(qtc => this.passQueuedTelecommands = qtc);
