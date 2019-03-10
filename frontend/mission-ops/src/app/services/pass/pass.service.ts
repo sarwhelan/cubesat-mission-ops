@@ -45,4 +45,12 @@ export class PassService {
   createPass(pass: Pass)  : Observable<any>{
     return this.http.post(this.passesUrl, pass);
   }
+
+  getPassTransmissionSums() : Observable<any>{
+    return this.http.get(`${this.passesUrl}/transmission-sum`);
+  }
+
+  getPassExecutionSums() : Observable<any>{
+    return this.http.get(`${this.passesUrl}/execution-sum`);
+  }
 }

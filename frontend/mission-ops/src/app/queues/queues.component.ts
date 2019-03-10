@@ -8,8 +8,11 @@ import { Telecommand } from 'src/classes/telecommand';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { AuthService } from '../services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
-import { Subject } from 'rxjs';
+import { Subject, Observable, Subscription, forkJoin } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 import { ExecutionQueueComponent } from '../execution-queue/execution-queue.component';
+import { PassLimitService } from '../services/pass-limit/pass-limit.service';
+import { PassLimit } from 'src/classes/pass-limit';
 
 @Component({
   selector: 'app-queues',
@@ -22,7 +25,10 @@ export class QueuesComponent implements OnInit {
   transmissionQueue: boolean;
   passes: Pass[];
   telecommands: Telecommand[];
+  passLimits: PassLimit[];
   selectedPass: Pass;
+  calculatedTransmissionID: number;
+  calculatedExecutionID: number;
 
   private reloadPass: Subject<Pass> = new Subject<Pass>();
 
@@ -30,6 +36,7 @@ export class QueuesComponent implements OnInit {
     private modalService: NgbModal,
     private telecommandService: TelecommandService,
     private queuedTelecommandService: QueuedTelecommandService,
+    private passLimitService: PassLimitService,
     private auth: AuthService) { }
 
   ngOnInit() {
@@ -37,6 +44,7 @@ export class QueuesComponent implements OnInit {
     this.transmissionQueue = false;
     this.getPasses();
     this.getTelecommands();
+    this.getPassLimits();
   }
 
   addPass() : void{
@@ -88,6 +96,12 @@ export class QueuesComponent implements OnInit {
       .subscribe(tcs => this.telecommands = tcs);
   }
 
+  getPassLimits() : void
+  {
+    this.passLimitService.getPassLimits()
+      .subscribe(pls => this.passLimits = pls);
+  }
+
   promptAddQueuedTelecommand() : void
   {
     const modalRef = this.modalService.open(CreateQueuedTelecommandComponent);
@@ -104,24 +118,21 @@ export class QueuesComponent implements OnInit {
         result.executionTime.minute,
         result.executionTime.second
       ));
-      var executionPassID = this.calculateExecutionPassID(executionTime);
-      var transmissionPassID = this.calculateTransmissionPassID();
-      this.queuedTelecommandService.createQueuedTelecommands(
-        new QueuedTelecommand(
+      var createQtc = (self) => {
+        var newQtc = new QueuedTelecommand(
           parseInt(userID),
-          executionPassID,
-          transmissionPassID,
+          self.calculatedExecutionID,
+          self.calculatedTransmissionID,
           result.telecommandID,
           result.priorityLevel,
           executionTime
-        )
-      ).subscribe(qtc => {
-        if (this.transmissionQueue) {
-          this.getPasses(this.passes.find(x => x.passID == transmissionPassID));
-        } else {
-          this.getPasses(this.passes.find(x => x.passID == executionPassID));
-        }
-      });
+        );
+        console.log(newQtc);
+        return self.queuedTelecommandService.createQueuedTelecommands(
+          newQtc
+        );
+      }
+      this.calculatePassIDs(result.telecommandID, executionTime, createQtc);
     }).catch((error) => {
       // Modal closed without submission
       console.log(error);
@@ -129,18 +140,55 @@ export class QueuesComponent implements OnInit {
   }
 
   /**
-   * Must have at least one active pass.
+   * Must have at least one active pass and pass limits must exist.
    */
-  calculateTransmissionPassID() : number
+  calculatePassIDs(telecommandID: number, executionTime: Date, qtcCreation: (self) => Observable<any>) : void
   {
+    var maxBandwidth = this.passLimits.find(x => x.name == "bandwidthUsage").maxValue;
+    var maxPower = this.passLimits.find(x => x.name == "powerConsumption").maxValue;
+    var activeTelecommand = this.telecommands.find(x => x.telecommandID == telecommandID);
     var activePasses = this.passes.filter(x => !x.passHasOccurred);
-    // TODO: Need more information in Pass - has it reached capacity?
-    return activePasses[0].passID;
-  }
 
-  calculateExecutionPassID(executionTime : Date) : number
-  {
-    // TODO: Calculate ID based on given execution time.
-    return 1;
+    let passTransmissionSums = this.passService.getPassTransmissionSums();
+    let passExecutionSums = this.passService.getPassExecutionSums();
+    forkJoin([passTransmissionSums, passExecutionSums])
+      .pipe(concatMap(results => {
+        // Transmission sum
+        if (!results[0]) {
+          this.calculatedTransmissionID = activePasses[0].passID;
+        }
+        for (var i = 0; i < activePasses.length; i++) {
+          var passSum = results[0].find(x => x.passID == activePasses[i].passID);
+          //console.log(" pass sum is " + passSum.bandwidthUsage + "for" + pass.passID);
+          if (passSum) {
+            console.log(activeTelecommand.bandwidthUsage + " + " + passSum.sumBandwidth + " < " + maxBandwidth);
+            console.log(activeTelecommand.powerConsumption + " + " + passSum.sumPower + " < " + maxPower);
+          } else {
+            console.log('boo ' + activePasses[i].passID);
+          }
+          if (passSum && parseInt(passSum.sumBandwidth) + activeTelecommand.bandwidthUsage <= maxBandwidth 
+            && parseInt(passSum.sumPower) + activeTelecommand.powerConsumption <= maxPower)
+          {
+            this.calculatedTransmissionID = activePasses[i].passID;
+            break;
+          }
+        }
+        if (!this.calculatedTransmissionID) {
+          // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
+          this.calculatedTransmissionID = 1;
+        }
+        console.log(this.calculatedTransmissionID);
+        // TODO: Execution queuing
+        this.calculatedExecutionID = 1;
+        return qtcCreation(this);
+      }))
+      .subscribe(results => {
+        
+        if (this.transmissionQueue) {
+          this.getPasses(this.passes.find(x => x.passID == this.calculatedTransmissionID));
+        } else {
+          this.getPasses(this.passes.find(x => x.passID == this.calculatedExecutionID));
+        }
+      });
   }
 }
