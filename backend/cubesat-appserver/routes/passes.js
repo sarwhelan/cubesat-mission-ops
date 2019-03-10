@@ -55,14 +55,18 @@ router.route('/:id')
 router.route('/transmission-sum')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query('SELECT pass.passID, SUM(bandwidthUsage), SUM(powerConsumption)' + 
-                'FROM cubesat.passes as pass' +
-                'RIGHT JOIN cubesat.queuedTelecommands as qtc' +
-                'ON pass.passID = qtc.transmissionPassID' +
-                'LEFT JOIN cubesat.telecommands as tc' + 
-                'ON qtc.telecommandID = tc.telecommandID' + 
+            db.query('SELECT pass.passID, SUM(bandwidthUsage) as sumBandwidth, SUM(powerConsumption) as sumPower ' + 
+                'FROM cubesat.passes as pass ' +
+                'RIGHT JOIN cubesat.queuedTelecommands as qtc ' +
+                'ON pass.passID = qtc.transmissionPassID ' +
+                'LEFT JOIN cubesat.telecommands as tc ' + 
+                'ON qtc.telecommandID = tc.telecommandID ' + 
                 'GROUP BY pass.passID;', function (error, results, fields){
                 if (error) throw error;
+                if (!results) {
+                    console.log(results);
+                    res.send({error:'no results'});
+                }
                 res.json(results);
             })
         } catch (err) {
@@ -74,14 +78,18 @@ router.route('/transmission-sum')
 router.route('/execution-sum')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query('SELECT pass.passID, SUM(bandwidthUsage), SUM(powerConsumption)' + 
-                'FROM cubesat.passes as pass' +
-                'RIGHT JOIN cubesat.queuedTelecommands as qtc' +
-                'ON pass.passID = qtc.executionPassID' +
-                'LEFT JOIN cubesat.telecommands as tc' + 
-                'ON qtc.telecommandID = tc.telecommandID' + 
+            db.query('SELECT pass.passID, SUM(bandwidthUsage) as sumBandwidth, SUM(powerConsumption) as sumPower ' + 
+                'FROM cubesat.passes as pass ' +
+                'RIGHT JOIN cubesat.queuedTelecommands as qtc ' +
+                'ON pass.passID = qtc.executionPassID ' +
+                'LEFT JOIN cubesat.telecommands as tc ' + 
+                'ON qtc.telecommandID = tc.telecommandID ' + 
                 'GROUP BY pass.passID;', function (error, results, fields){
                 if (error) throw error;
+                if (!results) {
+                    console.log(results);
+                    res.send({error:'no results'});
+                }
                 res.json(results);
             })
         } catch (err) {
