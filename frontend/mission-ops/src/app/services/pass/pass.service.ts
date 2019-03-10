@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pass } from '../../../classes/pass';
 import { HttpClient } from '@angular/common/http';
+import { PassSum } from 'src/classes/pass-sum';
 
 /**
  * Service handling all {@link Pass} app server routing.
@@ -46,11 +47,11 @@ export class PassService {
     return this.http.post(this.passesUrl, pass);
   }
 
-  getPassTransmissionSums() : Observable<any>{
-    return this.http.get(`${this.passesUrl}/transmission-sum`);
+  getPassTransmissionSums() : Observable<PassSum[]>{
+    return this.http.get<PassSum[]>(`${this.passesUrl}/transmission-sum`);
   }
 
-  getPassExecutionSums() : Observable<any>{
-    return this.http.get(`${this.passesUrl}/execution-sum`);
+  getPassExecutionSums() : Observable<PassSum[]>{
+    return this.http.get<PassSum[]>(`${this.passesUrl}/execution-sum`);
   }
 }

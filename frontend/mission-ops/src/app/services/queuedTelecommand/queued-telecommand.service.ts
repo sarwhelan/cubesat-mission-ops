@@ -29,12 +29,8 @@ export class QueuedTelecommandService {
   updatedQueuedTelecommands(queuedTelecommand: QueuedTelecommand) : Observable<any>{
     return this.http.put(this.queuedTelecommandsUrl + "/" + queuedTelecommand.queuedTelecommandID, queuedTelecommand);
   }
-
-  createQueuedTelecommand(queuedTelecommand: QueuedTelecommand)  : Observable<any>{
-    return this.http.post(this.queuedTelecommandsUrl, queuedTelecommand);
-  }
-
-  createBatchQueuedTelecommands(queuedTelecommands: QueuedTelecommand[]) : Observable<any>
+  
+  createBatchQueuedTelecommands(queuedTelecommands: Object[]) : Observable<any>
   {
     return this.http.post(this.queuedTelecommandsUrl, queuedTelecommands);
   }

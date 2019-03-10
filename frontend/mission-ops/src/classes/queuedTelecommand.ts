@@ -48,7 +48,7 @@
      * @type {boolean}
      * @memberof QueuedTelecommand
      */
-    priorityLevel: boolean;
+    priority: boolean;
 
     
     /**
@@ -57,7 +57,7 @@
      * @type {Date}
      * @memberof QueuedTelecommand
      */
-    executionTime: Date;
+    executionTimeUTC: Date;
 
     /**
      * The command parameter JSON, stringified.
@@ -65,7 +65,7 @@
      * @type {string}
      * @memberof QueuedTelecommand
      */
-    commandParams: string;
+    commandParameters: string;
 
     /**
      * Creates an instance of QueuedTelecommand.
@@ -76,9 +76,10 @@
      * @param {Boolean} priorityLevel The assigned priority level.
      * @param {Date} executionTime The assigned execution time.
      */
-    constructor(userID: number, 
+    constructor( 
         executionPassID: number,
         transmissionPassID: number,
+        userID: number,
         telecommandID: number, 
         priorityLevel: boolean,
         executionTime: Date,
@@ -87,8 +88,8 @@
         this.executionPassID = executionPassID;
         this.transmissionPassID = transmissionPassID;
         this.telecommandID = telecommandID;
-        this.priorityLevel = priorityLevel;
-        this.executionTime = executionTime;
-        this.commandParams = commandParams;
+        this.priority = priorityLevel;
+        this.executionTimeUTC = executionTime;
+        this.commandParameters = commandParams;
     }
 }

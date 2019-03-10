@@ -2,6 +2,7 @@
   <div class = "col">
     <button class = "btn btn-primary" (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
     <button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
+    <button class = "btn btn-warning" (click) = "promptAddQueuedTelecommandBatch()">Add Telecommand Batch to Queue</button>
     <button class="btn btn-success" (click)="addPass()">Add New Pass</button>
     <ul class="list-group">
         <li *ngFor="let pass of passes"

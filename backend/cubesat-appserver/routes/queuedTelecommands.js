@@ -20,10 +20,11 @@ router.route('/')
     })
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            var insertParameters = [req.body.executionPassID, req.body.transmissionPassID, req.body.userID, req.body.telecommandID, req.body.priorityLevel, req.body.executionTime];
+            //var insertParameters = [req.body.executionPassID, req.body.transmissionPassID, req.body.userID, req.body.telecommandID, req.body.priorityLevel, req.body.executionTime];
 
             // using this pattern of using ? in our query builder does the escaping for us! No need to worry about sql injection
-            db.query('INSERT INTO queuedTelecommands (executionPassID, transmissionPassID, userID, telecommandID, priority, executionTimeUTC) VALUES (?, ?, ?, ?, ?, ?)', insertParameters, function (error, results, fields) {
+            console.log(req.body);
+            db.query('INSERT INTO queuedTelecommands (userID, executionPassID, transmissionPassID, telecommandID, priority, executionTimeUTC, commandParameters) VALUES ?', [req.body], function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);
