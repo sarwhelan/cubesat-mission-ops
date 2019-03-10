@@ -20,10 +20,17 @@ export class PresetTelecommandService {
     return this.http.get<PresetTelecommand[]>(getURL);
   }
 
-  deletePresetTelecommands(presetTelecommandID: number) : Observable<any>
+  deletePresetTelecommand(presetTelecommandID: number) : Observable<any>
   {
     var deleteURL = this.presetTelecommandUrl + "/" + presetTelecommandID;
 
     return this.http.delete<PresetTelecommand[]>(deleteURL);
+  }
+
+  updatePresetTelecommand(presetTelecommand: PresetTelecommand) : Observable<any>
+  {
+    var updateURL = this.presetTelecommandUrl + "/" + presetTelecommand.presetTelecommandID;
+
+    return this.http.put(updateURL, presetTelecommand);
   }
 }

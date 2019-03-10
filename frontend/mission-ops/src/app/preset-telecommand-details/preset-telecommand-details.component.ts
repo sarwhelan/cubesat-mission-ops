@@ -10,7 +10,7 @@ import { PresetTelecommandService } from '../services/presetTelecommand/preset-t
 export class PresetTelecommandDetailsComponent implements OnInit {
 
   @Input() presetTelecommand: PresetTelecommand;
-  @Output() deletedPresetTelecommand = new EventEmitter<number>();
+  @Output() relaodPresetTelecommands = new EventEmitter<number>();
   
   originalPresetTelecommand: PresetTelecommand;
   public isCollapsed = true;
@@ -19,7 +19,6 @@ export class PresetTelecommandDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.presetTelecommand.relativeExecutionTime);
     // typescript doesnt allow for multiple constructors...
     // and the object we get back from the service *thinks* its of
     // type presetTelecommand but it doesn't have access to any functions defined in the
@@ -34,6 +33,12 @@ export class PresetTelecommandDetailsComponent implements OnInit {
     this.originalPresetTelecommand.presetTelecommandID = this.presetTelecommand.presetTelecommandID;  }
 
   savePresetTelecommand(): void{
+    this.presetTelecommandService.updatePresetTelecommand(this.presetTelecommand)
+      .subscribe(results => { 
+        // update the presetTelecommands in case the order has changed due to 
+        // relative execution time changes        
+        this.relaodPresetTelecommands.emit();
+      });
     
   }
 
@@ -45,9 +50,9 @@ export class PresetTelecommandDetailsComponent implements OnInit {
   }
 
   deletePresetTelecommand(): void{
-    this.presetTelecommandService.deletePresetTelecommands(this.presetTelecommand.presetTelecommandID)
+    this.presetTelecommandService.deletePresetTelecommand(this.presetTelecommand.presetTelecommandID)
     .subscribe(results => {
-      this.deletedPresetTelecommand.emit(this.presetTelecommand.presetTelecommandID);
+      this.relaodPresetTelecommands.emit();
     });
   }
 

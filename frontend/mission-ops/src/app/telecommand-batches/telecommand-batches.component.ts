@@ -20,6 +20,19 @@ export class TelecommandBatchesComponent implements OnInit {
     this.getTelecommandBatches();
   }
 
+  saveBatchName(): void{
+    this.telecommandBatchService.updateTelecommandBatch(this.selectedBatch)
+    .subscribe(results => { /* dont need to do anything for the momment */});
+  }
+
+  addNewTelecommandBatch() : void{
+    var newTelecommandBatch = new TelecommandBatch("new Telecommand Batch");
+    this.telecommandBatchService.createNewTelecommandBatch(newTelecommandBatch)
+      .subscribe(results =>{
+        this.getTelecommandBatches();
+      });
+  }
+
   onSelect(batch: TelecommandBatch): void {
     this.selectedBatch = batch;
     
@@ -28,13 +41,22 @@ export class TelecommandBatchesComponent implements OnInit {
       .subscribe(presetTelecommands => this.selectedPresetTelecommands = presetTelecommands);
   }
 
-  deletedPresetTelecommand(){
+  relaodPresetTelecommands(){
     this.presetTelecommandService.getPresetTelecommands(this.selectedBatch.batchID)
       .subscribe(presetTelecommands => this.selectedPresetTelecommands = presetTelecommands);
   }
 
   getTelecommandBatches(): void {
+    this.selectedPresetTelecommands = [];
+    this.selectedBatch = null;
     this.telecommandBatchService.getTelecommandBatches()
       .subscribe(batches => this.telecommandBatches = batches);
+  }
+
+  deleteBatch(): void{
+    this.telecommandBatchService.deleteTelecommandBatch(this.selectedBatch.batchID)
+      .subscribe(results => {
+        this.getTelecommandBatches();
+      });
   }
 }

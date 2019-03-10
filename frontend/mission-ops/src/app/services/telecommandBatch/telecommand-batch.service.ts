@@ -17,4 +17,23 @@ export class TelecommandBatchService {
   {
     return this.http.get<TelecommandBatch[]>(this.telecommandBatchesUrl);
   }
+
+  updateTelecommandBatch(batch: TelecommandBatch) : Observable<any>
+  {
+    var updateURL = this.telecommandBatchesUrl + "/" + batch.batchID;
+
+    return this.http.put(updateURL, batch);
+  }
+
+  deleteTelecommandBatch(batchID: number) : Observable<any>
+  {
+    var deleteURL = this.telecommandBatchesUrl + "/" + batchID;
+
+    return this.http.delete(deleteURL);
+  }
+
+  createNewTelecommandBatch(newBatch: TelecommandBatch): Observable<any>
+  {
+    return this.http.post(this.telecommandBatchesUrl, newBatch);
+  }
 }

@@ -4,8 +4,7 @@
     totalBandwidthUsage: number;
     totalPowerConsumption: number;
 
-    constructor(id: number, name: string) {
-        this.batchID = id;
+    constructor(name: string) {
         this.name = name;
     }
 }

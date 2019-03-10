@@ -27,7 +27,22 @@ router.route('/:id')
         try {
             var batchID = req.params.id;
             
-            db.query('SELECT presetTelecommands.*, telecommands.name from presetTelecommands JOIN telecommands on presetTelecommands.telecommandID = telecommands.telecommandID WHERE batchID = ?', batchID, function (error, results, fields) {
+            db.query('SELECT presetTelecommands.*, telecommands.name from presetTelecommands JOIN telecommands on presetTelecommands.telecommandID = telecommands.telecommandID WHERE batchID = ? ORDER BY relativeExecutionTime', batchID, function (error, results, fields) {
+                if (error) throw error;
+
+                res.json(results);
+            });
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
+    })
+    .put(parseUrlencoded, parseJSON, (req, res) => {
+        try {
+            var presetTelecommandID = req.params.id;
+            var updateParams = [req.body.relativeExecutionTime, req.body.priorityLevel, req.body.commandParameters, presetTelecommandID];
+            
+            db.query('UPDATE presetTelecommands SET relativeExecutionTime = ?, priorityLevel = ?, commandParameters = ? WHERE presetTelecommandID = ?;', updateParams, function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);

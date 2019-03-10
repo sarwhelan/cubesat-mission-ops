@@ -1,5 +1,5 @@
 <div *ngIf="presetTelecommand">
-  <div (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="presetTelecommandDetailsPane">  
+  <div style="cursor: pointer;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="presetTelecommandDetailsPane">  
     <span>
       {{presetTelecommand.name}}
     </span>

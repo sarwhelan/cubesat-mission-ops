@@ -14,16 +14,28 @@
     </ul>
   </div>
   <div class="col">
-
     <div *ngIf="selectedBatch">
+        <form  class="form-inline">
+          <div class="form-group">
+            <label style="padding-right: 10px;"><b>Batch Name: </b></label>
+            <input [(ngModel)] = "selectedBatch.name" class="form-control" name = "selectedBatchName">
+            <button type="button"
+            class="btn btn-success"
+            (click)="saveBatchName()">Save Name</button>
+          </div>
+        </form>
+        <br/>
         <ul class="list-group">
             <app-preset-telecommand-details
             class="list-group-item border border-primary"
             *ngFor="let presetCommand of selectedPresetTelecommands"
             [presetTelecommand]="presetCommand"
-            (deletedPresetTelecommand)="deletedPresetTelecommand($event)">
+            (relaodPresetTelecommands)="relaodPresetTelecommands($event)">
           </app-preset-telecommand-details>
         </ul>
+        <button type="button"
+        class="btn btn-danger"
+        (click)="deleteBatch()">Delete Batch</button>
     </div>
   </div>
 </div>
