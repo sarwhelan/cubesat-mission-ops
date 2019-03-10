@@ -21,7 +21,7 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
     // Put all config info about image format and etc in here
   };
 
-  private loading: boolean = true;
+  private loading: boolean = false;
 
   @Output()
   public ready: EventEmitter<void> = new EventEmitter<void>();
@@ -29,15 +29,11 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    if (!this.inputData) {
-      // Use backup image if no input is provided
-      this.inputData = {
-        src: 'https://naver.github.io/egjs-view360/examples/img/equi.jpg',
-        type: 'image'
-      };
+    if (this.inputData) {
+      this.loading = true;
+      
+      this.createViewer();
     }
-
-    this.createViewer();
   }
 
   ngOnDestroy() {

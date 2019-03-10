@@ -1,4 +1,4 @@
 export class PanoramaInput {
-    src: string;
+    src: string | HTMLImageElement | HTMLVideoElement;
     type: 'image' | 'video';
 }
