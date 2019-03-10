@@ -33,4 +33,9 @@ export class PresetTelecommandService {
 
     return this.http.put(updateURL, presetTelecommand);
   }
+
+  addNewPresetTelecommand(presetTelecommand: PresetTelecommand): Observable<any>
+  {
+    return this.http.post(this.presetTelecommandUrl, presetTelecommand);
+  }
 }
