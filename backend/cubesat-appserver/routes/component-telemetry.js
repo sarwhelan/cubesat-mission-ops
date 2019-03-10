@@ -26,7 +26,8 @@ router.route('/')
             var insertParams = [req.body.telemetryTypeID, req.body.componentID, req.body.name, req.body.upperBound, req.body.lowerBound];
             db.query('INSERT INTO componentTelemetry (telemetryTypeID, componentID, name, upperBound, lowerBound) VALUES (?, ?, ?, ?, ?)', insertParams, (error, results, fields) => {
                 if (error) throw error;
-                res.json(200);
+                res.json({newCompTelem: results.insertId});
+                //res.json(200);
             });
         } catch (err) {
             console.log(err);
@@ -56,7 +57,8 @@ router.route('/:ID')
             db.query("UPDATE componentTelemetry SET telemetryTypeID = ?, componentID = ?, name = ?, upperBound = ?, lowerBound = ? " +
                 "WHERE componentTelemetryID = ?", updateParams, function (error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.json({updateCompTelem:results.insertId});
+                //res.sendStatus(200);
               });
         } catch (err) {
             console.log(err);
@@ -69,7 +71,8 @@ router.route('/:ID')
         try {
             db.query("DELETE FROM componentTelemetry WHERE componentTelemetryID = ?", req.params.ID, function(error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.json({byeCompTelem:results.insertId});
+                //res.sendStatus(200);
             })
         } catch(err) {
             console.log(err);

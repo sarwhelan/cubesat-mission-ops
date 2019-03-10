@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pass } from '../../classes/pass';
+import { PassService } from '../services/pass/pass.service';
+import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
+import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-transmission-queue',
@@ -8,10 +12,36 @@ import { Pass } from '../../classes/pass';
 })
 export class TransmissionQueueComponent implements OnInit {
 
-  @Input() passes: Pass[];
-  constructor() { }
+  /**
+   * The passes of the CubeSat. Contains information about the commands to be transmitted.
+   * 
+   * @type {Pass[]}
+   * @memberof TransmissionQueueComponent
+   */
+
+  @Input()
+  events: Observable<Pass>;
+  private selectedPass: Pass;
+  private newPassEstimatedPassDateTime: Date;
+  private passQueuedTelecommands: QueuedTelecommand[];
+
+  private reloadPassSubscription: any;
+
+  constructor(private passService: PassService, private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
+    this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
   }
 
+  onSelect(pass: Pass) : void
+  {
+    if (!pass) return;
+    this.selectedPass = pass;
+    this.queuedTelecommandService.getQueuedTelecommandsTransmission(this.selectedPass)
+      .subscribe(qtc => this.passQueuedTelecommands = qtc);
+  }
+
+  ngOnDestroy() {
+    this.reloadPassSubscription.unsubscribe();
+  }
 }

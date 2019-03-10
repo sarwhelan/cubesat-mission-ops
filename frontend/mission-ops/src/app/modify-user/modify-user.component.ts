@@ -88,10 +88,22 @@ export class ModifyUserComponent implements OnInit {
     });
   }
 
+  /**
+   * Prompts the user to change their password.
+   *
+   * @memberof ModifyUserComponent
+   */
   public promptChangePassword(): void {
     this.modal.open();
   }
 
+  /**
+   * Initiates the changing of the user's password.
+   * Validates the input data and displays any errors to the user.
+   *
+   * @returns {void}
+   * @memberof ModifyUserComponent
+   */
   public changePassword(): void {
     this.passwordProcessing = true;
     this.passwordChangeAlert.hide();

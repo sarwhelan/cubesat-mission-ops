@@ -1,10 +1,28 @@
-<button (click)="selectExecution()">Time Tagged Execution Queue</button>
-<button (click)="selectTransmission()">TelecommandTransmission Queue</button>
+<button (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
+<ng-container *ngTemplateOutlet = "queue"></ng-container>
 
-<!-- <div *ngIf="executionQueue">
-  <app-execution-queue [passes] = "passes"></app-execution-queue>
-</div>
-<div *ngIf="transmissionQueue">
-  <app-transmission-queue [passes] = "passes"></app-transmission-queue>
-</div> -->
+<ng-template #queue>
+  <div class = "row">
+      <div class = "col">
+        <ul class="list-group">
+            <li *ngFor="let pass of passes"
+            (click)="onSelect(pass)"
+            [class.active]="pass === selectedPass"
+            class="list-group-item">
+              Pass {{pass.passID}}
+            </li>
+          </ul> 
+      </div>
+      <div class = "col">
+        <div *ngIf = "!executionQueue; else execQ">
+          <app-transmission-queue [events] = "reloadPass.asObservable()"></app-transmission-queue>
+        </div>
+        <ng-template #execQ>
+          <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
+        </ng-template>
+      </div>
+    </div>
+</ng-template>
 
+<button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
+<button class="btn btn-success" (click)="addPass()">Add New Pass</button>

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // TODO: Before deployment, maybe refine this to only the modules we need to reduce package size
 import { HttpClientModule } from '@angular/common/http'; 
 
@@ -29,7 +29,16 @@ import { ComponentTelemetryComponent } from './component-telemetry/component-tel
 import { TelemetryDataComponent } from './telemetry-data/telemetry-data.component';
 import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { QueuedTelecommandComponent } from './queued-telecommand/queued-telecommand.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
+import { CreateSystemComponent } from './create-system/create-system.component';
+import { CreateComponentComponent } from './create-component/create-component.component';
+import { CreateComponentTelemetryComponent } from './create-component-telemetry/create-component-telemetry.component';
+import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
+import { CreateQueuedTelecommandComponent } from './create-queued-telecommand/create-queued-telecommand.component';
+import { DatetimePickerComponent } from './datetime-picker/datetime-picker.component';
+import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/preset-telecommand-details.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +58,7 @@ import { ModifyUserComponent } from './modify-user/modify-user.component';
     ModalComponent,
     AccessDeniedComponent,
     LogoutComponent,
+    QueuedTelecommandComponent,
     ChartComponent,
     ComponentListComponent,
     ComponentTelemetryComponent,
@@ -56,6 +66,14 @@ import { ModifyUserComponent } from './modify-user/modify-user.component';
     UsersComponent,
     PaginationComponent,
     ModifyUserComponent,
+    CreateSystemComponent,
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+    CubesatSysInputsComponent,
+    CreateQueuedTelecommandComponent,
+    DatetimePickerComponent,
+    PresetTelecommandDetailsComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,9 +81,17 @@ import { ModifyUserComponent } from './modify-user/modify-user.component';
     FormsModule,
     NgbModule,
     HttpClientModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    CreateSystemComponent, 
+    CreateComponentComponent,
+    CreateComponentTelemetryComponent,
+    CreateQueuedTelecommandComponent,
+  ]
 })
 export class AppModule { }

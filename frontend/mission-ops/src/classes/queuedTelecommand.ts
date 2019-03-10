@@ -7,8 +7,23 @@ export class QueuedTelecommand {
      * @type {number}
      * @memberof QueuedTelecommand
      */
-    queuedTelecommandId: number;
+    queuedTelecommandID: number;
 
+    /**
+     * The execution pass ID.
+     * 
+     * @type {number}
+     * @memberof QueuedTelecommand
+     */
+    executionPassID: number;
+
+    /**
+     * The transmission pass ID.
+     * 
+     * @type {number}
+     * @memberof QueuedTelecommand
+     */
+    transmissionPassID: number;
 
     /**
      * The user that queued the command
@@ -25,7 +40,7 @@ export class QueuedTelecommand {
      * @type {Telecommand}
      * @memberof QueuedTelecommand
      */
-    telecommand: Telecommand;
+    telecommandID: number;
 
 
     /**
@@ -47,12 +62,25 @@ export class QueuedTelecommand {
     executionTime: Date;
 
     /**
-     *Creates an instance of QueuedTelecommand.
+     * Creates an instance of QueuedTelecommand.
      * @param {number} id The unique ID of the queuedTelecommand
-     * @param {Telecommand} command The command to be executed
+     * 
+     * 
+     * @param {Telecommand} telecommandID The command to be executed
+     * @param {Boolean} priorityLevel The assigned priority level.
+     * @param {Date} executionTime The assigned execution time.
      */
-    constructor(id: number, command: Telecommand) {
-        this.queuedTelecommandId = id;
-        this.telecommand = command;
+    constructor(userID: number, 
+        executionPassID: number,
+        transmissionPassID: number,
+        telecommandID: number, 
+        priorityLevel: boolean,
+        executionTime: Date) {
+        this.userID = userID;
+        this.executionPassID = executionPassID;
+        this.transmissionPassID = transmissionPassID;
+        this.telecommandID = telecommandID;
+        this.priorityLevel = priorityLevel;
+        this.executionTime = executionTime;
     }
 }

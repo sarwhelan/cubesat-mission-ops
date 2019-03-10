@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pass } from '../../classes/pass';
+import { PassService } from '../services/pass/pass.service';
+import { QueuedTelecommand } from '../../classes/queuedTelecommand';
+import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-execution-queue',
@@ -14,10 +18,30 @@ export class ExecutionQueueComponent implements OnInit {
    * @type {Pass[]}
    * @memberof ExecutionQueueComponent
    */
-  @Input() passes: Pass[];
-  constructor() { }
+  @Input()
+  events: Observable<Pass>;
+  
+  private selectedPass: Pass;
+  private newPassEstimatedPassDateTime: Date;
+  private passQueuedTelecommands: QueuedTelecommand[];
+
+  private reloadPassSubscription: any;
+  
+  constructor(private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
+    this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
   }
 
+  onSelect(pass: Pass): void {
+    this.selectedPass = pass;
+    this.queuedTelecommandService.getQueuedTelecommands().subscribe(queuedTelecommands => {
+      this.passQueuedTelecommands = queuedTelecommands;
+      //this.passQueuedTelecommands.push(new QueuedTelecommand(1, 1))
+    });
+  }
+
+  ngOnDestroy() {
+    this.reloadPassSubscription.unsubscribe();
+  }
 }
