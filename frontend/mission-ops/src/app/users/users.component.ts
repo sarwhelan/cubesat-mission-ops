@@ -31,6 +31,12 @@ export class UsersComponent implements OnInit {
   private pagination: PaginationComponent
 
   private _userLimit: number = 10;
+  /**
+   * The number of users to display on each page.
+   *
+   * @private
+   * @memberof UsersComponent
+   */
   private get userLimit() {
     return this._userLimit;
   }
@@ -40,16 +46,47 @@ export class UsersComponent implements OnInit {
   }
 
   private userList: PagedList<User>;
+  /**
+   * The number of pages of users to be displayed.
+   *
+   * @private
+   * @type {number}
+   * @memberof UsersComponent
+   */
   private pages: number = 1;
 
+  /**
+   * The user that is being deleted right now.
+   *
+   * @private
+   * @type {User}
+   * @memberof UsersComponent
+   */
   private deletingUser: User;
+  /**
+   * The confirmation message the user must enter
+   * before being allowed to delete a user.
+   *
+   * @private
+   * @type {string}
+   * @memberof UsersComponent
+   */
   private deleteConfirm: string;
 
+  /**
+   * Indicates whether or not processing is currently going
+   * on. Used to show lazy loading indicators.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof UsersComponent
+   */
   private processing: boolean;
 
   constructor(private users: UsersService, private auth: AuthService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    // Initialize the page from the query params if they exist
     let page = Number(this.activatedRoute.snapshot.queryParamMap.get('page'));
     let limit = Number(this.activatedRoute.snapshot.queryParamMap.get('limit'));
     
@@ -130,6 +167,14 @@ export class UsersComponent implements OnInit {
       });
   }
 
+  /**
+   * Updates the URL query params to match the internal state
+   * of the page.
+   *
+   * @private
+   * @param {number} page The page number to include in the URL.
+   * @memberof UsersComponent
+   */
   private updateQueryParams(page: number) {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
