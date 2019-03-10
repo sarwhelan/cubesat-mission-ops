@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Telecommand } from 'src/classes/telecommand';
 import { AuthService } from '../services/auth/auth.service';
+import { TelecommandBatch } from 'src/classes/telecommandBatch';
 
 @Component({
   selector: 'app-create-queued-telecommand',
@@ -14,26 +14,28 @@ export class CreateQueuedTelecommandComponent implements OnInit {
 
   @Input()
   createQtcForm: FormGroup;
-  isEditing: boolean;
-  selectedQtc: QueuedTelecommand;
   modalTitle: string;
   modalSubmit: string;
+  isBatch: boolean;
 
   public telecommands: Telecommand[];
+  public telecommandBatches: TelecommandBatch[];
 
   selectedTelecommand: Telecommand;
+  selectedTelecommandBatch: TelecommandBatch;
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, private auth: AuthService)
   { }
 
   ngOnInit() {
-    if (!this.isEditing) {
+    if (!this.isBatch){
       this.modalTitle = "Add Telecommand to Queue";
-      this.modalSubmit = "Add to Queue";
+      this.updateTelecommand(this.telecommands[0].telecommandID);
     } else {
-      this.modalTitle = "Modify Telecommand in Queue";
-      this.modalSubmit = "Apply Changes";
+      this.modalTitle = "Add Telecommand Batch to Queue";
+      this.updateTelecommandBatch(this.telecommandBatches[0].id);
     }
+    this.modalSubmit = "Add to Queue";
     this.createForm();
   }
 
@@ -43,27 +45,32 @@ export class CreateQueuedTelecommandComponent implements OnInit {
     var executionDate = new NgbDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDay());
     var executionTime = {hour: 0, minute: 0, second: 0};
 
-    if (this.isEditing) {
-      executionDate = new NgbDate(this.selectedQtc.executionTime.getUTCFullYear(), 
-        this.selectedQtc.executionTime.getUTCMonth(),
-        this.selectedQtc.executionTime.getUTCDay());
-      executionTime = {
-        hour: this.selectedQtc.executionTime.getUTCHours(),
-        minute: this.selectedQtc.executionTime.getUTCMinutes(),
-        second: this.selectedQtc.executionTime.getUTCSeconds(),
-      };
+    if (!this.isBatch) {
+      this.createQtcForm = this.formBuilder.group({
+        telecommandID: this.selectedTelecommand.telecommandID,
+        priorityLevel: false,
+        executionDate: executionDate,
+        executionTime: executionTime,
+        commandParams: this.selectedTelecommand.command,
+      });
+    } else {
+      this.createQtcForm = this.formBuilder.group({
+        telecommandBatchID: this.selectedTelecommandBatch.id,
+        priorityLevel: false,
+        executionDate: executionDate,
+        executionTime: executionTime,
+      });
     }
-    this.createQtcForm = this.formBuilder.group({
-      telecommandID: this.isEditing ? this.selectedQtc.telecommandID : this.telecommands[0].telecommandID,
-      priorityLevel: this.isEditing ? this.selectedQtc.priorityLevel : false,
-      executionDate: executionDate,
-      executionTime: executionTime,
-    });
   }
 
   updateTelecommand(id: number) : void
   {
     this.selectedTelecommand = this.telecommands.find(x => x.telecommandID == id);
+  }
+
+  updateTelecommandBatch(id: number) : void
+  {
+    this.selectedTelecommandBatch = this.telecommandBatches.find(x => x.id == id);
   }
 
   submitQtc() : void

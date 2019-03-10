@@ -1,6 +1,4 @@
-﻿import { Telecommand } from './telecommand';
-
-export class QueuedTelecommand {
+﻿export class QueuedTelecommand {
     /**
      * The unique ID of the queuedTelecommand
      *
@@ -62,6 +60,14 @@ export class QueuedTelecommand {
     executionTime: Date;
 
     /**
+     * The command parameter JSON, stringified.
+     * 
+     * @type {string}
+     * @memberof QueuedTelecommand
+     */
+    commandParams: string;
+
+    /**
      * Creates an instance of QueuedTelecommand.
      * @param {number} id The unique ID of the queuedTelecommand
      * 
@@ -75,12 +81,14 @@ export class QueuedTelecommand {
         transmissionPassID: number,
         telecommandID: number, 
         priorityLevel: boolean,
-        executionTime: Date) {
+        executionTime: Date,
+        commandParams: string) {
         this.userID = userID;
         this.executionPassID = executionPassID;
         this.transmissionPassID = transmissionPassID;
         this.telecommandID = telecommandID;
         this.priorityLevel = priorityLevel;
         this.executionTime = executionTime;
+        this.commandParams = commandParams;
     }
 }
