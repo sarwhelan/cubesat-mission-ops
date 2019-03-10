@@ -3,6 +3,8 @@ import { TelecommandBatch } from '../../classes/telecommandBatch';
 import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
 import { PresetTelecommand } from '../../classes/presetTelecommand';
 import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
+import { Telecommand } from '../../classes/telecommand';
+import { TelecommandService } from '../services/telecommand/telecommand.service';
 
 @Component({
   selector: 'app-telecommand-batches',
@@ -14,10 +16,14 @@ export class TelecommandBatchesComponent implements OnInit {
   telecommandBatches: TelecommandBatch[];
   selectedBatch: TelecommandBatch;
   selectedPresetTelecommands: PresetTelecommand[];
-  constructor(private telecommandBatchService: TelecommandBatchService, private presetTelecommandService: PresetTelecommandService) { }
+  telecommands: Telecommand[];
+  selectedTelecommand: Telecommand;
+
+  constructor(private telecommandBatchService: TelecommandBatchService, private presetTelecommandService: PresetTelecommandService, private telecommandService: TelecommandService) { }
 
   ngOnInit() {
     this.getTelecommandBatches();
+    this.getTelecommands();
   }
 
   saveBatchName(): void{
@@ -58,5 +64,35 @@ export class TelecommandBatchesComponent implements OnInit {
       .subscribe(results => {
         this.getTelecommandBatches();
       });
+  }
+
+  getTelecommands(): void{
+    this.telecommandService.getTelecommands()
+      .subscribe(telecommands =>{
+        this.telecommands = telecommands;
+        if (this.telecommands.length > 0)
+        {
+          this.selectedTelecommand = this.telecommands[0];
+        }
+      });
+  }
+
+  addNewPresetTelecommand(): void{
+    var newPresetTelecommand = new PresetTelecommand(this.selectedTelecommand.telecommandID, this.selectedBatch.batchID);
+    newPresetTelecommand.commandParameters = this.selectedTelecommand.command;
+    newPresetTelecommand.priorityLevel = this.selectedTelecommand.defaultPriorityLevel;
+    newPresetTelecommand.minuteDelay = 0;
+    newPresetTelecommand.hourDelay = 0;
+    newPresetTelecommand.dayDelay = 0;
+
+    this.presetTelecommandService.addNewPresetTelecommand(newPresetTelecommand)
+      .subscribe(results =>{
+        this.relaodPresetTelecommands();
+      });
+  }
+
+  updateSelectedTelecommand(newSelected: Telecommand)
+  {
+    this.selectedTelecommand = newSelected;
   }
 }
