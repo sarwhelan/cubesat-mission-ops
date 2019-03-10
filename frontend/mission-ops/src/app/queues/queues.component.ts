@@ -9,12 +9,13 @@ import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-t
 import { AuthService } from '../services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Subject, Observable, Subscription, forkJoin } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 import { ExecutionQueueComponent } from '../execution-queue/execution-queue.component';
 import { PassLimitService } from '../services/pass-limit/pass-limit.service';
 import { PassLimit } from 'src/classes/pass-limit';
 import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
+import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
 
 @Component({
   selector: 'app-queues',
@@ -39,6 +40,7 @@ export class QueuesComponent implements OnInit {
     private modalService: NgbModal,
     private telecommandService: TelecommandService,
     private telecommandBatchService: TelecommandBatchService,
+    private presetTelecommandService: PresetTelecommandService,
     private queuedTelecommandService: QueuedTelecommandService,
     private passLimitService: PassLimitService,
     private auth: AuthService) { }
@@ -129,18 +131,17 @@ export class QueuesComponent implements OnInit {
         result.executionTime.minute,
         result.executionTime.second
       ));
-      var createQtc = (self) => {
+      var createQtc = (self, transID, execID) => {
         var newQtc = new QueuedTelecommand(
           parseInt(userID),
-          self.calculatedExecutionID,
-          self.calculatedTransmissionID,
+          execID,
+          transID,
           result.telecommandID,
           result.priorityLevel,
           executionTime,
           result.commandParams,
         );
-        console.log(newQtc);
-        return self.queuedTelecommandService.createQueuedTelecommands(
+        return self.queuedTelecommandService.createQueuedTelecommand(
           newQtc
         );
       }
@@ -168,21 +169,27 @@ export class QueuesComponent implements OnInit {
         result.executionTime.second
       ));
 
-      var createQtc = (self) => {
-        var newQtc = new QueuedTelecommand(
-          parseInt(userID),
-          self.calculatedExecutionID,
-          self.calculatedTransmissionID,
-          result.telecommandID,
-          result.priorityLevel,
-          executionTime,
-          result.commandParams,
-        );
-        return self.queuedTelecommandService.createQueuedTelecommands(
-          newQtc
-        );
-      }
-      this.calculatePassIDs(result.telecommandID, executionTime, createQtc);
+      this.presetTelecommandService.getPresetTelecommands(result.telecommandBatchID)
+        .subscribe(ptcs => {
+          var createQtc = (self, transID, execID) => {
+            var pQtcBatch = [];
+            ptcs.forEach(ptc => {
+              pQtcBatch.push(new QueuedTelecommand(
+                parseInt(userID),
+                execID,
+                transID,
+                ptc.telecommandID,
+                ptc.priorityLevel,
+                executionTime,
+                ptc.commandParameters,
+              ));
+            });
+            return self.queuedTelecommandService.createBatchQueuedTelecommands(
+              pQtcBatch
+            );
+          }
+          this.calculatePassIDs(result.telecommandID, executionTime, createQtc);
+        });
     }).catch((error) => {
       // Modal closed without submission
       console.log(error);
@@ -192,7 +199,7 @@ export class QueuesComponent implements OnInit {
   /**
    * Must have at least one active pass and pass limits must exist.
    */
-  calculatePassIDs(telecommandID: number, executionTime: Date, qtcCreation: (self) => Observable<any>) : void
+  calculatePassIDs(telecommandID: number, executionTime: Date, qtcCreation: (self, transID, execID) => Observable<any>) : void
   {
     var maxBandwidth = this.passLimits.find(x => x.name == "bandwidthUsage").maxValue;
     var maxPower = this.passLimits.find(x => x.name == "powerConsumption").maxValue;
@@ -202,35 +209,38 @@ export class QueuesComponent implements OnInit {
     let passTransmissionSums = this.passService.getPassTransmissionSums();
     let passExecutionSums = this.passService.getPassExecutionSums();
     forkJoin([passTransmissionSums, passExecutionSums])
-      .pipe(concatMap(results => {
+      .pipe(mergeMap(results => {
+        var calcTransID, calcExecID;
         // Transmission sum
         if (!results[0]) {
-          this.calculatedTransmissionID = activePasses[0].passID;
+          calcTransID = activePasses[0].passID;
         }
         for (var i = 0; i < activePasses.length; i++) {
           var passSum = results[0].find(x => x.passID == activePasses[i].passID);
 
-          if (passSum && parseInt(passSum.sumBandwidth) + activeTelecommand.bandwidthUsage <= maxBandwidth 
-            && parseInt(passSum.sumPower) + activeTelecommand.powerConsumption <= maxPower)
+          if (!passSum || (parseInt(passSum.sumBandwidth) + activeTelecommand.bandwidthUsage <= maxBandwidth 
+            && parseInt(passSum.sumPower) + activeTelecommand.powerConsumption <= maxPower))
           {
-            this.calculatedTransmissionID = activePasses[i].passID;
+            calcTransID = activePasses[i].passID;
             break;
           }
         }
-        if (!this.calculatedTransmissionID) {
+        if (!calcTransID) {
           // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
-          this.calculatedTransmissionID = 1;
+          calcTransID = 1;
         }
 
         // TODO: Execution queuing
-        this.calculatedExecutionID = 1;
-        return qtcCreation(this);
+        calcExecID = 1;
+        return qtcCreation(this, calcTransID, calcExecID).pipe(
+          map(_ => [calcExecID, calcTransID])
+        );
       }))
-      .subscribe(results => {
+      .subscribe(([execID, transID]) => {
         if (this.transmissionQueue) {
-          this.getPasses(this.passes.find(x => x.passID == this.calculatedTransmissionID));
+          this.getPasses(this.passes.find(x => x.passID == transID));
         } else {
-          this.getPasses(this.passes.find(x => x.passID == this.calculatedExecutionID));
+          this.getPasses(this.passes.find(x => x.passID == execID));
         }
       });
   }

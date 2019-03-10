@@ -33,7 +33,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
       this.updateTelecommand(this.telecommands[0].telecommandID);
     } else {
       this.modalTitle = "Add Telecommand Batch to Queue";
-      this.updateTelecommandBatch(this.telecommandBatches[0].id);
+      this.updateTelecommandBatch(this.telecommandBatches[0].batchID);
     }
     this.modalSubmit = "Add to Queue";
     this.createForm();
@@ -55,7 +55,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
       });
     } else {
       this.createQtcForm = this.formBuilder.group({
-        telecommandBatchID: this.selectedTelecommandBatch.id,
+        telecommandBatchID: this.selectedTelecommandBatch.batchID,
         priorityLevel: false,
         executionDate: executionDate,
         executionTime: executionTime,
@@ -70,7 +70,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
 
   updateTelecommandBatch(id: number) : void
   {
-    this.selectedTelecommandBatch = this.telecommandBatches.find(x => x.id == id);
+    this.selectedTelecommandBatch = this.telecommandBatches.find(x => x.batchID == id);
   }
 
   submitQtc() : void
