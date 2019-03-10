@@ -33,6 +33,17 @@
             (relaodPresetTelecommands)="relaodPresetTelecommands($event)">
           </app-preset-telecommand-details>
         </ul>
+        <form class="form-inline" style="padding-top:10px;padding-bottom: 10px;">
+          <label style="padding-right: 10px;"><b>New Telecommand: </b></label>
+          <app-telecommand-dropdown
+          [telecommands] = "telecommands"
+          [selectedTelecommand] = "selectedTelecommand"
+          (newSelectedTelecommand) = "updateSelectedTelecommand($event)">
+          </app-telecommand-dropdown>
+          <button type="button"
+          class="btn btn-success"
+          (click)="addNewPresetTelecommand()">Add Telecommand To Batch</button>
+        </form>
         <button type="button"
         class="btn btn-danger"
         (click)="deleteBatch()">Delete Batch</button>
