@@ -1,0 +1,26 @@
+<div *ngIf="presetTelecommand">
+  <div style="cursor: pointer;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="presetTelecommandDetailsPane">  
+    <span>
+      {{presetTelecommand.name}}
+    </span>
+  </div>
+  <div id="presetTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
+    <form>
+        <div class="form-check">
+          <input [(ngModel)] = "presetTelecommand.priorityLevel" type="checkbox" class="form-check-input" name="presetTelecommandPriorityLevel">
+          <label>High Priority Command</label>
+        </div>
+        <div class="form-group">
+          <label>Command Parameters JSON</label>
+          <textarea [(ngModel)] = "presetTelecommand.commandParameters"  class="form-control" rows=10 name= "telecommandCommand"></textarea>
+        </div>
+        <div class="form-group">
+            <label >Relative Execution DateTime</label>
+            <input [(ngModel)] = "presetTelecommand.relativeExecutionTime" class="form-control" name = "telecommandRelativeExecutionTime">
+          </div>
+      </form>
+      <button (click)="savePresetTelecommand()" type="button" class="btn btn-success">Save Changes</button>
+      <button (click)="discardChanges()" type="button" class="btn btn-warning">Discard Changes</button>
+      <button (click)="deletePresetTelecommand()" type="button" class="btn btn-danger">Delete Preset Telecommand</button>
+    </div>
+</div>

@@ -1,12 +1,10 @@
 ﻿export class TelecommandBatch {
-    id: number;
-    // telecommands : PresetTelecommand;
+    batchID: number;
     name: string;
     totalBandwidthUsage: number;
     totalPowerConsumption: number;
 
-    constructor(id: number, name: string) {
-        this.id = id;
+    constructor(name: string) {
         this.name = name;
     }
 }

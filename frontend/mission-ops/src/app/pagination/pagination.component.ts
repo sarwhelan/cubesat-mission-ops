@@ -172,18 +172,38 @@ export class PaginationComponent implements OnInit {
     });
   }
 
+  /**
+   * Switches to the next page.
+   *
+   * @memberof PaginationComponent
+   */
   public nextPage(): void {
     this.goToPage(this.page + 1);
   }
 
+  /**
+   * Switches to the last page.
+   *
+   * @memberof PaginationComponent
+   */
   public lastPage(): void {
     this.goToPage(this.maxPage);
   }
 
+  /**
+   * Switches to the previous page.
+   *
+   * @memberof PaginationComponent
+   */
   public prevPage(): void {
     this.goToPage(this.page - 1);
   }
 
+  /**
+   * Switches to the first page.
+   *
+   * @memberof PaginationComponent
+   */
   public firstPage(): void {
     this.goToPage(this.minPage);
   }
