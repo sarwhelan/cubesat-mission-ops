@@ -1,3 +1,6 @@
+// application server outlining the routes utilized by the
+// frontend web application as well as the ground station server
+
 const express = require('express');
 const app = express();
 

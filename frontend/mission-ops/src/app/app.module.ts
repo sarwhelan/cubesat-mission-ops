@@ -31,7 +31,6 @@ import { UsersComponent } from './users/users.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { QueuedTelecommandComponent } from './queued-telecommand/queued-telecommand.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
-import { TelemLimitsComponent } from './telem-limits/telem-limits.component';
 import { CreateSystemComponent } from './create-system/create-system.component';
 import { CreateComponentComponent } from './create-component/create-component.component';
 import { CreateComponentTelemetryComponent } from './create-component-telemetry/create-component-telemetry.component';
@@ -39,6 +38,7 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
 import { CreateQueuedTelecommandComponent } from './create-queued-telecommand/create-queued-telecommand.component';
 import { DatetimePickerComponent } from './datetime-picker/datetime-picker.component';
 import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/preset-telecommand-details.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +66,6 @@ import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/
     UsersComponent,
     PaginationComponent,
     ModifyUserComponent,
-    TelemLimitsComponent,
     CreateSystemComponent,
     CreateComponentComponent,
     CreateComponentTelemetryComponent,
@@ -74,6 +73,7 @@ import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/
     CreateQueuedTelecommandComponent,
     DatetimePickerComponent,
     PresetTelecommandDetailsComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,

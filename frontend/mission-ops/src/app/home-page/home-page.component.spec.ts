@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TelemLimitsComponent } from './telem-limits.component';
+import { HomePageComponent } from './home-page.component';
 
-describe('TelemLimitsComponent', () => {
-  let component: TelemLimitsComponent;
-  let fixture: ComponentFixture<TelemLimitsComponent>;
+describe('HomePageComponent', () => {
+  let component: HomePageComponent;
+  let fixture: ComponentFixture<HomePageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TelemLimitsComponent ]
+      declarations: [ HomePageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TelemLimitsComponent);
+    fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

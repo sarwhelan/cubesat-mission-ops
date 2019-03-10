@@ -8,14 +8,14 @@ var db = require('../database');
 router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            // var insertParameters = [req.body.componentID, req.body.command, req.body.name, req.body.defaultPriorityLevel, req.body.bandwidthUsage, req.body.powerConsumption, req.body.archived];
+            var insertParameters = [req.body.telecommandID, req.body.batchID, req.body.relativeExecutionTime, req.body.priorityLevel, req.body.commandParameters];
 
             // using this pattern of using ? in our query builder does the escaping for us! No need to worry about sql injection
-/*             db.query('INSERT INTO telecommands (componentID, command, name, defaultPriorityLevel, bandwidthUsage, powerConsumption, archived) VALUES (?, ?, ?, ?, ?, ?, ?)', insertParameters, function (error, results, fields) {
+            db.query('INSERT INTO presetTelecommands(telecommandID, batchID, relativeExecutionTime, priorityLevel, commandParameters) VALUES (?, ?, ?, ?, ?)', insertParameters, function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);
-              }); */
+              });
         } catch (err) {
             console.log(err);
             res.send(err);
