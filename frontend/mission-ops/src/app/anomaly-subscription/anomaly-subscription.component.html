@@ -15,13 +15,11 @@
     </p>
 </ng-template>
 
-
-
 <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownSystems" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSystems" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Subscribe to System
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownSystems">
-      <a *ngFor="let system of systems" class="dropdown-item" (click)="addSubscription(system.systemID)">{{system.systemName}}</a>
+        <a *ngFor="let sys of systems" class="dropdown-item" (click)="addSubscription(sys.systemID)">{{sys.systemName}}</a>
     </div>
 </div>

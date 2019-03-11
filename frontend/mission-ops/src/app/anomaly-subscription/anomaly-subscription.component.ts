@@ -40,8 +40,8 @@ export class AnomalySubscriptionComponent implements OnInit {
     this.systemService.getSystems()
       .subscribe(systems => {
         this.systems = systems;
+        console.log(this.systems);
     })
-    console.log(this.systems);
   }
 
   selectSub(systemID) {
