@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { PanoViewer } from '@egjs/view360';
 
-import { PanoramaInput } from 'src/classes/panorama-input';
+import { PanoramicMedia } from 'src/classes/panoramic-media';
 
 @Component({
   selector: 'app-panorama-viewer',
@@ -13,8 +13,51 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
   @ViewChild('viewer')
   private viewerElement: ElementRef;
 
+  private _inputData: PanoramicMedia;
   @Input()
-  private inputData: PanoramaInput;
+  private get inputData() {
+    return this._inputData;
+  }
+  private set inputData(val) {
+    if (!val && !this._inputData) {
+      // input was already undefined/null and is being set to undefined/null
+      // Do nothing
+    } else if (!val && this._inputData) {
+      // input existed, but is being set to undefined/null
+      // Destroy viewer
+      this.viewer.destroy();
+    } else if (val && !this._inputData) {
+      // input was undefined/null, but we're getting new data
+      // Create viewer
+      this.createViewer(val);
+    } else {
+      // input existed and we're setting it to a new value
+      // Change viewer image, recreate if switching type
+      if (val.type === this._inputData.type) {
+        // Type matches, so just change content
+        this.loading = true;
+        if (val.type === 'image') {
+          this.viewer.setImage(val.src);
+        } else {
+          this.viewer.setVideo(val.src);
+        }
+      } else {
+        // Type does not match, so destroy and recreate the viewer
+        this.viewer.destroy();
+        this.createViewer(val);
+      }
+    }
+
+    if (val && val.type === 'video') {
+      // New media type is video, so start it playing once it's done loading
+      this.viewer.once('ready', (eventData) => {
+        this.viewer.getVideo().loop = true;
+        this.viewer.getVideo().play();
+      });
+    }
+
+    this._inputData = val;
+  }
 
   private viewer: PanoViewer;
   private viewerConfig: any = {
@@ -29,11 +72,6 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    if (this.inputData) {
-      this.loading = true;
-      
-      this.createViewer();
-    }
   }
 
   ngOnDestroy() {
@@ -42,25 +80,26 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private buildConfig(): any {
+  private buildConfig(inputData: PanoramicMedia): any {
     let viewerConfig: any = {};
 
     // Builds a config object from the master config and input data and puts it into viewerConfig
-    if (this.inputData.type === 'image') {
+    if (inputData.type === 'image') {
       Object.assign(viewerConfig, this.viewerConfig, {
-        image: this.inputData.src
+        image: inputData.src
       });
     } else {
       Object.assign(viewerConfig, this.viewerConfig, {
-        video: this.inputData.src
+        video: inputData.src
       });
     }
 
     return viewerConfig;
   }
 
-  private createViewer() {
-    this.viewer = new PanoViewer(this.viewerElement.nativeElement as HTMLElement, this.buildConfig());
+  private createViewer(inputData: PanoramicMedia) {
+    this.loading = true;
+    this.viewer = new PanoViewer(this.viewerElement.nativeElement as HTMLElement, this.buildConfig(inputData));
 
     this.viewer.on('ready', (eventData) => {
       this.loading = false;
@@ -68,33 +107,32 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
     });
   }
 
-  public setView(view: PanoramaInput) {
-    let oldView = this.inputData;
-    this.inputData = view;
+  // public setView(newView: PanoramicMedia, oldView: PanoramicMedia) {
 
-    if (this.viewer && oldView.type === view.type) {
-      this.loading = true;
+  //   if (this.viewer && oldView.type === newView.type) {
+  //     this.loading = true;
       
-      if (view.type === 'image') {
-        this.viewer.setImage(view.src);
-      } else {
-        this.viewer.setVideo(view.src);
-      }
-    } else {
-      // Either the viewer doesn't exist or we're changing from displaying an image to displaying a video or vice versa.
-      // Either way, we now need to create a new viewer.
-      if (this.viewer) {
-        // Destroy the old viewer
-        this.viewer.destroy();
-      }
-      this.createViewer();
-    }
+  //     if (newView.type === 'image') {
+  //       this.viewer.setImage(newView.src);
+  //     } else {
+  //       this.viewer.setVideo(newView.src);
+  //     }
+  //   } else {
+  //     // Either the viewer doesn't exist or we're changing from displaying an image to displaying a video or vice versa.
+  //     // Either way, we now need to create a new viewer.
+  //     if (this.viewer) {
+  //       // Destroy the old viewer if it exists
+  //       this.viewer.destroy();
+  //     }
+  //     this.createViewer();
+  //   }
 
-    if (view.type === 'video') {
-      this.viewer.once('ready', (eventData) => {
-        this.viewer.getVideo().loop = true;
-        this.viewer.getVideo().play();
-      });
-    }
-  }
+  //   if (newView.type === 'video') {
+  //     // It it's a video start it playing as soon as it's done loading
+  //     this.viewer.once('ready', (eventData) => {
+  //       this.viewer.getVideo().loop = true;
+  //       this.viewer.getVideo().play();
+  //     });
+  //   }
+  // }
 }

@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
     new HeaderItem("Telecommand Batches", "/telecommandBatches"),
     new HeaderItem("Telemetry Limits", '/telem-limits'),
     new HeaderItem("Telemetry", "/telemetry"),
+    new HeaderItem("Media", "/media"),
   ];
 
   constructor(private router: Router, private auth: AuthService) {  

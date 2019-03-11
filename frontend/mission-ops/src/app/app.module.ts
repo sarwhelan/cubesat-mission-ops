@@ -40,6 +40,8 @@ import { CreateQueuedTelecommandComponent } from './create-queued-telecommand/cr
 import { DatetimePickerComponent } from './datetime-picker/datetime-picker.component';
 import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/preset-telecommand-details.component';
 import { PanoramaViewerComponent } from './panorama-viewer/panorama-viewer.component';
+import { MediaLibraryComponent } from './media-library/media-library.component';
+import { MediaViewComponent } from './media-view/media-view.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { PanoramaViewerComponent } from './panorama-viewer/panorama-viewer.compo
     DatetimePickerComponent,
     PresetTelecommandDetailsComponent,
     PanoramaViewerComponent,
+    MediaLibraryComponent,
+    MediaViewComponent,
   ],
   imports: [
     BrowserModule,
