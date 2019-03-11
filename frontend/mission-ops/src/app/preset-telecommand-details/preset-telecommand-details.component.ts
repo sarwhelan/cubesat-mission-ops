@@ -29,7 +29,9 @@ export class PresetTelecommandDetailsComponent implements OnInit {
     this.originalPresetTelecommand.commandParameters = this.presetTelecommand.commandParameters;
     this.originalPresetTelecommand.name = this.presetTelecommand.name;
     this.originalPresetTelecommand.priorityLevel = this.presetTelecommand.priorityLevel;
-    this.originalPresetTelecommand.relativeExecutionTime = this.presetTelecommand.relativeExecutionTime;
+    this.originalPresetTelecommand.minuteDelay = this.presetTelecommand.minuteDelay;
+    this.originalPresetTelecommand.hourDelay = this.presetTelecommand.hourDelay;
+    this.originalPresetTelecommand.dayDelay = this.presetTelecommand.dayDelay;
     this.originalPresetTelecommand.presetTelecommandID = this.presetTelecommand.presetTelecommandID;  }
 
   savePresetTelecommand(): void{
@@ -46,7 +48,9 @@ export class PresetTelecommandDetailsComponent implements OnInit {
   discardChanges(): void{
     this.presetTelecommand.commandParameters = this.originalPresetTelecommand.commandParameters;
     this.presetTelecommand.priorityLevel = this.originalPresetTelecommand.priorityLevel;
-    this.presetTelecommand.relativeExecutionTime = this.originalPresetTelecommand.relativeExecutionTime;
+    this.presetTelecommand.minuteDelay = this.originalPresetTelecommand.minuteDelay;
+    this.presetTelecommand.hourDelay = this.originalPresetTelecommand.hourDelay;
+    this.presetTelecommand.dayDelay = this.originalPresetTelecommand.dayDelay;
   }
 
   deletePresetTelecommand(): void{

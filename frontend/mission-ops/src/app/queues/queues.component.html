@@ -1,28 +1,31 @@
-<button (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
-<ng-container *ngTemplateOutlet = "queue"></ng-container>
-
-<ng-template #queue>
-  <div class = "row">
-      <div class = "col">
-        <ul class="list-group">
-            <li *ngFor="let pass of passes"
-            (click)="onSelect(pass)"
-            [class.active]="pass === selectedPass"
-            class="list-group-item">
-              Pass {{pass.passID}}
-            </li>
-          </ul> 
-      </div>
-      <div class = "col">
-        <div *ngIf = "!executionQueue; else execQ">
-          <app-transmission-queue [events] = "reloadPass.asObservable()"></app-transmission-queue>
-        </div>
-        <ng-template #execQ>
-          <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
+<div class = "row">
+  <div class = "col">
+    <button class = "btn btn-primary" (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
+    <button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
+    <button class = "btn btn-warning" (click) = "promptAddQueuedTelecommandBatch()">Add Telecommand Batch to Queue</button>
+    <button class="btn btn-success" (click)="addPass()">Add New Pass</button>
+    <ul class="list-group">
+        <li *ngFor="let pass of passes"
+        (click)="onSelect(pass)"
+        [class.active]="pass === selectedPass"
+        class="list-group-item">
+          Pass {{pass.passID}}
+          <span class="badge badge-light">Est. Pass Time: {{pass.estimatedPassDateTime}}</span>
+        </li>
+      </ul> 
+  </div>
+  <div class = "col">
+    <ngb-tabset type="pills">
+      <ngb-tab title="Transmission Queue">
+        <ng-template ngbTabContent>
+          <app-transmission-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-transmission-queue>
         </ng-template>
-      </div>
-    </div>
-</ng-template>
-
-<button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
-<button class="btn btn-success" (click)="addPass()">Add New Pass</button>
+      </ngb-tab>
+      <ngb-tab title="Execution Queue">
+        <ng-template ngbTabContent>
+            <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

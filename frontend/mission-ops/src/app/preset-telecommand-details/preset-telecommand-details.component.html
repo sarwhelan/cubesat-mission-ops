@@ -14,10 +14,19 @@
           <label>Command Parameters JSON</label>
           <textarea [(ngModel)] = "presetTelecommand.commandParameters"  class="form-control" rows=10 name= "telecommandCommand"></textarea>
         </div>
-        <div class="form-group">
-            <label >Relative Execution DateTime</label>
-            <input [(ngModel)] = "presetTelecommand.relativeExecutionTime" class="form-control" name = "telecommandRelativeExecutionTime">
-          </div>
+        <label >Relative Execution Time</label>
+        <div class="form-group-inline">
+            <label >Minutes: </label>
+            <input [(ngModel)] = "presetTelecommand.minuteDelay" class="form-control" name = "telecommandMinuteDelay">
+        </div>
+        <div class="form-group-inline">
+            <label >Hours: </label>
+            <input [(ngModel)] = "presetTelecommand.hourDelay" class="form-control" name = "telecommandHourDelay">
+        </div>
+        <div class="form-group-inline">
+            <label >Days: </label>
+            <input [(ngModel)] = "presetTelecommand.dayDelay" class="form-control" name = "telecommandDayDelay">
+        </div>
       </form>
       <button (click)="savePresetTelecommand()" type="button" class="btn btn-success">Save Changes</button>
       <button (click)="discardChanges()" type="button" class="btn btn-warning">Discard Changes</button>

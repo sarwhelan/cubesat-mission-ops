@@ -26,10 +26,15 @@ define("DATA_DUMP_WATCH_DIR", "/home/dzagar/Desktop/watchtest");
 * Queue path constants.
 */
 if (process.env.NODE_ENV !== 'production') {
-    define("CURR_QUEUE_PATH", `${__dirname}/test/queue/queue.json`);
+    define("CURR_QUEUE_DIR", `${__dirname}/test/queue/`);
 	define("QUEUE_BACKUP_DIR", `${__dirname}/test/queue/queuedumptest`);
 }
 else {
-    define("CURR_QUEUE_PATH", "/home/dzagar/Desktop/queue/queue.json");
+    define("CURR_QUEUE_DIR", "/home/dzagar/Desktop/queue/");
     define("QUEUE_BACKUP_DIR", "/home/dzagar/Desktop/queuedumptest");
 }
+
+/**
+ * Queue filename.
+ */
+define("QUEUE_FILE", "queue.json");

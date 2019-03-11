@@ -40,6 +40,7 @@ import { DatetimePickerComponent } from './datetime-picker/datetime-picker.compo
 import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/preset-telecommand-details.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-subscription.component';
+import { TelecommandDropdownComponent } from './telecommand-dropdown/telecommand-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-sub
     PresetTelecommandDetailsComponent,
     HomePageComponent,
     AnomalySubscriptionComponent,
+    TelecommandDropdownComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,10 @@
     batchID: number;
     commandParameters: string;
     priorityLevel: boolean;
-    relativeExecutionTime: Date;
+    secondDelay: number;
+    minuteDelay: number;
+    hourDelay: number;
+    dayDelay: number;
     name: string;
 
     constructor(telecommandID: number, batchID: number) {

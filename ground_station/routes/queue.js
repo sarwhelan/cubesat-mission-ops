@@ -11,32 +11,33 @@ const path = require('path');
 const logger = require('../logger');
 const constants = require('../constants');
 
-router.route('/')
+router.route('/:id')
 	// Rewrites the current queue in waiting with the received (updated) queue as a JSON object.
 	.post(parseUrlencoded, parseJSON, (req, res) => {
 		try 
 		{
-			// Verify batch format.
-			if (!req.body.batch) {
-				throw new Error('Incorrect JSON format - must contain batch collection.');
+			var passDir = `Pass ${req.params.id}`;
+		
+			var passQueueDir = path.join(constants.CURR_QUEUE_DIR, passDir);
+			if (!fs.existsSync(passQueueDir)) {
+				fs.mkdirSync(passQueueDir);
 			}
+			var srcPath = path.join(passQueueDir, constants.QUEUE_FILE);
 			// Write to local queue and parse back.
-			fs.writeFileSync(constants.CURR_QUEUE_PATH, JSON.stringify(req.body));
+			fs.writeFileSync(srcPath, JSON.stringify(req.body));
 			// Copy last saved queue for current date to external storage.
 			/// TODO: Figure out how often we care about snapshotting the queue
-			var date = new Date();
-			var dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-			subDirPath = path.join(constants.QUEUE_BACKUP_DIR, dateString);
-			if (!fs.existsSync(subDirPath)) {
-				fs.mkdirSync(subDirPath);
+			passBackupDir = path.join(constants.QUEUE_BACKUP_DIR, passDir);
+			if (!fs.existsSync(passBackupDir)) {
+				fs.mkdirSync(passBackupDir);
 			}
-			destPath = path.join(subDirPath, path.basename(constants.CURR_QUEUE_PATH));
-			fs.copyFile(constants.CURR_QUEUE_PATH, destPath, (err) => {
+			var destPath = path.join(passBackupDir, constants.QUEUE_FILE);
+			fs.copyFile(srcPath, destPath, (err) => {
 				if (err) throw err;
-				logger.log('debug', `Queue copy from ${constants.CURR_QUEUE_PATH} to ${destPath} successful`);
+				logger.log('debug', `Queue copy from ${srcPath} to ${destPath} successful`);
 			});
 			// Parse back for verification
-			success = JSON.parse(fs.readFileSync(constants.CURR_QUEUE_PATH, 'utf8'));
+			success = JSON.parse(fs.readFileSync(srcPath, 'utf8'));
 			res.send(success);
 			logger.info('POST /queue SUCCESS');
 		} catch (e) {
@@ -48,7 +49,9 @@ router.route('/')
     .get(parseUrlencoded, parseJSON, (req, res) => {
     	try 
     	{
-	    	success = JSON.parse(fs.readFileSync(constants.CURR_QUEUE_PATH, 'utf8'));
+			var passDir = `Pass ${req.params.id}`;
+			var passQueueFile = path.join(constant.CURR_QUEUE_DIR, passDir, constants.QUEUE_FILE);
+	    	success = JSON.parse(fs.readFileSync(passQueueFile, 'utf8'));
 	    	res.send(success);
 	    	logger.info('GET /queue SUCCESS');
     	} catch (e) {
