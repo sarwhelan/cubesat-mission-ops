@@ -128,12 +128,14 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommands = this.telecommands;
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
+      var userID;
       if (!user) {
         // Not logged in; should not be able to add to the queue.
         console.log('User not logged in, cannot add to queue');
-        return;
+        userID = "456";
       } else {
-        var userID = user.id;
+        userID = user.id;
+        console.log(user.id);
       }
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
@@ -149,7 +151,7 @@ export class QueuesComponent implements OnInit {
         var newQtc = new QueuedTelecommand(
           execID,
           transID,
-          parseInt(userID),
+          userID,
           result.telecommandID,
           result.priorityLevel,
           executionTime,
@@ -173,12 +175,14 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommandBatches = this.telecommandBatches;
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
+      var userID;
       if (!user) {
         // Not logged in; should not be able to add to the queue.
         console.log('User not logged in, cannot add to queue');
-        return;
+        userID = "456";
       } else {
-        var userID = user.id;
+        userID = user.id;
+        console.log(user.id);
       }
       console.log(result.executionDate, result.executionTime);
       var executionTime = new Date(Date.UTC(
@@ -205,7 +209,7 @@ export class QueuesComponent implements OnInit {
               pQtcBatch.push(Object.values(new QueuedTelecommand(
                 execID,
                 transID,
-                parseInt(userID),
+                userID,
                 ptc.telecommandID,
                 ptc.priorityLevel,
                 telecommandExecutionTime,
@@ -255,19 +259,19 @@ export class QueuesComponent implements OnInit {
       calcExecID = activePasses[0].passID;
     } 
     else {
-      var sortedActivePassByTime = [...activePasses].sort((a,b) => (a.estimatedPassDateTime.getTime() > b.estimatedPassDateTime.getTime()) ? 1 : -1);
-      for (var i = 0; i < sortedActivePassByTime.length; i++) {
-        if (executionTime.getTime() > sortedActivePassByTime[i].estimatedPassDateTime.getTime()) continue;
+      //var sortedActivePassByTime = [...activePasses].sort((a,b) => (a.estimatedPassDateTime.getTime() > b.estimatedPassDateTime.getTime()) ? 1 : -1);
+      for (var i = 0; i < activePasses.length; i++) {
+        if (executionTime.getTime() > new Date(activePasses[i].estimatedPassDateTime).getTime()) continue;
         if (i == 0) {
           console.log('no pass exists to execute this command');
           break;
         }
-        var passSum = this.sumExecutionResults.find(x => x.passID == sortedActivePassByTime[i-1].passID);
+        var passSum = this.sumExecutionResults.find(x => x.passID == activePasses[i-1].passID);
 
         // Limit passes on power.
         if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= maxPower)
         {
-          calcExecID = sortedActivePassByTime[i].passID;
+          calcExecID = activePasses[i].passID;
           if (!passSum) {
             console.log('pushed from exec', activeTelecommand);
             this.sumExecutionResults.push({passID: calcExecID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
@@ -309,7 +313,7 @@ export class QueuesComponent implements OnInit {
       }
     }
 
-    
+    console.log(calcTransID, calcExecID);
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumBandwidth += activeTelecommand.bandwidthUsage;
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumPower += activeTelecommand.powerConsumption;
     this.sumExecutionResults.find(x => x.passID == calcExecID).sumBandwidth += activeTelecommand.bandwidthUsage;
