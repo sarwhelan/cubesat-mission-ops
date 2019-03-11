@@ -50,8 +50,8 @@ export class QueuesComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.executionQueue = true;
-    this.transmissionQueue = false;
+    this.executionQueue = false;
+    this.transmissionQueue = true;
     this.getPasses();
     this.getTelecommands();
     this.getPassLimits();
@@ -104,7 +104,9 @@ export class QueuesComponent implements OnInit {
   getTelecommands() : void
   {
     this.telecommandService.getTelecommands()
-      .subscribe(tcs => this.telecommands = tcs);
+      .subscribe(tcs => {
+        this.telecommands = tcs;
+      });
   }
 
   getTelecommandBatches() : void

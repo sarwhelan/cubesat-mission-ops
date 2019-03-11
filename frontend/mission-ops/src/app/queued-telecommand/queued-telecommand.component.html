@@ -1,5 +1,30 @@
-Telecommand: {{queuedTelecommand.telecommandID}}
-Execution Datetime: {{queuedTelecommand.executionTimeUTC}}
-Transmission Priority: {{queuedTelecommand.priority}}
-Pass Of Transmission: {{queuedTelecommand.passID}}
-Responsible User: {{queuedTelecommand.userID}}
+<div *ngIf="queuedTelecommand && telecommandDetails">
+  <div style="cursor: pointer;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="queuedTelecommandDetailsPane">  
+    <span><span class = "badge badge-light">{{queuedTelecommand.telecommandID}}</span>{{telecommandDetails.name}}</span>
+  </div>
+  <div id="queuedTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
+    <form>
+      <div class="form-check">
+        <input [ngModel] = "queuedTelecommand.priority" type="checkbox" class="form-check-input" name="queuedTelecommandPriority" disabled readonly>
+        <label>High Priority Command</label>
+      </div>
+      <div class="form-group">
+        <label>Transmission Pass</label>
+        <input [ngModel] = "queuedTelecommand.transmissionPassID"  class="form-control" name= "queuedTelecommandTransmissionPassID" readonly>
+      </div>
+      <div class = "form-group">
+        <label>Execution Pass</label>
+        <input [ngModel] = "queuedTelecommand.transmissionPassID"  class="form-control" name= "queuedTelecommandExecutionPassID" readonly>
+      </div>
+      <div class = "form-group">
+        <label>Execution Datetime</label>
+        <input [ngModel] = "queuedTelecommand.executionTimeUTC"  class="form-control" name= "queuedTelecommandExecutionTimeUTC" readonly>
+      </div>
+      <div class = "form-group">
+        <label>Responsible User</label>
+        <input [ngModel] = "userID"  class="form-control" name= "queuedTelecommandUser" readonly>
+      </div>
+    </form>
+    <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-danger">Remove Telecommand from Queue</button>
+  </div>
+</div>

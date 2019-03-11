@@ -4,6 +4,7 @@ import { PassService } from '../services/pass/pass.service';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Observable } from 'rxjs';
+import { Telecommand } from 'src/classes/telecommand';
 
 @Component({
   selector: 'app-transmission-queue',
@@ -24,6 +25,7 @@ export class TransmissionQueueComponent implements OnInit {
   private selectedPass: Pass;
   private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
+  @Input() telecommands: Telecommand[];
 
   private reloadPassSubscription: any;
 

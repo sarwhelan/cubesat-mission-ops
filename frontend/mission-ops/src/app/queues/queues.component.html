@@ -16,7 +16,7 @@
   </div>
   <div class = "col">
     <div *ngIf = "!executionQueue; else execQ">
-      <app-transmission-queue [events] = "reloadPass.asObservable()"></app-transmission-queue>
+      <app-transmission-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-transmission-queue>
     </div>
     <ng-template #execQ>
       <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>

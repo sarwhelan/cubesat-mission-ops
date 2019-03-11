@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { QueuedTelecommand } from '../../classes/queuedTelecommand';
+import { Telecommand } from 'src/classes/telecommand';
+import { UsersService } from '../services/users/users.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-queued-telecommand',
@@ -8,11 +11,22 @@ import { QueuedTelecommand } from '../../classes/queuedTelecommand';
 })
 export class QueuedTelecommandComponent implements OnInit {
 
-  constructor() { }
-
   @Input() queuedTelecommand: QueuedTelecommand;
+  @Input() telecommands: Telecommand[];
+  private telecommandDetails: Telecommand; 
+  private userID : string;
+  isCollapsed: boolean = true;
+
+  constructor(private userService: UsersService) {}
+
   ngOnInit() {
-    console.log(this.queuedTelecommand);
+    this.userService.getUser(this.queuedTelecommand.userID.toString())
+      .subscribe(user => {
+        this.userID = user.id;
+      });
   }
 
+  ngOnChanges() {
+    this.telecommandDetails = this.telecommands.find(x => x.telecommandID == this.queuedTelecommand.telecommandID);
+  }
 }
