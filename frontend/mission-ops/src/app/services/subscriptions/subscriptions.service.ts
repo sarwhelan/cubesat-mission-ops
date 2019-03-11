@@ -28,9 +28,9 @@ export class SubscriptionsService {
     return this.http.post<Number>(this.systemUrl + userID, JSON.stringify({"systemID": systemID}), this.httpOptions);
   }
 
-  deleteSubscription(systemID: Number, userID: String): Observable<Number>
+  deleteSubscription(systemID: Number, userID: String): Observable<Subscription>
   {
-    return this.http.delete<Number>(this.systemUrl + userID + "." + systemID);
+    return this.http.delete<Subscription>(this.systemUrl + userID + "." + systemID);
   }
   
 }

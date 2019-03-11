@@ -29,10 +29,10 @@ router.route('/:userID')
             let insertParams = [req.body.systemID, req.params.userID];
             db.query("INSERT INTO userAlertSubscriptions (systemID, userID) VALUES (?, ?)", insertParams, function(error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.send(results);
             })
         } catch (err) {
-            res.sendStatus(500);
+            res.send(err);
             console.log(err);
         }
     });
@@ -44,10 +44,10 @@ router.route('/:userID.:systemID')
             let deleteParams = [req.params.systemID, req.params.userID];
             db.query("DELETE FROM userAlertSubscriptions WHERE systemID = ? AND userID = ?", deleteParams, function(error, results, fields) {
                 if (error) throw error;
-                res.sendStatus(200);
+                res.send(results);
             })
         } catch (err) {
-            res.sendStatus(500);
+            res.send(err);
             console.log(err);
         }
     });
