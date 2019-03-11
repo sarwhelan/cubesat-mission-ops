@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { QueuedTelecommand } from '../../classes/queuedTelecommand';
 import { Telecommand } from 'src/classes/telecommand';
 import { UsersService } from '../services/users/users.service';
-import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-queued-telecommand',
@@ -20,10 +21,12 @@ export class QueuedTelecommandComponent implements OnInit {
   constructor(private userService: UsersService) {}
 
   ngOnInit() {
+    // the catch here doesn't work, need to fix
     this.userService.getUser(this.queuedTelecommand.userID.toString())
-      .subscribe(user => {
-        this.userID = user.id;
-      });
+    .pipe(catchError(err => of(err)))
+    .subscribe(user => {
+      this.userID = user.id;
+    }, err => this.userID = "No user found.");
   }
 
   ngOnChanges() {
