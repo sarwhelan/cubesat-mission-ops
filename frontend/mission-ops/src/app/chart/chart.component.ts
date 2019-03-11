@@ -13,6 +13,8 @@ NoDataToDisplay(Highcharts);
 export class ChartComponent implements OnInit {
 
   private _values: number[];
+  private _minValue: number;
+  private _maxValue: number;
   private _title: string;
   private _xAxis: string;
   private _yAxis: string;
@@ -25,6 +27,22 @@ export class ChartComponent implements OnInit {
   }
   private set values(val: number[]) {
     this._values = val;
+  }
+
+  @Input()
+  private get minValue() {
+    return this._minValue;
+  }
+  private set minValue(val: number) {
+    this._minValue = val;
+  }
+
+  @Input()
+  private get maxValue() {
+    return this._maxValue;
+  }
+  private set maxValue(val: number) {
+    this._maxValue = val;
   }
 
   @Input()
@@ -75,6 +93,8 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     var msLabels = this.labels.map(x => new Date(x).getTime());
+    var maxValues = new Array(this.values.length).fill(this.maxValue);
+    var minValues = new Array(this.values.length).fill(this.minValue);
     this.chartOptions = {
       title: {
         text: this.title
@@ -105,6 +125,22 @@ export class ChartComponent implements OnInit {
         type: 'line',
         showInLegend: false,
         data: this.values,
+      }, {
+        name: "Max Value",
+        type: 'line',
+        showInLegend: false,
+        data: maxValues,
+        color: "#ff0000",
+        marker: {enabled: false},
+        states: { hover: { enabled: false } },
+      }, {
+        name: "Min Value",
+        type: 'line',
+        showInLegend: false,
+        data: minValues,
+        color: "#ff0000",
+        marker: {enabled: false},
+        states: { hover: { enabled: false } },
       }],
       lang: {
         noData: "No data to display."
