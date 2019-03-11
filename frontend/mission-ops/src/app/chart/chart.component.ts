@@ -95,6 +95,7 @@ export class ChartComponent implements OnInit {
     var msLabels = this.labels.map(x => new Date(x).getTime());
     var maxValues = new Array(this.values.length).fill(this.maxValue);
     var minValues = new Array(this.values.length).fill(this.minValue);
+    var self = this;
     this.chartOptions = {
       title: {
         text: this.title
@@ -125,6 +126,14 @@ export class ChartComponent implements OnInit {
         type: 'line',
         showInLegend: false,
         data: this.values,
+        zones: [{
+          value: this.minValue,
+          color: '#FF0000',
+        }, {
+          value: this.maxValue,
+        }, {
+          color: '#FF0000',
+        }]
       }, {
         name: "Max Value",
         type: 'line',
