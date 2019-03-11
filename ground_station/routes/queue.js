@@ -18,7 +18,7 @@ router.route('/:id')
 		{
 			var passDir = `Pass ${req.params.id}`;
 		
-			var passQueueDir = path.join(constant.CURR_QUEUE_DIR, passDir);
+			var passQueueDir = path.join(constants.CURR_QUEUE_DIR, passDir);
 			if (!fs.existsSync(passQueueDir)) {
 				fs.mkdirSync(passQueueDir);
 			}
