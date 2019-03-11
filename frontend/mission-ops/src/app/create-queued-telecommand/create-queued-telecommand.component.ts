@@ -42,8 +42,16 @@ export class CreateQueuedTelecommandComponent implements OnInit {
   private createForm() : void
   {
     var today = new Date();
-    var executionDate = new NgbDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDay());
-    var executionTime = {hour: 0, minute: 0, second: 0};
+    var executionDate = { 
+      year: today.getUTCFullYear(), 
+      month: today.getUTCMonth()+1, // UTC is zero-indexed. Why.
+      day: today.getUTCDate()
+    }
+    var executionTime = {
+      hour: 0, 
+      minute: 0, 
+      second: 0
+    };
 
     if (!this.isBatch) {
       this.createQtcForm = this.formBuilder.group({
