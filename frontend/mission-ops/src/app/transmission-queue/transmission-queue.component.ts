@@ -23,13 +23,12 @@ export class TransmissionQueueComponent implements OnInit {
   @Input()
   events: Observable<Pass>;
   private selectedPass: Pass;
-  private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
   @Input() telecommands: Telecommand[];
 
   private reloadPassSubscription: any;
 
-  constructor(private passService: PassService, private queuedTelecommandService: QueuedTelecommandService) { }
+  constructor(private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
     this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
