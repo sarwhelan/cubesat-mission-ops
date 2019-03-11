@@ -21,31 +21,48 @@ export class AnomalySubscriptionComponent implements OnInit {
   ngOnInit() {
     const userID = this.route.snapshot.queryParamMap.get('id');
     this.getSubscriptions(userID);
-    this.getSystems();
   }
 
   getSubscriptions(userID) {
     this.subService.getSubscriptions(userID)
       .subscribe(subscriptions => { 
         this.subscriptions = subscriptions;
+        this.getSystems();
       });
   }
 
   addSubscription(systemID) {
-    console.log("adding subscription to " + systemID);
+    const userID = this.route.snapshot.queryParamMap.get('id');
+    this.subService.addSubscription(systemID, userID)
+      .subscribe(response => {
+        this.getSubscriptions(userID);
+      })
   }
 
   getSystems() {
-    console.log("getting systems...");
     this.systemService.getSystems()
       .subscribe(systems => {
+        for (var i = 0; i < this.subscriptions.length; i++) {
+          for (var j = 0; j < systems.length; j++) {
+            if (this.subscriptions[i].systemID == systems[j].systemID) {
+              systems.splice(j, 1);
+            }
+          }
+        }
         this.systems = systems;
-        console.log(this.systems);
     })
   }
 
-  selectSub(systemID) {
-    console.log("selected subscription " + systemID);
+  selectSub(sub: Subscription) {
+    this.selectedSub = sub;
+  }
+
+  removeSub() {
+    const userID = this.route.snapshot.queryParamMap.get('id');
+    this.subService.deleteSubscription(this.selectedSub.systemID, userID)
+      .subscribe(response => {
+        this.getSubscriptions(userID);
+      })
   }
 
 }

@@ -22,4 +22,15 @@ export class SubscriptionsService {
   {
     return this.http.get<Subscription[]>(this.systemUrl + userID);
   }
+
+  addSubscription(systemID: Number, userID: String): Observable<Number>
+  {
+    return this.http.post<Number>(this.systemUrl + userID, JSON.stringify({"systemID": systemID}), this.httpOptions);
+  }
+
+  deleteSubscription(systemID: Number, userID: String): Observable<Number>
+  {
+    return this.http.delete<Number>(this.systemUrl + userID + "." + systemID);
+  }
+  
 }

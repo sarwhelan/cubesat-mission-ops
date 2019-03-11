@@ -3,7 +3,7 @@
 <div *ngIf="subscriptions && subscriptions.length > 0; else noSubscriptions">
   <ul class="list-group">
     <li *ngFor="let sub of subscriptions"
-    (click)="selectSub(sub.systemID)"
+    (click)="selectSub(sub)"
     class="list-group-item">
       {{sub.systemName}}
     </li>
@@ -15,11 +15,24 @@
     </p>
 </ng-template>
 
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSystems" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Subscribe to System
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownSystems">
-        <a *ngFor="let sys of systems" class="dropdown-item" (click)="addSubscription(sys.systemID)">{{sys.systemName}}</a>
+<div class="row">
+    <div class="col">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownSystems" ngbDropdownToggle>Add System Subscription</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownSystems">
+            <div *ngIf="systems && systems.length > 0; else noSystems">
+              <button class="btn btn-outline-secondary" *ngFor="let sys of systems" ngbDropdownItem (click)="addSubscription(sys.systemID)">{{sys.systemName}}</button>
+            </div>
+            <ng-template #noSystems>
+              <p>
+                You're currently subscribed to all systems!
+              </p>
+            </ng-template>
+        </div>
+      </div>
     </div>
+</div>
+
+<div *ngIf="selectedSub">
+  <button class="btn btn-outline-primary" (click)="removeSub()">Remove {{selectedSub.systemName}}</button>
 </div>

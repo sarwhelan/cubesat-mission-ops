@@ -32,21 +32,22 @@ router.route('/:userID')
                 res.sendStatus(200);
             })
         } catch (err) {
-            res.send(err);
+            res.sendStatus(500);
             console.log(err);
         }
-    })
+    });
 
+router.route('/:userID.:systemID')
     // remove a subscription for specified userID
     .delete(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            let deleteParams = [req.body.systemID, req.params.userID];
+            let deleteParams = [req.params.systemID, req.params.userID];
             db.query("DELETE FROM userAlertSubscriptions WHERE systemID = ? AND userID = ?", deleteParams, function(error, results, fields) {
                 if (error) throw error;
                 res.sendStatus(200);
             })
         } catch (err) {
-            res.send(err);
+            res.sendStatus(500);
             console.log(err);
         }
     });
