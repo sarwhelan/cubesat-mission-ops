@@ -249,33 +249,65 @@ export class QueuesComponent implements OnInit {
   calculatePassIDs(activePasses: Pass[], activeTelecommand: Telecommand, executionTime: Date, maxBandwidth: number, maxPower: number) : [number, number]
   {
     var calcTransID, calcExecID;
-    // Transmission sum
-    if (!this.sumTransmissionResults) {
-      calcTransID = activePasses[0].passID;
+    
+    // Execution
+    if (!this.sumExecutionResults) {
+      calcExecID = activePasses[0].passID;
     } 
+    else {
+      var sortedActivePassByTime = [...activePasses].sort((a,b) => (a.estimatedPassDateTime.getTime() > b.estimatedPassDateTime.getTime()) ? 1 : -1);
+      for (var i = 0; i < sortedActivePassByTime.length; i++) {
+        if (executionTime.getTime() > sortedActivePassByTime[i].estimatedPassDateTime.getTime()) continue;
+        if (i == 0) {
+          console.log('no pass exists to execute this command');
+          break;
+        }
+        var passSum = this.sumExecutionResults.find(x => x.passID == sortedActivePassByTime[i-1].passID);
+
+        // Limit passes on power.
+        if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= maxPower)
+        {
+          calcExecID = sortedActivePassByTime[i].passID;
+          if (!passSum) {
+            console.log('pushed from exec', activeTelecommand);
+            this.sumExecutionResults.push({passID: calcExecID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
+          }
+          break;
+        } else {
+          console.log('THROW ERROR: pass capacity reached');
+          break;
+        }
+      }
+    }
+    if (!calcExecID) {
+      // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
+      calcExecID = 1;
+    }
+
+    // Transmission
+    if (!this.sumExecutionResults) {
+      calcTransID = activePasses[0].passID;
+    }
     else {
       for (var i = 0; i < activePasses.length; i++) {
         var passSum = this.sumTransmissionResults.find(x => x.passID == activePasses[i].passID);
 
-        if (!passSum || (passSum.sumBandwidth + activeTelecommand.bandwidthUsage <= maxBandwidth 
-          && passSum.sumPower + activeTelecommand.powerConsumption <= maxPower))
+        // Limit passes on bandwidth.
+        if (!passSum || passSum.sumBandwidth + activeTelecommand.bandwidthUsage <= maxBandwidth)
         {
           calcTransID = activePasses[i].passID;
           if (!passSum) {
-            console.log('pushed', activeTelecommand);
+            console.log('pushed from trans', activeTelecommand);
             this.sumTransmissionResults.push({passID: calcTransID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
           }
           break;
         }
       }
+      if (!calcTransID) {
+        // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
+        calcTransID = 1;
+      }
     }
-    if (!calcTransID) {
-      // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
-      calcTransID = 1;
-    }
-
-    // TODO: Execution queuing
-    calcExecID = 1;
 
     
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumBandwidth += activeTelecommand.bandwidthUsage;
