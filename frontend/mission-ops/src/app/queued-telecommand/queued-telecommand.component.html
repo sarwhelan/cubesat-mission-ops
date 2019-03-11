@@ -34,9 +34,9 @@
         <label>Execution Datetime</label>
         <input [ngModel] = "queuedTelecommand.executionTimeUTC"  class="form-control" name= "queuedTelecommandExecutionTimeUTC" readonly>
       </div>
-      <div class = "form-group">
+      <div *ngIf="user" class = "form-group">
         <label>Responsible User</label>
-        <input [ngModel] = "userID"  class="form-control" name= "queuedTelecommandUser" readonly>
+        <input [ngModel] = "user.email"  class="form-control" name= "queuedTelecommandUser" readonly>
       </div>
     </form>
   </div>

@@ -5,6 +5,8 @@ import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-t
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Observable } from 'rxjs';
 import { Telecommand } from 'src/classes/telecommand';
+import { User } from '../../classes/user';
+import { UsersService } from '../services/users/users.service';
 
 @Component({
   selector: 'app-transmission-queue',
@@ -25,13 +27,18 @@ export class TransmissionQueueComponent implements OnInit {
   private selectedPass: Pass;
   private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
+  private users: User[]
   @Input() telecommands: Telecommand[];
 
   private reloadPassSubscription: any;
 
-  constructor(private passService: PassService, private queuedTelecommandService: QueuedTelecommandService) { }
+  constructor(private userService: UsersService, private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
+    this.userService.getUsers(Number.MAX_SAFE_INTEGER - 1)
+      .subscribe(users => {
+        this.users = users.items
+      });
     this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
   }
 
@@ -39,8 +46,7 @@ export class TransmissionQueueComponent implements OnInit {
   {
     if (!pass) return;
     this.selectedPass = pass;
-    this.queuedTelecommandService.getQueuedTelecommandsTransmission(this.selectedPass)
-      .subscribe(qtc => this.passQueuedTelecommands = qtc);
+    this.reloadQueuedTelecommands();
   }
 
   reloadQueuedTelecommands(){
