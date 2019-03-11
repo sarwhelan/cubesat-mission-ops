@@ -5,6 +5,7 @@ import { UsersService } from '../services/users/users.service';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
+import { User } from '../../classes/user';
 
 @Component({
   selector: 'app-queued-telecommand',
@@ -15,20 +16,17 @@ export class QueuedTelecommandComponent implements OnInit {
 
   @Input() queuedTelecommand: QueuedTelecommand;
   @Input() telecommands: Telecommand[];
+  @Input() users: User[];
+
   @Output() reloadQueuedTelecommands = new EventEmitter<number>();
   private telecommandDetails: Telecommand; 
-  private userID : string;
+  user : User;
   isCollapsed: boolean = true;
 
   constructor(private userService: UsersService, private queuedTelecommandService: QueuedTelecommandService) {}
 
   ngOnInit() {
-    // the catch here doesn't work, need to fix
-    this.userService.getUser(this.queuedTelecommand.userID.toString())
-    .pipe(catchError(err => of(err)))
-    .subscribe(user => {
-      this.userID = user.id;
-    }, err => this.userID = "No user found.");
+    this.user = this.users.find(x => x.id == this.queuedTelecommand.userID.toString());
   }
 
   ngOnChanges() {
