@@ -34,4 +34,9 @@ export class QueuedTelecommandService {
   {
     return this.http.post(this.queuedTelecommandsUrl, queuedTelecommands);
   }
+
+  deleteQueuedTelecommand(queuedTelecommand: QueuedTelecommand) : Observable<any> 
+  {
+    return this.http.delete(`${this.queuedTelecommandsUrl}/${queuedTelecommand.queuedTelecommandID}`);
+  }
 }

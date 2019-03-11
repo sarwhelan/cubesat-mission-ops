@@ -43,6 +43,11 @@ export class TransmissionQueueComponent implements OnInit {
       .subscribe(qtc => this.passQueuedTelecommands = qtc);
   }
 
+  reloadQueuedTelecommands(){
+    this.queuedTelecommandService.getQueuedTelecommandsTransmission(this.selectedPass)
+      .subscribe(qtc => this.passQueuedTelecommands = qtc);
+  }
+
   ngOnDestroy() {
     this.reloadPassSubscription.unsubscribe();
   }

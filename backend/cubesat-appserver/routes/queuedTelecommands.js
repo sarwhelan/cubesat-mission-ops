@@ -51,6 +51,20 @@ router.route('/:id')
             console.log(err);
             res.send(err);
         }
+    })
+    .delete(parseUrlencoded, parseJSON, (req, res) => {
+        try {
+            var queuedTelecommandID = req.params.id;
+            
+            db.query('DELETE FROM queuedTelecommands WHERE queuedTelecommandID = ?', queuedTelecommandID, function (error, results, fields) {
+                if (error) throw error;
+
+                res.json(results);
+              });
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
     });
 
 module.exports = router;

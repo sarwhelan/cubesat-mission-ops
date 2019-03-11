@@ -4,7 +4,8 @@
     <div *ngFor="let queuedTelecommand of passQueuedTelecommands">
       <app-queued-telecommand class="list-group-item border border-primary" 
           [queuedTelecommand] = "queuedTelecommand" 
-          [telecommands] = "telecommands">
+          [telecommands] = "telecommands"
+          (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
       </app-queued-telecommand>
     </div>
   </ul>
