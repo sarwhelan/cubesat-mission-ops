@@ -1,14 +1,26 @@
 <h2>Telemetry</h2>
 <div class = "row">
     <div class = "col-md-4">
-      <ul class="list-group">
-          <li *ngFor="let component of components"
-          (click)="onSelect(component)"
-          [class.active]="component === selectedComponent"
+      <div class="list-group">
+          <div *ngFor="let sys of systems"
+          (click)="onSelect(sys)"
+          [class.active]="sys === selectedSystem"
           class="list-group-item">
-            {{component.name}}
-          </li>
-        </ul>
+            {{sys.systemName}}
+            <ng-container *ngIf = "sys === selectedSystem">
+                <ng-container *ngIf = "components && components.length > 0; else noComponents">
+                  <ul class = "list-group" style="color:black;">
+                      <li *ngFor="let comp of components"
+                        (click) = "onSelectComp(comp)"
+                        [class.active]="comp === selectedComponent"
+                        class = "list-group-item">
+                        {{comp.name}}
+                      </li>
+                    </ul>
+                </ng-container>
+              </ng-container>
+            </div>
+        </div>
     </div>
     <div class = "col-md-8">
       <div *ngIf = "selectedComponent">
@@ -16,3 +28,19 @@
       </div>
   </div>
 </div>
+
+<ng-template #noComponents>
+  <ng-container *ngIf = "components && components.length == 0; else spinner">
+      <p>
+        No components available for this system.
+      </p>
+  </ng-container>
+</ng-template>
+
+<ng-template #spinner>
+  <div *ngIf = "selectedSystem" class = "text-center">
+    <div class = "spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>

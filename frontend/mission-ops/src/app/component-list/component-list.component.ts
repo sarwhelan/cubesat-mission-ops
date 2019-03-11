@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Component as CubeSatComp } from '../../classes/component';
 import { ComponentService } from '../services/component/component.service';
+import { SystemService } from '../services/system/system.service';
+import { System } from 'src/classes/system';
 
 @Component({
   selector: 'app-component-list',
@@ -9,20 +11,34 @@ import { ComponentService } from '../services/component/component.service';
 })
 export class ComponentListComponent implements OnInit {
   components: CubeSatComp[];
+  systems: System[];
+  selectedSystem: System;
   selectedComponent: CubeSatComp;
 
-  constructor(private componentService: ComponentService) { }
+  constructor(private systemService: SystemService, private componentService: ComponentService) { }
 
   ngOnInit() {
+    this.getSystems();
+  }
+
+  onSelect(system: System) : void {
+    if (system === this.selectedSystem) return;
+    this.components = null;
+    this.selectedSystem = system;
     this.getComponents();
   }
 
-  onSelect(component: CubeSatComp): void {
+  onSelectComp(component: CubeSatComp): void {
     this.selectedComponent = component;
   }
 
+  getSystems() : void {
+    this.systemService.getSystems()
+      .subscribe(sys => this.systems = sys);
+  }
+
   getComponents(): void {
-    this.componentService.getComponents()
+    this.componentService.getComponentsFromSystem(this.selectedSystem.systemID)
       .subscribe(components => this.components = components);
   }
 
