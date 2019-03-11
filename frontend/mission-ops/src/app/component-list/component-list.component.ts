@@ -24,6 +24,7 @@ export class ComponentListComponent implements OnInit {
   onSelect(system: System) : void {
     if (system === this.selectedSystem) return;
     this.components = null;
+    this.selectedComponent = null;
     this.selectedSystem = system;
     this.getComponents();
   }

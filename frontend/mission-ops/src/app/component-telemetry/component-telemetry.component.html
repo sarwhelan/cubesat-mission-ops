@@ -7,9 +7,20 @@
         </li>
       </ul>
     </div>
-    <ng-template #noTelemetries>
-        <p>
-          No component telemetry data available.
-        </p>
-    </ng-template>
 </div>
+
+<ng-template #noTelemetries>
+    <ng-container *ngIf = "componentTelemetries && componentTelemetries.length == 0; else spinner">
+        <p>
+          No components available for this system.
+        </p>
+    </ng-container>
+  </ng-template>
+  
+  <ng-template #spinner>
+    <div *ngIf = "component" class = "text-center">
+      <div class = "spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
