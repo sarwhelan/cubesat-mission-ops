@@ -11,12 +11,11 @@
   </div>
   <div id="queuedTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
     <form>
-      <br/>
+      <hr/>
       <div class="form-check">
         <input [ngModel] = "queuedTelecommand.priority" type="checkbox" class="form-check-input" name="queuedTelecommandPriority" disabled readonly>
         <label>High Priority Command</label>
       </div>
-      <br/>
       <div class="form-row">
         <div class = "col">
             <label>Transmission Pass</label>
