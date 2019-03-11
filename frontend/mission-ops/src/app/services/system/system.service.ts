@@ -20,7 +20,10 @@ export class SystemService {
 
   getSystems(): Observable<System[]>
   {
-    return this.http.get<System[]>(this.systemUrl);
+    console.log("getting systems in system service...");
+    var systems = this.http.get<System[]>(this.systemUrl);
+    console.log(systems);
+    return systems;
   }
 
   createSystem(system: System): Observable<Number> 

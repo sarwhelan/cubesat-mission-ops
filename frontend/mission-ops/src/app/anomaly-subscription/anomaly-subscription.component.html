@@ -1,0 +1,38 @@
+<h3>Manage Anomaly Subscriptions</h3>
+
+<div *ngIf="subscriptions && subscriptions.length > 0; else noSubscriptions">
+  <ul class="list-group">
+    <li *ngFor="let sub of subscriptions"
+    (click)="selectSub(sub)"
+    class="list-group-item">
+      {{sub.systemName}}
+    </li>
+  </ul>
+</div>
+<ng-template #noSubscriptions>
+    <p>
+      You don't have any anomaly subscriptions yet.
+    </p>
+</ng-template>
+
+<div class="row">
+    <div class="col">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownSystems" ngbDropdownToggle>Add System Subscription</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownSystems">
+            <div *ngIf="systems && systems.length > 0; else noSystems">
+              <button class="btn btn-outline-secondary" *ngFor="let sys of systems" ngbDropdownItem (click)="addSubscription(sys.systemID)">{{sys.systemName}}</button>
+            </div>
+            <ng-template #noSystems>
+              <p>
+                You're currently subscribed to all systems!
+              </p>
+            </ng-template>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div *ngIf="selectedSub">
+  <button class="btn btn-outline-primary" (click)="removeSub()">Remove {{selectedSub.systemName}}</button>
+</div>
