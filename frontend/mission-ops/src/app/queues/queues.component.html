@@ -23,7 +23,7 @@
       </ngb-tab>
       <ngb-tab title="Execution Queue">
         <ng-template ngbTabContent>
-            <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
+            <app-execution-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-execution-queue>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

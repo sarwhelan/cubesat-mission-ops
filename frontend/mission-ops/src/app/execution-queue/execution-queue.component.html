@@ -1,7 +1,13 @@
 <div class="col">
-  <div *ngIf="selectedPass">
-    <div *ngFor="let queuedTelecommand of passQueuedTelecommands" class="border border-primary">
-        <app-queued-telecommand [queuedTelecommand] = "queuedTelecommand"></app-queued-telecommand>
+    <div *ngIf="selectedPass">
+        <ul class = "list-group">
+      <div *ngFor="let queuedTelecommand of passQueuedTelecommands">
+        <app-queued-telecommand class="list-group-item border border-primary" 
+            [queuedTelecommand] = "queuedTelecommand" 
+            [telecommands] = "telecommands"
+            (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
+        </app-queued-telecommand>
+      </div>
+    </ul>
     </div>
   </div>
-</div>

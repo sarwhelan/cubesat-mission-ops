@@ -13,6 +13,7 @@ export class QueuedTelecommandService {
   
   private queuedTelecommandsUrl = "http://localhost:3000/queued-telecommands"
   private transmissionQueueUrl = "http://localhost:3000/transmission-queue"
+  private executionQueueUrl = "http://localhost:3000/execution-queue"
 
   constructor(private http: HttpClient) { }
 
@@ -24,6 +25,11 @@ export class QueuedTelecommandService {
   getQueuedTelecommandsTransmission(transmissionPass: Pass) : Observable<QueuedTelecommand[]>
   {
     return this.http.get<QueuedTelecommand[]>(`${this.transmissionQueueUrl}/${transmissionPass.passID}`);
+  }
+
+  getQueuedTelecommandsExecution(executionPass: Pass) : Observable<QueuedTelecommand[]>
+  {
+    return this.http.get<QueuedTelecommand[]>(`${this.executionQueueUrl}/${executionPass.passID}`);
   }
 
   updatedQueuedTelecommands(queuedTelecommand: QueuedTelecommand) : Observable<any>{

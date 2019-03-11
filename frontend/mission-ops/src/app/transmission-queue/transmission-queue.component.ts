@@ -25,7 +25,6 @@ export class TransmissionQueueComponent implements OnInit {
   @Input()
   events: Observable<Pass>;
   private selectedPass: Pass;
-  private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
   private users: User[]
   @Input() telecommands: Telecommand[];
