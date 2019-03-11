@@ -9,7 +9,7 @@ import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-t
 @Component({
   selector: 'app-queued-telecommand',
   templateUrl: './queued-telecommand.component.html',
-  styleUrls: ['./queued-telecommand.component.scss']
+  styleUrls: ['./queued-telecommand.component.scss', '../../../node_modules/font-awesome/scss/font-awesome.scss']
 })
 export class QueuedTelecommandComponent implements OnInit {
 

@@ -1,11 +1,12 @@
 <div *ngIf="queuedTelecommand && telecommandDetails">
   <div style="cursor: pointer;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="queuedTelecommandDetailsPane">  
-    <span>
+    <span class = "align-middle">
         <span class = "badge badge-light">{{queuedTelecommand.telecommandID}}</span>
         {{telecommandDetails.name}}
         <ng-container *ngIf = "queuedTelecommand.priority">
             <span class = "badge badge-danger">!</span>
         </ng-container>
+        <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-danger d-flex float-right"><i class = "fa fa-trash"></i></button>
     </span>
   </div>
   <div id="queuedTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
@@ -39,6 +40,5 @@
         <input [ngModel] = "userID"  class="form-control" name= "queuedTelecommandUser" readonly>
       </div>
     </form>
-    <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-danger">Remove Telecommand from Queue</button>
   </div>
 </div>
