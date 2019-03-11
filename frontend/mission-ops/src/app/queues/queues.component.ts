@@ -262,13 +262,13 @@ export class QueuesComponent implements OnInit {
 
     // TODO: Execution queuing
     calcExecID = 1;
-    console.log(this.sumTransmissionResults, calcTransID);
+
+    
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumBandwidth += activeTelecommand.bandwidthUsage;
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumPower += activeTelecommand.powerConsumption;
-    if (calcTransID != calcExecID) {
-      this.sumExecutionResults.find(x => x.passID == calcExecID).sumBandwidth += activeTelecommand.bandwidthUsage;
-      this.sumExecutionResults.find(x => x.passID == calcExecID).sumPower += activeTelecommand.powerConsumption;
-    }
+    this.sumExecutionResults.find(x => x.passID == calcExecID).sumBandwidth += activeTelecommand.bandwidthUsage;
+    this.sumExecutionResults.find(x => x.passID == calcExecID).sumPower += activeTelecommand.powerConsumption;
+
     return [calcTransID, calcExecID];
   }
 }
