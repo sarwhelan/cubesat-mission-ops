@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Pass } from '../../classes/pass';
 import { PassService } from '../services/pass/pass.service';
 import { QueuedTelecommand } from '../../classes/queuedTelecommand';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { Observable } from 'rxjs';
 import { Telecommand } from 'src/classes/telecommand';
+import { UsersService } from '../services/users/users.service';
+import { User } from '../../classes/user';
 
 @Component({
   selector: 'app-execution-queue',
@@ -19,34 +21,39 @@ export class ExecutionQueueComponent implements OnInit {
    * @type {Pass[]}
    * @memberof ExecutionQueueComponent
    */
-  @Input()
-  events: Observable<Pass>;
-  private selectedPass: Pass;
+
   private passQueuedTelecommands: QueuedTelecommand[];
   @Input() telecommands: Telecommand[];
-
-  private reloadPassSubscription: any;
+  @Input() selectedPass: Pass;
+  users: User[]
   
-  constructor(private queuedTelecommandService: QueuedTelecommandService) { }
+  constructor(private userService: UsersService, private queuedTelecommandService: QueuedTelecommandService) { }
 
   ngOnInit() {
-    this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
+    this.userService.getUsers(Number.MAX_SAFE_INTEGER - 1)
+    .subscribe(users => {
+      this.users = users.items
+      this.reloadQueuedTelecommands();
+    });
   }
 
-  onSelect(pass: Pass): void {
-    if (!pass) return;
-    this.selectedPass = pass;
-    this.queuedTelecommandService.getQueuedTelecommandsExecution(this.selectedPass).subscribe(queuedTelecommands => {
-      this.passQueuedTelecommands = queuedTelecommands;
-    });
+  ngOnChanges(changes: SimpleChanges) : void
+  {
+    if (!changes.selectedPass)
+    {
+      return;
+    }
+
+    if (changes.selectedPass.firstChange)
+    {
+      return;
+    }
+
+    this.reloadQueuedTelecommands();
   }
 
   reloadQueuedTelecommands(){
     this.queuedTelecommandService.getQueuedTelecommandsExecution(this.selectedPass)
       .subscribe(qtc => this.passQueuedTelecommands = qtc);
-  }
-
-  ngOnDestroy() {
-    this.reloadPassSubscription.unsubscribe();
   }
 }

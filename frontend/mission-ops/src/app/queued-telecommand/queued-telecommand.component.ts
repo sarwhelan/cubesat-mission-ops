@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { User } from '../../classes/user';
+const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queued-telecommand',
@@ -17,6 +18,7 @@ export class QueuedTelecommandComponent implements OnInit {
   @Input() queuedTelecommand: QueuedTelecommand;
   @Input() telecommands: Telecommand[];
   @Input() users: User[];
+  @Input() orderRank: number;
 
   @Output() reloadQueuedTelecommands = new EventEmitter<number>();
   private telecommandDetails: Telecommand; 
@@ -31,6 +33,11 @@ export class QueuedTelecommandComponent implements OnInit {
 
   ngOnChanges() {
     this.telecommandDetails = this.telecommands.find(x => x.telecommandID == this.queuedTelecommand.telecommandID);
+  }
+
+  getFormatedDate()
+  {
+    return dateFormat(this.queuedTelecommand.executionTimeUTC, "dddd, mmmm dS, yyyy, HH:MM:ss");
   }
 
   deleteQueuedTelecommand() : void

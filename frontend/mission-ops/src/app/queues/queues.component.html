@@ -1,29 +1,31 @@
 <div class = "row">
   <div class = "col">
-    <button class = "btn btn-primary" (click) = "toggleActiveQueue()">{{executionQueue ? "Time Tagged" : "Transmission"}}</button>
-    <button class = "btn btn-info" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
-    <button class = "btn btn-warning" (click) = "promptAddQueuedTelecommandBatch()">Add Telecommand Batch to Queue</button>
-    <button class="btn btn-success" (click)="addPass()">Add New Pass</button>
+    <div class="btn-group" role="group">
+      <button class = "btn btn-outline-success" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
+      <button class = "btn btn-outline-success" (click) = "promptAddQueuedTelecommandBatch()">Add Telecommand Batch to Queue</button>
+      <button class="btn btn-outline-success" (click)="addPass()">Add New Pass</button>
+    </div>
+    <br />
+    <br />
     <ul class="list-group">
         <li *ngFor="let pass of passes"
         (click)="onSelect(pass)"
         [class.active]="pass === selectedPass"
         class="list-group-item">
-          Pass {{pass.passID}}
-          <span class="badge badge-light">Est. Pass Time: {{pass.estimatedPassDateTime}}</span>
+          <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
         </li>
       </ul> 
   </div>
   <div class = "col">
-    <ngb-tabset type="pills">
+    <ngb-tabset *ngIf="selectedPass">
       <ngb-tab title="Transmission Queue">
         <ng-template ngbTabContent>
-          <app-transmission-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-transmission-queue>
+          <app-transmission-queue [selectedPass] = "selectedPass" [telecommands] = "telecommands"></app-transmission-queue>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Execution Queue">
         <ng-template ngbTabContent>
-            <app-execution-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-execution-queue>
+            <app-execution-queue [selectedPass] = "selectedPass" [telecommands] = "telecommands"></app-execution-queue>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>
