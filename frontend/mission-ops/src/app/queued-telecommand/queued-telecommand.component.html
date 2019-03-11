@@ -10,17 +10,25 @@
   </div>
   <div id="queuedTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
     <form>
+      <br/>
       <div class="form-check">
         <input [ngModel] = "queuedTelecommand.priority" type="checkbox" class="form-check-input" name="queuedTelecommandPriority" disabled readonly>
         <label>High Priority Command</label>
       </div>
-      <div class="form-group">
-        <label>Transmission Pass</label>
-        <input [ngModel] = "queuedTelecommand.transmissionPassID"  class="form-control" name= "queuedTelecommandTransmissionPassID" readonly>
-      </div>
-      <div class = "form-group">
-        <label>Execution Pass</label>
-        <input [ngModel] = "queuedTelecommand.transmissionPassID"  class="form-control" name= "queuedTelecommandExecutionPassID" readonly>
+      <br/>
+      <div class="form-row">
+        <div class = "col">
+            <label>Transmission Pass</label>
+        </div>
+        <div class = "col">
+            <input [ngModel] = "queuedTelecommand.transmissionPassID"  class="form-control" name= "queuedTelecommandTransmissionPassID" readonly>
+        </div>
+       <div class = "col">
+          <label>Execution Pass</label>
+       </div>
+        <div class = "col">
+            <input [ngModel] = "queuedTelecommand.transmissionPassID"  class="form-control" name= "queuedTelecommandExecutionPassID" readonly>
+        </div>
       </div>
       <div class = "form-group">
         <label>Execution Datetime</label>
