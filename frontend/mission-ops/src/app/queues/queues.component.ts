@@ -128,7 +128,13 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommands = this.telecommands;
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
-      var userID = user ? user.id : "456";
+      if (!user) {
+        // Not logged in; should not be able to add to the queue.
+        console.log('User not logged in, cannot add to queue');
+        return;
+      } else {
+        var userID = user.id;
+      }
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
         result.executionDate.month-1,
@@ -167,7 +173,13 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommandBatches = this.telecommandBatches;
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
-      var userID = user ? user.id : "456";
+      if (!user) {
+        // Not logged in; should not be able to add to the queue.
+        console.log('User not logged in, cannot add to queue');
+        return;
+      } else {
+        var userID = user.id;
+      }
       console.log(result.executionDate, result.executionTime);
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
