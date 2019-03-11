@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
 
@@ -92,82 +92,95 @@ export class ChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    var msLabels = this.labels.map(x => new Date(x).getTime());
-    var maxValues = new Array(this.values.length).fill(this.maxValue);
-    var minValues = new Array(this.values.length).fill(this.minValue);
-    var zones;
-    console.log(this.maxValue, this.minValue);
-    if (this.maxValue) {
-      zones = [{
-        value: this.minValue,
-        color: '#FF0000',
-      }, {
-        value: this.maxValue,
-      }, {
-        color: '#FF0000',
-      }];
-    } else {
-      zones = [];
-    }
-    this.chartOptions = {
+    this.buildChart();
+}
+
+ngOnChanges(changes: SimpleChanges) {
+  if (changes.values && this.Highcharts && this.Highcharts.charts.length > 0) {
+    console.log('something changes', this.values);
+    this.Highcharts.charts[0].series[0].setData(this.values, false);
+    this.Highcharts.charts[0].redraw();
+  }
+}
+
+buildChart() : void
+{
+  var msLabels = this.labels.map(x => new Date(x).getTime());
+  var maxValues = new Array(this.values.length).fill(this.maxValue);
+  var minValues = new Array(this.values.length).fill(this.minValue);
+  var zones;
+  console.log(this.maxValue, this.minValue);
+  if (this.maxValue) {
+    zones = [{
+      value: this.minValue,
+      color: '#FF0000',
+    }, {
+      value: this.maxValue,
+    }, {
+      color: '#FF0000',
+    }];
+  } else {
+    zones = [];
+  }
+  this.chartOptions = {
+    title: {
+      text: this.title
+    },
+    xAxis: {
       title: {
-        text: this.title
+        text: this.xAxis
       },
-      xAxis: {
-        title: {
-          text: this.xAxis
-        },
-        categories: msLabels,
-        type: 'datetime',
-        labels: {
-          format: '{value:%Y-%m-%d}',
-        }
-      },
-      yAxis: {
-        title: {
-          text: this.yAxis
-        }
-      },
-      tooltip: {
-        crosshairs: [true],
-        formatter: function(){
-          return new Date(this.x).toUTCString() + "<br/>" + this.y;
-        }
-      },
-      series: [{
-        name: this.name,
-        type: 'line',
-        showInLegend: false,
-        data: this.values,
-        zones: zones
-      }, {
-        name: "Max Value",
-        type: 'line',
-        showInLegend: false,
-        data: maxValues,
-        color: "#ff0000",
-        marker: {enabled: false},
-        states: { hover: { enabled: false } },
-      }, {
-        name: "Min Value",
-        type: 'line',
-        showInLegend: false,
-        data: minValues,
-        color: "#ff0000",
-        marker: {enabled: false},
-        states: { hover: { enabled: false } },
-      }],
-      lang: {
-        noData: "No data to display."
-      },
-      noData: {
-          style: {
-              fontWeight: 'bold',
-              fontSize: '15px',
-              color: '#303030'
-          }
+      categories: msLabels,
+      type: 'datetime',
+      labels: {
+        format: '{value:%Y-%m-%d}',
       }
+    },
+    yAxis: {
+      title: {
+        text: this.yAxis
+      }
+    },
+    tooltip: {
+      crosshairs: [true],
+      formatter: function(){
+        return new Date(this.x).toUTCString() + "<br/>" + this.y;
+      }
+    },
+    series: [{
+      name: this.name,
+      type: 'line',
+      showInLegend: false,
+      data: this.values,
+      zones: zones
+    }, {
+      name: "Max Value",
+      type: 'line',
+      showInLegend: false,
+      data: maxValues,
+      color: "#ff0000",
+      marker: {enabled: false},
+      states: { hover: { enabled: false } },
+    }, {
+      name: "Min Value",
+      type: 'line',
+      showInLegend: false,
+      data: minValues,
+      color: "#ff0000",
+      marker: {enabled: false},
+      states: { hover: { enabled: false } },
+    }],
+    lang: {
+      noData: "No data to display."
+    },
+    noData: {
+        style: {
+            fontWeight: 'bold',
+            fontSize: '15px',
+            color: '#303030'
+        }
     }
+  }
 }
 
 }

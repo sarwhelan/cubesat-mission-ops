@@ -44,12 +44,14 @@ export class ComponentListComponent implements OnInit {
       second: 0
     };
 
-    this.chooseDataRangeForm = this.formBuilder.group({
+    this.dateRangeObj = {
       startDate: startDate,
       startTime: defaultTime,
       endDate: endDate,
       endTime: defaultTime,
-    });
+    }
+
+    this.chooseDataRangeForm = this.formBuilder.group(this.dateRangeObj);
   }
 
   submitDataRange() {
