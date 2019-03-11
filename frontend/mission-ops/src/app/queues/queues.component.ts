@@ -17,6 +17,7 @@ import { TelecommandBatchService } from '../services/telecommandBatch/telecomman
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
 import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
 import { PassSum } from 'src/classes/pass-sum';
+const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queues',
@@ -38,8 +39,6 @@ export class QueuesComponent implements OnInit {
   sumTransmissionResults : PassSum[];
   sumExecutionResults : PassSum[];
 
-  private reloadPass: Subject<Pass> = new Subject<Pass>();
-
   constructor(private passService: PassService,
     private modalService: NgbModal,
     private telecommandService: TelecommandService,
@@ -58,19 +57,17 @@ export class QueuesComponent implements OnInit {
     this.getTelecommandBatches();
   }
 
+  getFormatedDate(unformatedDate: Date)
+  {
+    return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
+  }
+
   addPass() : void{
     var newPass = new Pass(new Date());
     this.passService.createPass(newPass)
       .subscribe(pass => {
         this.getPasses();
-        this.reloadPass.next(newPass);
       });
-  }
-
-  toggleActiveQueue() : void
-  {
-    this.executionQueue = !this.executionQueue;
-    this.reloadPass.next(this.selectedPass);
   }
 
   selectExecution(): void{  
@@ -88,16 +85,13 @@ export class QueuesComponent implements OnInit {
   onSelect(pass: Pass) : void
   {
     this.selectedPass = pass;
-    this.reloadPass.next(pass);
   }
 
-  getPasses(pass?: Pass) : void{    
+  getPasses() : void{   
+    this.selectedPass = null; 
     this.passService.getPasses()
       .subscribe(passes => {
         this.passes = passes;
-        if (pass) {
-          this.reloadPass.next(pass);
-        }
       });
   }
 
