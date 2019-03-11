@@ -20,21 +20,21 @@
     <label class="form-check-label" for="adminInput">Administrator</label>
   </div>
   <div class="form-group">
-    <button *ngIf="user?.id === auth.getCurrentUser()?.id; else resetPasswordButton" (click)="promptChangePassword()" class="btn btn-primary">
+    <button *ngIf="user?.id === auth.getCurrentUser()?.id; else resetPasswordButton" (click)="promptChangePassword()" class="btn btn-outline-primary">
       Change Password
     </button>
     <ng-template #resetPasswordButton>
-      <button (click)="resetPassword()" class="btn btn-primary">
+      <button (click)="resetPassword()" class="btn btn-outline-primary">
         Reset Password
       </button>
     </ng-template>
   </div>
   <app-alert [alertStyle]="'danger'" #generalAlert></app-alert>
-  <button (click)="saveChanges()" class="btn btn-primary">
+  <button (click)="saveChanges()" class="btn btn-outline-primary">
     Save Changes
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>
-  <button class="btn btn-secondary" (click)="goBack()">
+  <button class="btn btn-outline-secondary" (click)="goBack()">
     Cancel
   </button>
 </form>
@@ -68,7 +68,7 @@
     </form>
   </ng-container>
   <ng-container modal-footer>
-    <button (click)="changePassword()" class="btn btn-primary">
+    <button (click)="changePassword()" class="btn btn-outline-primary">
       Change Password
       <span *ngIf="passwordProcessing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     </button>

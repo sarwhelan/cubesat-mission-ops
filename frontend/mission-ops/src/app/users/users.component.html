@@ -21,8 +21,8 @@
           </div>
         </td>
         <td class="text-right">
-          <a class="btn btn-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
-          <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
+          <a class="btn btn-outline-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
+          <button (click)="promptDeleteUser(user)" class="btn btn-outline-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
         </td>
       </tr>
     </ng-container>
@@ -55,7 +55,7 @@
       </select>
     </div>
     <div class="col-sm text-right">
-      <a class="btn btn-primary" role="button" href="/users/create">
+      <a class="btn btn-outline-primary" role="button" href="/users/create">
         New User
       </a>
     </div>
@@ -74,7 +74,7 @@
     <app-alert #deleteUserAlert [alertStyle]="'danger'"></app-alert>
   </ng-container>
   <ng-container modal-footer>
-    <button (click)="deleteUser()" class="btn btn-danger" [attr.disabled]="deleteConfirm !== deletingUser?.email ? '' : null">
+    <button (click)="deleteUser()" class="btn btn-outline-danger" [attr.disabled]="deleteConfirm !== deletingUser?.email ? '' : null">
       Delete
       <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     </button>
