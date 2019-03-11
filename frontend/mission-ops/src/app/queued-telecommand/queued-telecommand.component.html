@@ -1,6 +1,12 @@
 <div *ngIf="queuedTelecommand && telecommandDetails">
   <div style="cursor: pointer;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="queuedTelecommandDetailsPane">  
-    <span><span class = "badge badge-light">{{queuedTelecommand.telecommandID}}</span>{{telecommandDetails.name}}</span>
+    <span>
+        <span class = "badge badge-light">{{queuedTelecommand.telecommandID}}</span>
+        {{telecommandDetails.name}}
+        <ng-container *ngIf = "queuedTelecommand.priority">
+            <span class = "badge badge-danger">!</span>
+        </ng-container>
+    </span>
   </div>
   <div id="queuedTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
     <form>
