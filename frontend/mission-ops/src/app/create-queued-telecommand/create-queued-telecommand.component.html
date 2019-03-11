@@ -1,75 +1,80 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{modalTitle}}</h4>
-    <button type="button" class="close" aria-label="Close"
-     (click)="activeModal.dismiss('Cross click')">
-    </button>
-  </div>
-  <form [formGroup] = "createQtcForm" (ngSubmit) = "submitQtc()">
-    <div class = "modal-body">
-      <div class = "container">
+  <h4 class="modal-title">{{modalTitle}}</h4>
+  <button type="button" class="close" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<form [formGroup] = "createQtcForm" (ngSubmit) = "submitQtc()">
+  <div class = "modal-body">
+    <div class = "container">
+      <div class = "form-group">
+        <label for = "system">User</label>
+        <input type = "text"
+          [value] = "auth.getCurrentUser()?.name"
+          class = "form-control"
+          name = "user"
+          readonly/>
+      </div>
+      <div *ngIf = "!isBatch; else batch">
         <div class = "form-group">
-          <label for = "system">User</label>
-          <input type = "text"
-            [value] = "auth.getCurrentUser()?.name"
-            class = "form-control"
-            name = "user"
-            readonly/>
-        </div>
-        <div *ngIf = "!isBatch; else batch">
-            <div class = "form-group">
-              <label for = "telecommandID">Telecommand</label>
-              <select class="form-control" 
-                      id="telecommandID" 
-                      formControlName="telecommandID"
-                      (change) = "updateTelecommand($event.target.value)">
-                  <option *ngFor="let tc of telecommands, let i = index" 
-                          [attr.selected] = "i == 0 ? true : null" 
-                          [value] = "tc.telecommandID"
-                          [attr.value] = "tc.telecommandID">
-                          {{tc.name}}
-                  </option>
-              </select>
-            </div>
-            <div class = "form-group">
-              <label for = "commandParams">Command Parameters</label>
-              <textarea
-                formControlName = "commandParams"
-                class = "form-control"
-                [value] = "selectedTelecommand.command"></textarea>
-            </div>
-        </div>
-        <ng-template #batch>
-          <div class = "form-group">
-              <label for = "telecommandBatchID">Telecommand</label>
-              <select class="form-control" 
-                      id="telecommandBatchID" 
-                      formControlName="telecommandBatchID"
-                      (change) = "updateTelecommandBatch($event.target.value)">
-                  <option *ngFor="let tc of telecommandBatches, let i = index" 
-                          [attr.selected] = "i == 0 ? true : null" 
-                          [value] = "tc.id"
-                          [attr.value] = "tc.id">
-                          {{tc.name}}
-                  </option>
-              </select>
-            </div>
-        </ng-template>
+          <label for = "telecommandID">Telecommand</label>
+          <select class="form-control" 
+                  id="telecommandID" 
+                  formControlName="telecommandID"
+                  (change) = "updateTelecommand($event.target.value)">
+            <option *ngFor="let tc of telecommands, let i = index" 
+                    [attr.selected] = "i == 0 ? true : null" 
+                    [value] = "tc.telecommandID"
+                    [attr.value] = "tc.telecommandID">
+                      {{tc.name}}
+            </option>
+          </select>
         </div>
         <div class = "form-group">
-          <label for = "name">High Priority?</label>
+          <label for = "commandParams">Command Parameters</label>
+          <textarea formControlName = "commandParams"
+                    class = "form-control"
+                    [value] = "selectedTelecommand.command">
+          </textarea>
+        </div>
+      </div>
+      <ng-template #batch>
+        <div class = "form-group">
+          <label for = "telecommandBatchID">Telecommand</label>
+          <select class="form-control" 
+                  id="telecommandBatchID" 
+                  formControlName="telecommandBatchID"
+                  (change) = "updateTelecommandBatch($event.target.value)">
+            <option *ngFor="let tc of telecommandBatches, let i = index" 
+                    [attr.selected] = "i == 0 ? true : null" 
+                    [value] = "tc.id"
+                    [attr.value] = "tc.id">
+                      {{tc.name}}
+            </option>
+          </select>
+        </div>
+      </ng-template>
+      <div class = "form-group">
+        <div class = "form-check-inline">
           <input type = "checkbox"
-            class = "form-control"
+            class = "form-check-input form-control"
             formControlName = "priorityLevel"/>
+          <label for = "priorityLevel"
+                class = "form-check-label">
+            High Priority
+          </label>
         </div>
-        <div class = "form-group">
-          <label for = "executionDate">Execution Datetime</label>
-          <app-datetime-picker dateFormControlName = "executionDate" timeFormControlName = "executionTime" [formGroup] = "createQtcForm"></app-datetime-picker>
-        </div>
+      </div>
+      <div class = "form-group">
+        <label for = "executionDate">Execution Datetime</label>
+        <app-datetime-picker dateFormControlName = "executionDate" timeFormControlName = "executionTime" [formGroup] = "createQtcForm"></app-datetime-picker>
+      </div>
     </div>
+  </div>
   <div class="modal-footer">
     <button class = "btn btn-success"
-      [disabled] = "!createQtcForm.valid">
-      {{modalSubmit}}
+            [disabled] = "!createQtcForm.valid">
+              {{modalSubmit}}
     </button>
   </div>
-  </form>
+</form>
