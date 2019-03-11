@@ -23,8 +23,19 @@
         </div>
     </div>
     <div class = "col-md-8">
-      <div *ngIf = "selectedComponent">
-          <app-component-telemetry [component] = "selectedComponent"></app-component-telemetry>
+      <div class = "row">
+        <form class = "d-flex" [formGroup] = "chooseDataRangeForm" (ngSubmit) = "submitDataRange()">
+              <app-datetime-picker dateFormControlName = "startDate" timeFormControlName = "startTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+              <app-datetime-picker dateFormControlName = "endDate" timeFormControlName = "endTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+              <button class = "btn btn-success align-self-start" [disabled] = "!chooseDataRangeForm.valid">
+                Refresh
+              </button>
+        </form>
+      </div>
+      <div class = "row">
+        <div *ngIf = "selectedComponent">
+            <app-component-telemetry [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
+        </div>
       </div>
   </div>
 </div>

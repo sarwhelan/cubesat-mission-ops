@@ -3,7 +3,7 @@
     <ul class="list-group">
         <li *ngFor="let componentTelemetry of componentTelemetries"
         class="list-group-item" style="margin:auto">
-          <app-telemetry-data [componentTelemetry] = "componentTelemetry"></app-telemetry-data>
+          <app-telemetry-data [componentTelemetry] = "componentTelemetry" [dateRangeObj] = "dateRangeObj"></app-telemetry-data>
         </li>
       </ul>
     </div>

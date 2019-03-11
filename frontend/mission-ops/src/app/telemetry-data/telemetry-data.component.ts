@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { ComponentTelemetryDataService } from '../services/component-telemetry-data/component-telemetry-data.service';
 import { TelemetryData } from '../../classes/telemetry-data';
 import { ComponentTelemetry } from '../../classes/component-telemetry';
@@ -11,6 +11,8 @@ import { ComponentTelemetry } from '../../classes/component-telemetry';
 export class TelemetryDataComponent implements OnInit {
 
   private _componentTelemetry: ComponentTelemetry;
+
+  @Input() dateRangeObj : any;
 
   @Input()
   private get componentTelemetry() {
@@ -31,6 +33,14 @@ export class TelemetryDataComponent implements OnInit {
     console.log('init telemetry data');
     this._componentTelemetry = this._componentTelemetry;
     this.getTelemetryData(this.componentTelemetry.componentTelemetryID);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.dateRangeObj) {
+      console.log('on change');
+      this._componentTelemetry = this._componentTelemetry;
+      this.getTelemetryData(this.componentTelemetry.componentTelemetryID);
+    }
   }
 
   getTelemetryData(componentTelemetryID: number): void {
