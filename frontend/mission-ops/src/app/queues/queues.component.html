@@ -19,7 +19,7 @@
       <app-transmission-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-transmission-queue>
     </div>
     <ng-template #execQ>
-      <app-execution-queue [events] = "reloadPass.asObservable()"></app-execution-queue>
+      <app-execution-queue [events] = "reloadPass.asObservable()" [telecommands] = "telecommands"></app-execution-queue>
     </ng-template>
   </div>
 </div>

@@ -4,6 +4,7 @@ import { PassService } from '../services/pass/pass.service';
 import { QueuedTelecommand } from '../../classes/queuedTelecommand';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { Observable } from 'rxjs';
+import { Telecommand } from 'src/classes/telecommand';
 
 @Component({
   selector: 'app-execution-queue',
@@ -20,10 +21,9 @@ export class ExecutionQueueComponent implements OnInit {
    */
   @Input()
   events: Observable<Pass>;
-  
   private selectedPass: Pass;
-  private newPassEstimatedPassDateTime: Date;
   private passQueuedTelecommands: QueuedTelecommand[];
+  @Input() telecommands: Telecommand[];
 
   private reloadPassSubscription: any;
   
@@ -34,11 +34,16 @@ export class ExecutionQueueComponent implements OnInit {
   }
 
   onSelect(pass: Pass): void {
+    if (!pass) return;
     this.selectedPass = pass;
-    this.queuedTelecommandService.getQueuedTelecommands().subscribe(queuedTelecommands => {
+    this.queuedTelecommandService.getQueuedTelecommandsExecution(this.selectedPass).subscribe(queuedTelecommands => {
       this.passQueuedTelecommands = queuedTelecommands;
-      //this.passQueuedTelecommands.push(new QueuedTelecommand(1, 1))
     });
+  }
+
+  reloadQueuedTelecommands(){
+    this.queuedTelecommandService.getQueuedTelecommandsExecution(this.selectedPass)
+      .subscribe(qtc => this.passQueuedTelecommands = qtc);
   }
 
   ngOnDestroy() {
