@@ -129,7 +129,7 @@ export class QueuesComponent implements OnInit {
       var userID = user ? user.id : "456";
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
-        result.executionDate.month,
+        result.executionDate.month-1,
         result.executionDate.day,
         result.executionTime.hour,
         result.executionTime.minute,
@@ -138,7 +138,6 @@ export class QueuesComponent implements OnInit {
       var createQtc = (self, maxBandwidth, maxPower, activePasses) => {
         var activeTelecommand = this.telecommands.find(x => x.telecommandID == result.telecommandID);
         var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime, maxBandwidth, maxPower)
-        console.log("exec and trans ids ",execID, transID);
         var newQtc = new QueuedTelecommand(
           execID,
           transID,
@@ -167,9 +166,10 @@ export class QueuesComponent implements OnInit {
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
       var userID = user ? user.id : "456";
+      console.log(result.executionDate, result.executionTime);
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
-        result.executionDate.month,
+        result.executionDate.month-1, // Indexed from 0. Why. WHY.
         result.executionDate.day,
         result.executionTime.hour,
         result.executionTime.minute,
@@ -181,26 +181,20 @@ export class QueuesComponent implements OnInit {
           var createQtc = (self, maxBandwidth, maxPower, activePasses) => {
             var pQtcBatch = [];
             ptcs.forEach(ptc => {
-              ptc.relativeExecutionTime = new Date(ptc.relativeExecutionTime);
-              if (ptc.relativeExecutionTime){
-                executionTime.setUTCFullYear(executionTime.getUTCFullYear() + ptc.relativeExecutionTime.getUTCFullYear());
-                executionTime.setUTCMonth(executionTime.getUTCMonth() + ptc.relativeExecutionTime.getUTCMonth());
-                executionTime.setUTCDate(executionTime.getUTCDate() + ptc.relativeExecutionTime.getUTCDate());
-                executionTime.setUTCHours(executionTime.getUTCHours() + ptc.relativeExecutionTime.getUTCHours());
-                executionTime.setUTCMinutes(executionTime.getUTCMinutes() + ptc.relativeExecutionTime.getUTCMinutes());
-                executionTime.setUTCSeconds(executionTime.getUTCSeconds() + ptc.relativeExecutionTime.getUTCSeconds());
-              }
+              var telecommandExecutionTime = new Date(executionTime.getTime());
+              telecommandExecutionTime.setUTCDate(executionTime.getUTCDate() + ptc.dayDelay);
+              telecommandExecutionTime.setUTCHours(executionTime.getUTCHours() + ptc.hourDelay);
+              telecommandExecutionTime.setUTCMinutes(executionTime.getUTCMinutes() + ptc.minuteDelay);
+              telecommandExecutionTime.setUTCSeconds(executionTime.getUTCSeconds() + ptc.secondDelay);
               var activeTelecommand = this.telecommands.find(x => x.telecommandID == ptc.telecommandID);
-              console.log(activeTelecommand);
-              var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime, maxBandwidth, maxPower);
-              console.log("exec and trans ids ",execID, transID);
+              var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, telecommandExecutionTime, maxBandwidth, maxPower);
               pQtcBatch.push(Object.values(new QueuedTelecommand(
                 execID,
                 transID,
                 parseInt(userID),
                 ptc.telecommandID,
                 ptc.priorityLevel,
-                executionTime,
+                telecommandExecutionTime,
                 ptc.commandParameters,
               )));
             });

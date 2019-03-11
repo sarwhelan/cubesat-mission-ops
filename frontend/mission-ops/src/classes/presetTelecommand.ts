@@ -4,6 +4,7 @@
     batchID: number;
     commandParameters: string;
     priorityLevel: boolean;
+    secondDelay: number;
     minuteDelay: number;
     hourDelay: number;
     dayDelay: number;
