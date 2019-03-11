@@ -47,7 +47,7 @@ export class TelecommandBatchesComponent implements OnInit {
       .subscribe(presetTelecommands => this.selectedPresetTelecommands = presetTelecommands);
   }
 
-  relaodPresetTelecommands(){
+  reloadPresetTelecommands(){
     this.presetTelecommandService.getPresetTelecommands(this.selectedBatch.batchID)
       .subscribe(presetTelecommands => this.selectedPresetTelecommands = presetTelecommands);
   }
@@ -87,7 +87,7 @@ export class TelecommandBatchesComponent implements OnInit {
 
     this.presetTelecommandService.addNewPresetTelecommand(newPresetTelecommand)
       .subscribe(results =>{
-        this.relaodPresetTelecommands();
+        this.reloadPresetTelecommands();
       });
   }
 

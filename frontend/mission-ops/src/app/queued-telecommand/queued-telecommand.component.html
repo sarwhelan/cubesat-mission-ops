@@ -1,11 +1,16 @@
 <div *ngIf="queuedTelecommand && telecommandDetails">
   <div style="cursor: pointer;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="queuedTelecommandDetailsPane">  
     <span class = "align-middle">
-        <span class = "badge badge-light">{{queuedTelecommand.telecommandID}}</span>
-        {{telecommandDetails.name}}
-        <ng-container *ngIf = "queuedTelecommand.priority">
-            <span class = "badge badge-danger">!</span>
+        <span class = "badge badge-success">{{orderRank}}</span>
+        &nbsp;
+        <ng-container>
+            <span *ngIf = "queuedTelecommand.priority" class = "badge badge-danger">!</span>
+            <span *ngIf = "!queuedTelecommand.priority" class = "badge" style = "color: transparent;">!</span>
         </ng-container>
+        &nbsp;
+        <b>{{telecommandDetails.name}}</b>
+        &nbsp;
+        Exe. Time: {{getFormatedDate()}} UTC
         <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-danger d-flex float-right"><i class = "fa fa-trash"></i></button>
     </span>
   </div>

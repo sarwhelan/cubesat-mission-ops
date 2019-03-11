@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Pass } from '../../classes/pass';
 import { PassService } from '../services/pass/pass.service';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
@@ -15,22 +15,11 @@ import { UsersService } from '../services/users/users.service';
 })
 export class TransmissionQueueComponent implements OnInit {
 
-  /**
-   * The passes of the CubeSat. Contains information about the commands to be transmitted.
-   * 
-   * @type {Pass[]}
-   * @memberof TransmissionQueueComponent
-   */
-
-  @Input()
-  events: Observable<Pass>;
-  private selectedPass: Pass;
-  private newPassEstimatedPassDateTime: Date;
-  private passQueuedTelecommands: QueuedTelecommand[];
-  private users: User[]
+  @Input() selectedPass: Pass;
   @Input() telecommands: Telecommand[];
-
-  private reloadPassSubscription: any;
+  
+  private passQueuedTelecommands: QueuedTelecommand[];
+  users: User[]
 
   constructor(private userService: UsersService, private queuedTelecommandService: QueuedTelecommandService) { }
 
@@ -38,23 +27,27 @@ export class TransmissionQueueComponent implements OnInit {
     this.userService.getUsers(Number.MAX_SAFE_INTEGER - 1)
       .subscribe(users => {
         this.users = users.items
+        this.reloadQueuedTelecommands();
       });
-    this.reloadPassSubscription = this.events.subscribe(pass => this.onSelect(pass));
   }
 
-  onSelect(pass: Pass) : void
+  ngOnChanges(changes: SimpleChanges) : void
   {
-    if (!pass) return;
-    this.selectedPass = pass;
+    if (!changes.selectedPass)
+    {
+      return;
+    }
+
+    if (changes.selectedPass.firstChange)
+    {
+      return;
+    }
+
     this.reloadQueuedTelecommands();
   }
 
   reloadQueuedTelecommands(){
     this.queuedTelecommandService.getQueuedTelecommandsTransmission(this.selectedPass)
       .subscribe(qtc => this.passQueuedTelecommands = qtc);
-  }
-
-  ngOnDestroy() {
-    this.reloadPassSubscription.unsubscribe();
   }
 }

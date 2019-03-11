@@ -17,6 +17,7 @@ import { TelecommandBatchService } from '../services/telecommandBatch/telecomman
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
 import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
 import { PassSum } from 'src/classes/pass-sum';
+const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queues',
@@ -38,8 +39,6 @@ export class QueuesComponent implements OnInit {
   sumTransmissionResults : PassSum[];
   sumExecutionResults : PassSum[];
 
-  private reloadPass: Subject<Pass> = new Subject<Pass>();
-
   constructor(private passService: PassService,
     private modalService: NgbModal,
     private telecommandService: TelecommandService,
@@ -58,19 +57,17 @@ export class QueuesComponent implements OnInit {
     this.getTelecommandBatches();
   }
 
+  getFormatedDate(unformatedDate: Date)
+  {
+    return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
+  }
+
   addPass() : void{
     var newPass = new Pass(new Date());
     this.passService.createPass(newPass)
       .subscribe(pass => {
         this.getPasses();
-        this.reloadPass.next(newPass);
       });
-  }
-
-  toggleActiveQueue() : void
-  {
-    this.executionQueue = !this.executionQueue;
-    this.reloadPass.next(this.selectedPass);
   }
 
   selectExecution(): void{  
@@ -88,16 +85,13 @@ export class QueuesComponent implements OnInit {
   onSelect(pass: Pass) : void
   {
     this.selectedPass = pass;
-    this.reloadPass.next(pass);
   }
 
-  getPasses(pass?: Pass) : void{    
+  getPasses() : void{   
+    this.selectedPass = null; 
     this.passService.getPasses()
       .subscribe(passes => {
         this.passes = passes;
-        if (pass) {
-          this.reloadPass.next(pass);
-        }
       });
   }
 
@@ -128,7 +122,15 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommands = this.telecommands;
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
-      var userID = user ? user.id : "456";
+      var userID;
+      if (!user) {
+        // Not logged in; should not be able to add to the queue.
+        console.log('User not logged in, cannot add to queue');
+        userID = "456";
+      } else {
+        userID = user.id;
+        console.log(user.id);
+      }
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
         result.executionDate.month-1,
@@ -143,7 +145,7 @@ export class QueuesComponent implements OnInit {
         var newQtc = new QueuedTelecommand(
           execID,
           transID,
-          parseInt(userID),
+          userID,
           result.telecommandID,
           result.priorityLevel,
           executionTime,
@@ -167,7 +169,15 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommandBatches = this.telecommandBatches;
     modalRef.result.then((result) => {
       var user = this.auth.getCurrentUser();
-      var userID = user ? user.id : "456";
+      var userID;
+      if (!user) {
+        // Not logged in; should not be able to add to the queue.
+        console.log('User not logged in, cannot add to queue');
+        userID = "456";
+      } else {
+        userID = user.id;
+        console.log(user.id);
+      }
       console.log(result.executionDate, result.executionTime);
       var executionTime = new Date(Date.UTC(
         result.executionDate.year,
@@ -193,7 +203,7 @@ export class QueuesComponent implements OnInit {
               pQtcBatch.push(Object.values(new QueuedTelecommand(
                 execID,
                 transID,
-                parseInt(userID),
+                userID,
                 ptc.telecommandID,
                 ptc.priorityLevel,
                 telecommandExecutionTime,
@@ -237,35 +247,67 @@ export class QueuesComponent implements OnInit {
   calculatePassIDs(activePasses: Pass[], activeTelecommand: Telecommand, executionTime: Date, maxBandwidth: number, maxPower: number) : [number, number]
   {
     var calcTransID, calcExecID;
-    // Transmission sum
-    if (!this.sumTransmissionResults) {
-      calcTransID = activePasses[0].passID;
+    
+    // Execution
+    if (!this.sumExecutionResults) {
+      calcExecID = activePasses[0].passID;
     } 
+    else {
+      //var sortedActivePassByTime = [...activePasses].sort((a,b) => (a.estimatedPassDateTime.getTime() > b.estimatedPassDateTime.getTime()) ? 1 : -1);
+      for (var i = 0; i < activePasses.length; i++) {
+        if (executionTime.getTime() > new Date(activePasses[i].estimatedPassDateTime).getTime()) continue;
+        if (i == 0) {
+          console.log('no pass exists to execute this command');
+          break;
+        }
+        var passSum = this.sumExecutionResults.find(x => x.passID == activePasses[i-1].passID);
+
+        // Limit passes on power.
+        if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= maxPower)
+        {
+          calcExecID = activePasses[i].passID;
+          if (!passSum) {
+            console.log('pushed from exec', activeTelecommand);
+            this.sumExecutionResults.push({passID: calcExecID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
+          }
+          break;
+        } else {
+          console.log('THROW ERROR: pass capacity reached');
+          break;
+        }
+      }
+    }
+    if (!calcExecID) {
+      // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
+      calcExecID = 1;
+    }
+
+    // Transmission
+    if (!this.sumExecutionResults) {
+      calcTransID = activePasses[0].passID;
+    }
     else {
       for (var i = 0; i < activePasses.length; i++) {
         var passSum = this.sumTransmissionResults.find(x => x.passID == activePasses[i].passID);
 
-        if (!passSum || (passSum.sumBandwidth + activeTelecommand.bandwidthUsage <= maxBandwidth 
-          && passSum.sumPower + activeTelecommand.powerConsumption <= maxPower))
+        // Limit passes on bandwidth.
+        if (!passSum || passSum.sumBandwidth + activeTelecommand.bandwidthUsage <= maxBandwidth)
         {
           calcTransID = activePasses[i].passID;
           if (!passSum) {
-            console.log('pushed', activeTelecommand);
+            console.log('pushed from trans', activeTelecommand);
             this.sumTransmissionResults.push({passID: calcTransID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
           }
           break;
         }
       }
-    }
-    if (!calcTransID) {
-      // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
-      calcTransID = 1;
+      if (!calcTransID) {
+        // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
+        calcTransID = 1;
+      }
     }
 
-    // TODO: Execution queuing
-    calcExecID = 1;
-
-    
+    console.log(calcTransID, calcExecID);
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumBandwidth += activeTelecommand.bandwidthUsage;
     this.sumTransmissionResults.find(x => x.passID == calcTransID).sumPower += activeTelecommand.powerConsumption;
     this.sumExecutionResults.find(x => x.passID == calcExecID).sumBandwidth += activeTelecommand.bandwidthUsage;

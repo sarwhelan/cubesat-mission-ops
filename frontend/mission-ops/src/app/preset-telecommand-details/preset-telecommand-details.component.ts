@@ -10,7 +10,7 @@ import { PresetTelecommandService } from '../services/presetTelecommand/preset-t
 export class PresetTelecommandDetailsComponent implements OnInit {
 
   @Input() presetTelecommand: PresetTelecommand;
-  @Output() relaodPresetTelecommands = new EventEmitter<number>();
+  @Output() reloadPresetTelecommands = new EventEmitter<number>();
   
   originalPresetTelecommand: PresetTelecommand;
   public isCollapsed = true;
@@ -39,7 +39,7 @@ export class PresetTelecommandDetailsComponent implements OnInit {
       .subscribe(results => { 
         // update the presetTelecommands in case the order has changed due to 
         // relative execution time changes        
-        this.relaodPresetTelecommands.emit();
+        this.reloadPresetTelecommands.emit();
       });
     
   }
@@ -56,7 +56,7 @@ export class PresetTelecommandDetailsComponent implements OnInit {
   deletePresetTelecommand(): void{
     this.presetTelecommandService.deletePresetTelecommand(this.presetTelecommand.presetTelecommandID)
     .subscribe(results => {
-      this.relaodPresetTelecommands.emit();
+      this.reloadPresetTelecommands.emit();
     });
   }
 
