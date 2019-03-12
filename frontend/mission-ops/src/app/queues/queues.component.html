@@ -27,14 +27,13 @@
           <ng-template ngbTabContent>
             <ul class="list-group">
               <ng-container *ngIf = "futurePasses && futurePasses.length > 0; else noFuturePasses">
-
+                  <li *ngFor="let pass of futurePasses"
+                  (click)="onSelect(pass)"
+                  [class.active]="pass === selectedPass"
+                  class="list-group-item">
+                    <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
+                  </li>
               </ng-container>
-              <li *ngFor="let pass of futurePasses"
-                (click)="onSelect(pass)"
-                [class.active]="pass === selectedPass"
-                class="list-group-item">
-                  <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
-                </li>
               </ul> 
           </ng-template>
         </ngb-tab>
