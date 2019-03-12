@@ -17,7 +17,7 @@
     <tbody>
     <tr *ngFor="let anom of anomalies">
       <!--th scope="row">{{ anom.telemDataId }}</th>-->
-      <td>{{ anom.collectionTime}}</td>
+      <td>{{ getFormatedDate(anom.collectionTime)}}</td>
       <td>{{ anom.compTelemName}}</td>
       <td>{{ anom.compName}}</td>
       <td>{{ anom.sysName}}</td>

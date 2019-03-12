@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnomaliesService } from '../services/anomalies/anomalies.service';
 import { Anomaly } from '../../classes/anomaly';
+const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-anomaly-table',
@@ -16,6 +17,11 @@ export class AnomalyTableComponent implements OnInit {
 
   ngOnInit() {
     this.getAnomalies();
+  }
+
+  getFormatedDate(unformatedDate: Date)
+  {
+    return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
   }
 
   getAnomalies() {
