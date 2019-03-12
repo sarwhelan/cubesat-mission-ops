@@ -11,90 +11,6 @@ import { PagedList } from 'src/classes/paged-list';
 })
 export class PanoramicMediaService {
 
-  private _fakeMedia: PanoramicMedia[] = [
-    {
-      src: '',
-      previewSrc: '',
-      type: 'image',
-      name: 'Test Image 1',
-      tags: [ 'test', 'dope' ],
-      created: new Date('2019-01-05'),
-      id: '1'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'image',
-      name: 'Test Image 2',
-      tags: [ 'photo', 'pretty' ],
-      created: new Date('2019-01-29'),
-      id: '2'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'video',
-      name: 'Test Video 1',
-      tags: [ 'wow' ],
-      created: new Date('2019-02-15'),
-      id: '3'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'image',
-      name: 'Test Image 1',
-      tags: [ 'test', 'dope' ],
-      created: new Date('2019-01-05'),
-      id: '4'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'image',
-      name: 'Test Image 2',
-      tags: [ 'photo', 'pretty' ],
-      created: new Date('2019-01-29'),
-      id: '5'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'video',
-      name: 'Test Video 1',
-      tags: [ 'wow' ],
-      created: new Date('2019-02-15'),
-      id: '6'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'image',
-      name: 'Test Image 1',
-      tags: [ 'test', 'dope' ],
-      created: new Date('2019-01-05'),
-      id: '7'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'image',
-      name: 'Test Image 2',
-      tags: [ 'photo', 'pretty' ],
-      created: new Date('2019-01-29'),
-      id: '8'
-    },
-    {
-      src: '',
-      previewSrc: '',
-      type: 'video',
-      name: 'Test Video 1',
-      tags: [ 'wow' ],
-      created: new Date('2019-02-15'),
-      id: '9'
-    },
-  ];
-
   private media: Array<PanoramicMedia>;
   private mediaObs$: Observable<Array<PanoramicMedia>>;
 
@@ -113,34 +29,15 @@ export class PanoramicMediaService {
    * @memberof PanoramicMediaService
    */
   private fetchMediaList(): Observable<Array<PanoramicMedia>> {
-    const observables$ = [];
-    // Get src for each image
-    for(let i = 0; i < this._fakeMedia.length; i++) {
-      observables$.push(
-        this.http.get(`assets/${this._fakeMedia[i].name}.txt`, {
-          responseType: 'text'
-        }).pipe(
-          tap((val) => this._fakeMedia[i].src = val)
-        )
-      );
-    }
-
-    // Get previewSrc for each image
-    for(let i = 0; i < this._fakeMedia.length; i++) {
-      observables$.push(
-        this.http.get(`assets/${this._fakeMedia[i].name} Preview.txt`, {
-          responseType: 'text'
-        }).pipe(
-          tap((val) => this._fakeMedia[i].previewSrc = val)
-        )
-      );
-    }
-
-    return forkJoin(observables$).pipe(
-      map(() => this._fakeMedia),
-      tap((val) => {
-        this.media = val;
-        this.mediaObs$ = null;
+    return this.http.get('http://localhost:3000/media').pipe(
+      map((val) => val as Array<PanoramicMedia>),
+      map((val) => {
+        for(let i = 0; i < val.length; i++) {
+          // Replace source fields with full urls
+          val[i].src = `http://localhost:3000${val[i].src}`;
+          val[i].previewSrc = `http://localhost:3000${val[i].previewSrc}`;
+        }
+        return val;
       })
     );
   }
@@ -172,7 +69,7 @@ export class PanoramicMediaService {
       map((val) => new PagedList<PanoramicMedia>({
         items: val.slice(pageSize * page, pageSize * (page + 1)),
         page: page,
-        total: this.media.length
+        total: val.length
       }))
     );
   }
@@ -180,11 +77,11 @@ export class PanoramicMediaService {
   /**
    * Gets the PanoramicMedia object indicated by the given id.
    *
-   * @param {string} id The id of the PanoramicMedia object to get.
+   * @param {number} id The id of the PanoramicMedia object to get.
    * @returns {Observable<PanoramicMedia>}
    * @memberof PanoramicMediaService
    */
-  public getMedia(id: string): Observable<PanoramicMedia> {
+  public getMedia(id: number): Observable<PanoramicMedia> {
     let obs$: Observable<Array<PanoramicMedia>>;
     if (this.mediaObs$) {
       obs$ = this.mediaObs$;

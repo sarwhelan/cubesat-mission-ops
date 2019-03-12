@@ -4,6 +4,5 @@ export class PanoramicMedia {
     type: 'image' | 'video';
     name: string;
     tags: string[];
-    created: Date;
-    id: string;
+    id: number;
 }

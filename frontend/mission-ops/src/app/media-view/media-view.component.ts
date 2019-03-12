@@ -16,7 +16,7 @@ export class MediaViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private mediaService: PanoramicMediaService) { 
     const mediaId = this.route.snapshot.queryParamMap.get('id');
     if (mediaId) {
-      this.mediaService.getMedia(mediaId).subscribe((val) => {
+      this.mediaService.getMedia(Number(mediaId)).subscribe((val) => {
         this.media = val;
       }, (err) => {
         console.log(err);
