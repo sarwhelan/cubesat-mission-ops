@@ -3,8 +3,10 @@
     <div class="col">
       <button type="button"
       *ngIf="viewingExistingTelecommand"
-      class="btn btn-success"
+      class="btn btn-outline-success"
       (click)="addNewTelecommand()">Add New Telecommand</button>
+      <br/>
+      <br/>
       <ul class="list-group">
         <li *ngFor="let telecommand of telecommands"
         (click)="onSelect(telecommand)"
@@ -20,8 +22,8 @@
         <label style="color:red;">{{error}}</label>
         <br />
       </div>
-      <button *ngIf="!viewingExistingTelecommand" (click)="saveTelecommand()" type="button" class="btn btn-success">Save Changes</button>
-      <button *ngIf="selectedTelecommand && viewingExistingTelecommand" (click)="archiveTelecommand()" type="button" class="btn btn-danger">Archive Telecommand</button>
-      <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-warning">Discard Telecommand</button>
+      <button *ngIf="!viewingExistingTelecommand" (click)="saveTelecommand()" type="button" class="btn btn-outline-success">Save Changes</button>
+      <button *ngIf="selectedTelecommand && viewingExistingTelecommand" (click)="archiveTelecommand()" type="button" class="btn btn-outline-danger">Archive Telecommand</button>
+      <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-outline-warning">Discard Telecommand</button>
     </div>
 </div>

@@ -33,17 +33,10 @@ export class TransmissionQueueComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) : void
   {
-    if (!changes.selectedPass)
+    if (changes.selectedPass && !changes.selectedPass.firstChange)
     {
-      return;
+      this.reloadQueuedTelecommands();
     }
-
-    if (changes.selectedPass.firstChange)
-    {
-      return;
-    }
-
-    this.reloadQueuedTelecommands();
   }
 
   reloadQueuedTelecommands(){

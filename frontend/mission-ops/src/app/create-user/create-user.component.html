@@ -20,7 +20,7 @@
     <label class="form-check-label" for="adminInput">Administrator</label>
   </div>
   <app-alert [alertStyle]="'danger'"></app-alert>
-  <button (click)="create()" class="btn btn-primary">
+  <button (click)="create()" class="btn btn-outline-primary">
     Create
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>

@@ -18,6 +18,8 @@ export class HeaderComponent implements OnInit {
     new HeaderItem("Telemetry", "/telemetry"),
   ];
 
+  isCollapsed = true;
+
   constructor(private router: Router, private auth: AuthService) {  
     
     // This allows the active header to be selected even when the page is refreshed

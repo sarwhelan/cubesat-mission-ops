@@ -12,9 +12,9 @@
             {{system.systemName}}
           </li>
         </ul>
-        <button type="button" class="btn btn-success" (click)="promptAddSystem()">Add <i class="fa fa-plus-square"></i></button>
-        <button type="button" class="btn btn-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit <i class="fa fa-edit"></i></button>
-        <button type="button" class="btn btn-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete <i class="fa fa-trash"></i></button>
+        <button type="button" class="btn btn-outline-success" (click)="promptAddSystem()">Add <i class="fa fa-plus-square"></i></button>
+        <button type="button" class="btn btn-outline-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit <i class="fa fa-edit"></i></button>
+        <button type="button" class="btn btn-outline-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete <i class="fa fa-trash"></i></button>
     </div>
   </div>
   <div class = "col-md-3">
@@ -30,9 +30,9 @@
                 {{component.name}}
               </li>
             </ul>
-            <button type="button" class="btn btn-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
-            <button type="button" class="btn btn-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
-            <button type="button" class="btn btn-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
+            <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
+            <button type="button" class="btn btn-outline-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-outline-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
       </div>
       <ng-template #noSystem>
         <p>
@@ -59,9 +59,9 @@
                 <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
               </li>
             </ul>
-            <button type="button" class="btn btn-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
-            <button type="button" class="btn btn-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
-            <button type="button" class="btn btn-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
+            <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
+            <button type="button" class="btn btn-outline-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-outline-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
       </div>
       <ng-template #noComponent>
         <p>
@@ -81,7 +81,7 @@
     <p>It will be deleted <span class="text-danger">permanently</span> along with <span class = "text-danger">all associated components and component telemetries</span> and can never be recovered.</p>
   </ng-container>
   <ng-container modal-footer>
-    <button (click)="deleteSystem()" class="btn btn-danger">
+    <button (click)="deleteSystem()" class="btn btn-outline-danger">
       Delete System
     </button>
   </ng-container>
@@ -96,7 +96,7 @@
     <p>It will be deleted <span class="text-danger">permanently</span> along with <span class = "text-danger">all associated component telemetries</span> and can never be recovered.</p>
   </ng-container>
   <ng-container modal-footer>
-    <button (click)="deleteComponent()" class="btn btn-danger">
+    <button (click)="deleteComponent()" class="btn btn-outline-danger">
       Delete Component
     </button>
   </ng-container>
@@ -111,7 +111,7 @@
       <p>It will be deleted <span class="text-danger">permanently</span> and can never be recovered.</p>
     </ng-container>
     <ng-container modal-footer>
-      <button (click)="deleteCompTelem()" class="btn btn-danger">
+      <button (click)="deleteCompTelem()" class="btn btn-outline-danger">
         Delete Component Telemetry
       </button>
     </ng-container>

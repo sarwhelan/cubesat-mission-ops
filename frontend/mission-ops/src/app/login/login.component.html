@@ -9,11 +9,11 @@
     <input [(ngModel)]="password" type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
   </div>
   <app-alert [alertStyle]="'danger'" #loginAlert></app-alert>
-  <button (click)="signIn()" class="btn btn-primary">
+  <button (click)="signIn()" class="btn btn-outline-primary">
     Sign In
     <span *ngIf="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   </button>
-  <button (click)="forgotPassword()" class="btn btn-link">
+  <button (click)="forgotPassword()" class="btn btn-outline-link">
     Forgot Password?
   </button>
 </form>
@@ -26,7 +26,7 @@
     <app-new-password #pwd></app-new-password>
   </ng-container>
   <ng-container modal-footer>
-      <button (click)="pwd.changePassword()" class="btn btn-primary">
+      <button (click)="pwd.changePassword()" class="btn btn-outline-primary">
         Change Password
         <span *ngIf="pwd.processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       </button>
@@ -57,7 +57,7 @@
     </form>
   </ng-container>
   <ng-container modal-footer>
-    <button (click)="resetPassword()" class="btn btn-primary">
+    <button (click)="resetPassword()" class="btn btn-outline-primary">
       Reset Password
       <span *ngIf="processingNewPassword" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     </button>

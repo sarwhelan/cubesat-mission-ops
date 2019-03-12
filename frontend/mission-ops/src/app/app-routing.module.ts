@@ -14,6 +14,7 @@ import { UsersComponent } from './users/users.component';
 import { ModifyUserComponent } from './modify-user/modify-user.component';
 import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inputs.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-subscription.component';
 
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
@@ -22,18 +23,19 @@ import { AdminOrSelfGuardService } from './services/admin-or-self-guard/admin-or
 
 const routes: Routes = [
   { path : '', component: HomePageComponent },
-  { path : 'telecommands', component: TelecommandsComponent },
-  { path : 'telecommandBatches', component: TelecommandBatchesComponent },
-  { path : 'queue', component: QueuesComponent },
+  { path : 'telecommands', component: TelecommandsComponent, canActivate: [AuthGuardService] },
+  { path : 'telecommandBatches', component: TelecommandBatchesComponent, canActivate: [AuthGuardService] },
+  { path : 'queue', component: QueuesComponent, canActivate: [AuthGuardService] },
   { path : 'login', component: LoginComponent, canActivate: [AntiAuthGuardService] },
   { path : 'users/create', component: CreateUserComponent, canActivate: [] },
   { path : 'error/access-denied', component: AccessDeniedComponent },
   { path : 'logout', component: LogoutComponent, canActivate: [AuthGuardService] },
   { path : 'chart', component: ChartComponent },
-  { path: 'telemetry', component: ComponentListComponent },
+  { path: 'telemetry', component: ComponentListComponent, canActivate: [AuthGuardService] },
   { path : 'users', component: UsersComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'users/edit', component: ModifyUserComponent, canActivate: [AuthGuardService, AdminOrSelfGuardService] },
   { path : 'system-inputs', component: CubesatSysInputsComponent, canActivate: [AuthGuardService, AdminGuardService] },
+  { path : 'anomaly-subscription', component: AnomalySubscriptionComponent },
 ];
 
 @NgModule({
