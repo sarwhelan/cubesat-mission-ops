@@ -6,6 +6,7 @@
           <app-queued-telecommand class="list-group-item border border-primary" 
               [queuedTelecommand] = "queuedTelecommand" 
               [telecommands] = "telecommands"
+              [users] = "users"
               [orderRank] = "i + 1"
               (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
           </app-queued-telecommand>
