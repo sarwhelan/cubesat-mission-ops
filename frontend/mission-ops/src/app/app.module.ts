@@ -43,6 +43,9 @@ import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-sub
 import { TelecommandDropdownComponent } from './telecommand-dropdown/telecommand-dropdown.component';
 import { CreatePassComponent } from './create-pass/create-pass.component';
 import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
+import { PanoramaViewerComponent } from './panorama-viewer/panorama-viewer.component';
+import { MediaLibraryComponent } from './media-library/media-library.component';
+import { MediaViewComponent } from './media-view/media-view.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +85,9 @@ import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
     TelecommandDropdownComponent,
     CreatePassComponent,
     AnomalyTableComponent,
+    PanoramaViewerComponent,
+    MediaLibraryComponent,
+    MediaViewComponent,
   ],
   imports: [
     BrowserModule,

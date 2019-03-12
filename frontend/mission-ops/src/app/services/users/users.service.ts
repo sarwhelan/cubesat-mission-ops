@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { Observable, EMPTY, merge, forkJoin, zip } from 'rxjs';
+import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
 import { User } from '../../../classes/user';

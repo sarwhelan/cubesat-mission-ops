@@ -16,6 +16,8 @@ import { CubesatSysInputsComponent } from './cubesat-sys-inputs/cubesat-sys-inpu
 import { HomePageComponent } from './home-page/home-page.component';
 import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-subscription.component';
 import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
+import { MediaLibraryComponent } from './media-library/media-library.component';
+import { MediaViewComponent } from './media-view/media-view.component';
 
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path : 'system-inputs', component: CubesatSysInputsComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'anomaly-subscription', component: AnomalySubscriptionComponent },
   { path : 'anomalies', component: AnomalyTableComponent },
+  { path : 'media', component: MediaLibraryComponent },
+  { path : 'media/view', component: MediaViewComponent },
 ];
 
 @NgModule({

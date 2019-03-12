@@ -19,10 +19,14 @@ var telemLimits = require('./routes/telem-limits');
 var systems = require('./routes/systems');
 var telemetryTypes = require('./routes/telemetry-types');
 var transmissionQueue = require('./routes/transmission-queue');
+<<<<<<< HEAD
 var subscriptions = require('./routes/subscriptions');
 var passLimits = require('./routes/pass-limits');
 var executionQueue = require('./routes/execution-queue');
 var anomalies = require('./routes/anomalies');
+=======
+var media = require('./routes/media');
+>>>>>>> tmachado-360-images
 const logger = require('./logger');
 
 const port = 3000;
@@ -55,6 +59,7 @@ app.use('/subscriptions', subscriptions);
 app.use('/pass-limits', passLimits);
 app.use('/execution-queue', executionQueue);
 app.use('/anomalies', anomalies);
+app.use('/media', media);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
