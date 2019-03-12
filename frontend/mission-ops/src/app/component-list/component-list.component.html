@@ -1,18 +1,60 @@
 <h2>Telemetry</h2>
 <div class = "row">
     <div class = "col-md-4">
-      <ul class="list-group">
-          <li *ngFor="let component of components"
-          (click)="onSelect(component)"
-          [class.active]="component === selectedComponent"
+      <div class="list-group">
+          <div *ngFor="let sys of systems"
+          (click)="onSelect(sys)"
+          [class.active]="sys === selectedSystem"
           class="list-group-item">
-            {{component.name}}
-          </li>
-        </ul>
+            {{sys.systemName}}
+            <ng-container *ngIf = "sys === selectedSystem">
+                <ng-container *ngIf = "components && components.length > 0; else noComponents">
+                  <ul class = "list-group" style="color:black;">
+                      <li *ngFor="let comp of components"
+                        (click) = "onSelectComp(comp)"
+                        [class.active]="comp === selectedComponent"
+                        class = "list-group-item">
+                        {{comp.name}}
+                      </li>
+                    </ul>
+                </ng-container>
+              </ng-container>
+            </div>
+        </div>
     </div>
     <div class = "col-md-8">
-      <div *ngIf = "selectedComponent">
-          <app-component-telemetry [component] = "selectedComponent"></app-component-telemetry>
+      <div class = "row">
+        <form class = "d-flex" [formGroup] = "chooseDataRangeForm" (ngSubmit) = "submitDataRange()">
+              <label for ="startDate" class = "align-self-start" style="padding-right: 5px;padding-top: 5px;">From:</label>
+              <app-datetime-picker class = "border" dateFormControlName = "startDate" timeFormControlName = "startTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+              <label for ="endDate" class = "align-self-start" style="padding-right: 5px;padding-top: 5px;padding-left:5px;">To:</label>
+              <app-datetime-picker class = "border" dateFormControlName = "endDate" timeFormControlName = "endTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+              <button class = "btn btn-success align-self-start" style="margin-left:5px" [disabled] = "!chooseDataRangeForm.valid">
+                Refresh <i class="fa fa-refresh"></i>
+              </button>
+        </form>
+      </div>
+      <br/>
+      <div class = "row">
+        <div *ngIf = "selectedComponent">
+            <app-component-telemetry [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
+        </div>
       </div>
   </div>
 </div>
+
+<ng-template #noComponents>
+  <ng-container *ngIf = "components && components.length == 0; else spinner">
+      <p>
+        No components available for this system.
+      </p>
+  </ng-container>
+</ng-template>
+
+<ng-template #spinner>
+  <div *ngIf = "selectedSystem" class = "text-center">
+    <div class = "spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>

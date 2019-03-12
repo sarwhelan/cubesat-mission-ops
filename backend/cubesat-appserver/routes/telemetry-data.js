@@ -8,10 +8,20 @@ var db = require('../database');
 router.route('/')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("SELECT * FROM telemetryData", function (error, results, fields) {
-                if (error) throw error;
-                res.send(results);
-            });
+            if (req.query.startDate) {
+                var getParams = [new Date(req.query.startDate), new Date(req.query.endDate)];
+                console.log(getParams);
+                db.query("SELECT * FROM telemetryData WHERE collectionDateTime BETWEEN ? AND ?", getParams, function (error, results, fields) {
+                    if (error) throw error;
+                    res.send(results);
+                });
+            } else {
+                console.log('no');
+                db.query("SELECT * FROM telemetryData", function (error, results, fields) {
+                    if (error) throw error;
+                    res.send(results);
+                });
+            }
         } catch (err) {
             console.log(err);
             res.send(err);
@@ -34,10 +44,21 @@ router.route('/')
 router.route('/:componentTelemetryID')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("SELECT * FROM telemetryData WHERE componentTelemetryID = ?;", req.params.componentTelemetryID, function (error, results, fields) {
-                if (error) throw error;
-                res.json(results);
-              });
+            if (req.query.startDate) {
+                console.log(req.query);
+                var getParams = [req.params.componentTelemetryID, new Date(parseInt(req.query.startDate)), new Date(parseInt(req.query.endDate))];
+                console.log(getParams);
+                db.query("SELECT * FROM telemetryData WHERE componentTelemetryID = ? AND collectionDateTime BETWEEN ? AND ?", getParams, function (error, results, fields) {
+                    if (error) throw error;
+                    res.send(results);
+                });
+            } else {
+                console.log('no');
+                db.query("SELECT * FROM telemetryData WHERE componentTelemetryID = ?", req.params.componentTelemetryID, function (error, results, fields) {
+                    if (error) throw error;
+                    res.send(results);
+                });
+            }
         } catch (err) {
             console.log(err);
             res.send(err);

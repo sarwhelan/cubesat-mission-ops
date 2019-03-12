@@ -11,6 +11,7 @@ import { Component as CubeSatComp } from '../../classes/component';
 export class ComponentTelemetryComponent implements OnInit {
   
   private _component: CubeSatComp;
+  @Input() dateRangeObj: any;
 
   @Input() 
   private get component() {

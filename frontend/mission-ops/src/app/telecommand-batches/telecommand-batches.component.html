@@ -2,8 +2,10 @@
 <div class="row">
   <div class="col">
     <button type="button"
-    class="btn btn-success"
+    class="btn btn-outline-success"
     (click)="addNewTelecommandBatch()">Create New Batch</button>
+    <br />
+    <br />
     <ul class="list-group">
       <li *ngFor="let batch of telecommandBatches"
       (click)="onSelect(batch)"
@@ -20,7 +22,7 @@
             <label style="padding-right: 10px;"><b>Batch Name: </b></label>
             <input [(ngModel)] = "selectedBatch.name" class="form-control" name = "selectedBatchName">
             <button type="button"
-            class="btn btn-success"
+            class="btn btn-outline-success"
             (click)="saveBatchName()">Save Name</button>
           </div>
         </form>
@@ -41,11 +43,11 @@
           (newSelectedTelecommand) = "updateSelectedTelecommand($event)">
           </app-telecommand-dropdown>
           <button type="button"
-          class="btn btn-success"
+          class="btn btn-outline-success"
           (click)="addNewPresetTelecommand()">Add Telecommand To Batch</button>
         </form>
         <button type="button"
-        class="btn btn-danger"
+        class="btn btn-outline-danger"
         (click)="deleteBatch()">Delete Batch</button>
     </div>
   </div>

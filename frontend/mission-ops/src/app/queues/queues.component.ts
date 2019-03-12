@@ -17,6 +17,7 @@ import { TelecommandBatchService } from '../services/telecommandBatch/telecomman
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
 import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
 import { PassSum } from 'src/classes/pass-sum';
+import { CreatePassComponent } from '../create-pass/create-pass.component';
 const dateFormat = require('dateformat');
 
 @Component({
@@ -62,14 +63,6 @@ export class QueuesComponent implements OnInit {
     return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
   }
 
-  addPass() : void{
-    var newPass = new Pass(new Date());
-    this.passService.createPass(newPass)
-      .subscribe(pass => {
-        this.getPasses();
-      });
-  }
-
   selectExecution(): void{  
     console.log('exec');
     this.executionQueue = true;
@@ -113,6 +106,28 @@ export class QueuesComponent implements OnInit {
   {
     this.passLimitService.getPassLimits()
       .subscribe(pls => this.passLimits = pls);
+  }
+
+  promptAddPass() : void{
+    const modalRef = this.modalService.open(CreatePassComponent);
+    modalRef.result.then((result) => {
+      var newPassDate = new Date(Date.UTC(
+        result.passDate.year,
+        result.passDate.month-1,
+        result.passDate.day,
+        result.passTime.hour,
+        result.passTime.minute,
+        result.passTime.second,
+      ));
+      var newPass = new Pass(newPassDate);
+      this.passService.createPass(newPass)
+        .subscribe(pass => {
+          this.getPasses();
+        });
+    }).catch((error) => {
+      // Modal closed without submission
+      console.log(error);
+    });
   }
 
   promptAddQueuedTelecommand() : void
@@ -173,7 +188,7 @@ export class QueuesComponent implements OnInit {
       if (!user) {
         // Not logged in; should not be able to add to the queue.
         console.log('User not logged in, cannot add to queue');
-        userID = "456";
+        userID = "e6edfc52-b80d-4163-8e0b-b306715270f9";
       } else {
         userID = user.id;
         console.log(user.id);
