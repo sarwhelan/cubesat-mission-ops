@@ -110,33 +110,4 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
       this.ready.emit();
     });
   }
-
-  // public setView(newView: PanoramicMedia, oldView: PanoramicMedia) {
-
-  //   if (this.viewer && oldView.type === newView.type) {
-  //     this.loading = true;
-      
-  //     if (newView.type === 'image') {
-  //       this.viewer.setImage(newView.src);
-  //     } else {
-  //       this.viewer.setVideo(newView.src);
-  //     }
-  //   } else {
-  //     // Either the viewer doesn't exist or we're changing from displaying an image to displaying a video or vice versa.
-  //     // Either way, we now need to create a new viewer.
-  //     if (this.viewer) {
-  //       // Destroy the old viewer if it exists
-  //       this.viewer.destroy();
-  //     }
-  //     this.createViewer();
-  //   }
-
-  //   if (newView.type === 'video') {
-  //     // It it's a video start it playing as soon as it's done loading
-  //     this.viewer.once('ready', (eventData) => {
-  //       this.viewer.getVideo().loop = true;
-  //       this.viewer.getVideo().play();
-  //     });
-  //   }
-  // }
 }
