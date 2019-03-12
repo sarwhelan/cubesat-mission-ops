@@ -147,7 +147,9 @@ export class QueuesComponent implements OnInit {
       ));
       var createQtc = (self, maxBandwidth, maxPower, activePasses) => {
         var activeTelecommand = this.telecommands.find(x => x.telecommandID == result.telecommandID);
-        var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime, maxBandwidth, maxPower)
+        var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime, maxBandwidth, maxPower);
+        // TODO: Actually exit this..
+        if (transID == -1 || execID == -1) return false;
         var newQtc = new QueuedTelecommand(
           execID,
           transID,
@@ -197,6 +199,8 @@ export class QueuesComponent implements OnInit {
               telecommandExecutionTime.setUTCSeconds(executionTime.getUTCSeconds() + ptc.secondDelay);
               var activeTelecommand = this.telecommands.find(x => x.telecommandID == ptc.telecommandID);
               var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, telecommandExecutionTime, maxBandwidth, maxPower);
+              // TODO: Actually exit this..
+              if ([transID, execID] == [-1,-1]) return false;
               pQtcBatch.push(Object.values(new QueuedTelecommand(
                 execID,
                 transID,
@@ -251,10 +255,11 @@ export class QueuesComponent implements OnInit {
     } 
     else {
       //var sortedActivePassByTime = [...activePasses].sort((a,b) => (a.estimatedPassDateTime.getTime() > b.estimatedPassDateTime.getTime()) ? 1 : -1);
+      var msg = "";
       for (var i = 0; i < activePasses.length; i++) {
         if (executionTime.getTime() > new Date(activePasses[i].estimatedPassDateTime).getTime()) continue;
         if (i == 0) {
-          console.log('no pass exists to execute this command');
+          msg = 'No pass exists to execute this command. Create a new pass and try again.';
           break;
         }
         var passSum = this.sumExecutionResults.find(x => x.passID == activePasses[i-1].passID);
@@ -262,6 +267,10 @@ export class QueuesComponent implements OnInit {
         // Limit passes on power.
         if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= maxPower)
         {
+          if (!passSum && activeTelecommand.powerConsumption > maxPower){
+            msg = 'Error: Cannot add telecommand to queue. Telecommand power consumption exceeds the maximum power limitation in one pass.'
+            break;
+          }
           calcExecID = activePasses[i].passID;
           if (!passSum) {
             console.log('pushed from exec', activeTelecommand);
@@ -269,14 +278,15 @@ export class QueuesComponent implements OnInit {
           }
           break;
         } else {
-          console.log('THROW ERROR: pass capacity reached');
+          msg = 'Error: Pass capacity reached. Cannot queue telecommand within specified pass.';
           break;
         }
       }
     }
     if (!calcExecID) {
       // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
-      calcExecID = 1;
+      alert(msg);
+      return [-1,-1];
     }
 
     // Transmission
@@ -284,6 +294,7 @@ export class QueuesComponent implements OnInit {
       calcTransID = activePasses[0].passID;
     }
     else {
+      var msg = "";
       for (var i = 0; i < activePasses.length; i++) {
         var passSum = this.sumTransmissionResults.find(x => x.passID == activePasses[i].passID);
 
@@ -300,7 +311,8 @@ export class QueuesComponent implements OnInit {
       }
       if (!calcTransID) {
         // TODO: if it fits in no existing passes, create a new pass and plop this telecommand in there.
-        calcTransID = 1;
+        alert('No passes currently exist that will contain the requested telecommand(s). Create a new pass or modify the maximum pass limits and try again.');
+        return [-1,-1];
       }
     }
 
