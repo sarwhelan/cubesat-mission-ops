@@ -24,12 +24,12 @@
     transmissionPassID: number;
 
     /**
-     * The user that queued the command
+     * The ID of the user that queued the command
      *
-     * @type {number}
+     * @type {string}
      * @memberof QueuedTelecommand
      */
-    userID : number;
+    userID : string;
 
 
     /**
@@ -79,7 +79,7 @@
     constructor( 
         executionPassID: number,
         transmissionPassID: number,
-        userID: number,
+        userID: string,
         telecommandID: number, 
         priorityLevel: boolean,
         executionTime: Date,

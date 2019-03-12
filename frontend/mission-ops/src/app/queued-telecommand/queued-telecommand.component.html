@@ -10,7 +10,7 @@
         &nbsp;
         <b>{{telecommandDetails.name}}</b>
         &nbsp;
-        Exe. Time: {{getFormatedDate()}} UTC
+        {{getFormatedDate()}}
         <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-outline-danger d-flex float-right"><i class = "fa fa-trash"></i></button>
     </span>
   </div>
@@ -37,7 +37,7 @@
       </div>
       <div class = "form-group">
         <label>Execution Datetime</label>
-        <input [ngModel] = "queuedTelecommand.executionTimeUTC"  class="form-control" name= "queuedTelecommandExecutionTimeUTC" readonly>
+        <input [value] = "getFormatedDate()"  class="form-control" name= "queuedTelecommandExecutionTimeUTC" readonly>
       </div>
       <div *ngIf="user" class = "form-group">
         <label>Responsible User</label>
