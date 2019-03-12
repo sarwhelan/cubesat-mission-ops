@@ -173,7 +173,7 @@ export class QueuesComponent implements OnInit {
       if (!user) {
         // Not logged in; should not be able to add to the queue.
         console.log('User not logged in, cannot add to queue');
-        userID = "456";
+        userID = "e6edfc52-b80d-4163-8e0b-b306715270f9";
       } else {
         userID = user.id;
         console.log(user.id);

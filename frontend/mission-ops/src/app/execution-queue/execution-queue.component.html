@@ -1,10 +1,11 @@
 <div class="col">
     <div *ngIf="selectedPass">
         <ul class = "list-group">
-      <div *ngFor="let queuedTelecommand of passQueuedTelecommands">
+      <div *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index">
         <app-queued-telecommand class="list-group-item border border-primary" 
             [queuedTelecommand] = "queuedTelecommand" 
             [telecommands] = "telecommands"
+            [orderRank] = "i + 1"
             (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
         </app-queued-telecommand>
       </div>
