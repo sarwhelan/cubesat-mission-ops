@@ -1,15 +1,32 @@
 <div class="col">
   <div *ngIf="selectedPass">
-      <ul class = "list-group">
-    <div *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index">
-      <app-queued-telecommand class="list-group-item border border-primary" 
-          [queuedTelecommand] = "queuedTelecommand" 
-          [telecommands] = "telecommands"
-          [users] = "users"
-          [orderRank]="i+1"
-          (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
-      </app-queued-telecommand>
-    </div>
-  </ul>
+    <ul class = "list-group">
+      <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length > 0; else noTelecommands">
+        <div *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index">
+          <app-queued-telecommand class="list-group-item border border-primary" 
+              [queuedTelecommand] = "queuedTelecommand" 
+              [telecommands] = "telecommands"
+              [users] = "users"
+              [orderRank]="i+1"
+              (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
+          </app-queued-telecommand>
+        </div>
+      </ng-container>
+    </ul>
   </div>
 </div>
+
+<ng-template #noTelecommands>
+  <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length == 0; else spinner">
+    <br/>
+    <p class = "font-weight-bolder">No telecommands are being transmitted during this pass.</p>
+  </ng-container>
+</ng-template>
+
+<ng-template #spinner>
+  <div class = "text-center">
+    <div class = "spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>
