@@ -40,8 +40,8 @@ const routes: Routes = [
   { path : 'system-inputs', component: CubesatSysInputsComponent, canActivate: [AuthGuardService, AdminGuardService] },
   { path : 'anomaly-subscription', component: AnomalySubscriptionComponent },
   { path : 'anomalies', component: AnomalyTableComponent },
-  { path : 'media', component: MediaLibraryComponent },
-  { path : 'media/view', component: MediaViewComponent },
+  { path : 'payloadData', component: MediaLibraryComponent },
+  { path : 'payloadData/view', component: MediaViewComponent },
 ];
 
 @NgModule({

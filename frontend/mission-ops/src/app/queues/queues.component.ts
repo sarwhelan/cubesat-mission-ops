@@ -8,9 +8,8 @@ import { Telecommand } from 'src/classes/telecommand';
 import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
 import { AuthService } from '../services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
-import { Subject, Observable, Subscription, forkJoin } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
-import { ExecutionQueueComponent } from '../execution-queue/execution-queue.component';
+import { Observable, forkJoin } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { PassLimitService } from '../services/pass-limit/pass-limit.service';
 import { PassLimit } from 'src/classes/pass-limit';
 import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
@@ -29,7 +28,8 @@ export class QueuesComponent implements OnInit {
 
   executionQueue: boolean;
   transmissionQueue: boolean;
-  passes: Pass[];
+  futurePasses: Pass[];
+  pastPasses: Pass[];
   telecommands: Telecommand[];
   telecommandBatches: TelecommandBatch[];
   passLimits: PassLimit[];
@@ -84,7 +84,8 @@ export class QueuesComponent implements OnInit {
     this.selectedPass = null; 
     this.passService.getPasses()
       .subscribe(passes => {
-        this.passes = passes;
+        this.pastPasses = passes.filter(x => x.passHasOccurred);
+        this.futurePasses = passes.filter(x => !x.passHasOccurred);
       });
   }
 
@@ -235,7 +236,6 @@ export class QueuesComponent implements OnInit {
   {
     var maxBandwidth = this.passLimits.find(x => x.name == "bandwidthUsage").maxValue;
     var maxPower = this.passLimits.find(x => x.name == "powerConsumption").maxValue;
-    var activePasses = this.passes.filter(x => !x.passHasOccurred);
 
     let passTransmissionSums = this.passService.getPassTransmissionSums();
     let passExecutionSums = this.passService.getPassExecutionSums();
@@ -243,7 +243,7 @@ export class QueuesComponent implements OnInit {
       .pipe(mergeMap(results => {
         this.sumTransmissionResults = results[0];
         this.sumExecutionResults = results[1];
-        return qtcCreation(this, maxBandwidth, maxPower, activePasses);
+        return qtcCreation(this, maxBandwidth, maxPower, this.futurePasses);
       }))
       .subscribe(() => {
         this.getPasses();
