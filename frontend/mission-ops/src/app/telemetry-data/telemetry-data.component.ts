@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { ComponentTelemetryDataService } from '../services/component-telemetry-data/component-telemetry-data.service';
 import { TelemetryData } from '../../classes/telemetry-data';
 import { ComponentTelemetry } from '../../classes/component-telemetry';
+import { TelemetryType } from 'src/classes/telemetry-type';
 
 @Component({
   selector: 'app-telemetry-data',
@@ -13,6 +14,7 @@ export class TelemetryDataComponent implements OnInit {
   private _componentTelemetry: ComponentTelemetry;
 
   @Input() dateRangeObj : any;
+  @Input() telemetryTypes : TelemetryType[];
   private startDate: Date;
   private endDate: Date;
 
@@ -28,12 +30,15 @@ export class TelemetryDataComponent implements OnInit {
   telemetryData: TelemetryData[];
   telemetryValues: number[];
   telemetryTimes: string[];
+  telemetryTypeUnit: string;
 
   constructor(private telemetryDataService: ComponentTelemetryDataService) { }
 
   ngOnInit() {
     console.log('init telemetry data');
     this._componentTelemetry = this._componentTelemetry;
+    var telemetryType = this.telemetryTypes.find(x => x.telemetryTypeID == this.componentTelemetry.telemetryTypeID);
+    this.telemetryTypeUnit = `${telemetryType.name} (${telemetryType.telemetryUnit})`;
     this.getTelemetryData(this.componentTelemetry.componentTelemetryID);
   }
 

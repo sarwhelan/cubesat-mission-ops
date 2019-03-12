@@ -4,6 +4,8 @@ import { ComponentService } from '../services/component/component.service';
 import { SystemService } from '../services/system/system.service';
 import { System } from 'src/classes/system';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
+import { TelemetryType } from 'src/classes/telemetry-type';
 
 @Component({
   selector: 'app-component-list',
@@ -13,15 +15,20 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class ComponentListComponent implements OnInit {
   components: CubeSatComp[];
   systems: System[];
+  telemetryTypes: TelemetryType[];
   selectedSystem: System;
   selectedComponent: CubeSatComp;
   @Input() chooseDataRangeForm: FormGroup;
   dateRangeObj : any;
 
-  constructor(private systemService: SystemService, private componentService: ComponentService, private formBuilder: FormBuilder) { }
+  constructor(private systemService: SystemService, 
+    private componentService: ComponentService, 
+    private formBuilder: FormBuilder,
+    private telemetryTypeService : TelemetryTypesService) { }
 
   ngOnInit() {
     this.getSystems();
+    this.getTelemetryTypes();
     this.createForm();
   }
 
@@ -68,6 +75,11 @@ export class ComponentListComponent implements OnInit {
 
   onSelectComp(component: CubeSatComp): void {
     this.selectedComponent = component;
+  }
+
+  getTelemetryTypes() : void {
+    this.telemetryTypeService.getTelemetryTypes()
+      .subscribe(tts => this.telemetryTypes = tts);
   }
 
   getSystems() : void {
