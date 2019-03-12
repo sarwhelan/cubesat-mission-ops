@@ -3,7 +3,7 @@
   <ng-container *ngIf="mediaList; else loadingSpinner">
     <div class="row">
       <div *ngFor="let m of mediaList.items; index as i" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-        <a href="media/view?id={{m.id}}" style="color: inherit">
+        <a href="payloadData/view?id={{m.id}}" style="color: inherit">
           <div class="card">
             <img src="{{m.previewSrc}}" class="card-img-top" [hidden]="loading[i]" (load)="loading[i] = false">
             <div *ngIf="loading[i]" class="text-center">
