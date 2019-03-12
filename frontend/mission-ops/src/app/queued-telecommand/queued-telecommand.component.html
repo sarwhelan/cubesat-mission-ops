@@ -39,6 +39,12 @@
         <label>Execution Datetime</label>
         <input [value] = "getFormatedDate()"  class="form-control" name= "queuedTelecommandExecutionTimeUTC" readonly>
       </div>
+      <ng-container *ngIf = "queuedTelecommand.commandParameters.trim() != ''">
+        <div class = "form-group">
+          <label>Command Parameters</label>
+          <input [ngModel] = "queuedTelecommand.commandParameters"  class="form-control" name= "queuedTelecommandCommandParams" readonly>
+        </div>
+      </ng-container>
       <div *ngIf="user" class = "form-group">
         <label>Responsible User</label>
         <input [ngModel] = "user.email"  class="form-control" name= "queuedTelecommandUser" readonly>
