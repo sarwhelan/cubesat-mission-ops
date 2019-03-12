@@ -48,7 +48,7 @@ export class TelemetryDataComponent implements OnInit {
   getTelemetryData(componentTelemetryID: number): void {
     console.log('get telemetry data from ' + componentTelemetryID);
     console.log(this.dateRangeObj);
-    var startDate = new Date(Date.UTC(
+    this.startDate = new Date(Date.UTC(
       this.dateRangeObj.startDate.year,
       this.dateRangeObj.startDate.month-1,
       this.dateRangeObj.startDate.day,
@@ -56,7 +56,7 @@ export class TelemetryDataComponent implements OnInit {
       this.dateRangeObj.startTime.minute,
       this.dateRangeObj.startTime.second,
       ));
-    var endDate = new Date(Date.UTC(
+    this.endDate = new Date(Date.UTC(
       this.dateRangeObj.endDate.year,
       this.dateRangeObj.endDate.month-1,
       this.dateRangeObj.endDate.day,
@@ -64,7 +64,7 @@ export class TelemetryDataComponent implements OnInit {
       this.dateRangeObj.endTime.minute,
       this.dateRangeObj.endTime.second,
       ));
-    this.telemetryDataService.getTelemetryDataBetween(componentTelemetryID, startDate, endDate)
+    this.telemetryDataService.getTelemetryDataBetween(componentTelemetryID, this.startDate, this.endDate)
       .subscribe(telemetryData => {
         this.telemetryData = telemetryData;
         this.telemetryValues = this.telemetryData.map(x => x.telemetryValue);

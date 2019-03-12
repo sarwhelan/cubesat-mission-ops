@@ -21,6 +21,9 @@ export class ChartComponent implements OnInit {
   private _name: string;
   private _labels: string[];
 
+  @Input() startDate: Date;
+  @Input() endDate: Date;
+
   @Input()
   private get values() {
     return this._values;
@@ -96,10 +99,16 @@ export class ChartComponent implements OnInit {
 }
 
 ngOnChanges(changes: SimpleChanges) {
-  if (changes.values && this.Highcharts && this.Highcharts.charts.length > 0) {
-    console.log('something changes', this.values);
+  if (changes.values && this.Highcharts && this.Highcharts.charts.length > 0 && this.startDate && this.endDate) {
+    console.log('something changes', this.values, this.startDate, this.endDate);
+    /*var maxValues = new Array(this.values.length).fill(this.maxValue);
+    var minValues = new Array(this.values.length).fill(this.minValue);
     this.Highcharts.charts[0].series[0].setData(this.values, false);
-    this.Highcharts.charts[0].redraw();
+    this.Highcharts.charts[0].xAxis[0].setCategories(this.labels, false);
+    this.Highcharts.charts[0].series[1].setData(maxValues, false);
+    this.Highcharts.charts[0].series[2].setData(minValues, false);
+    this.Highcharts.charts[0].redraw(true);*/
+    this.buildChart();
   }
 }
 
@@ -152,7 +161,10 @@ buildChart() : void
       type: 'line',
       showInLegend: false,
       data: this.values,
-      zones: zones
+      zones: zones,
+      animation: {
+        duration: 1000,
+      }
     }, {
       name: "Max Value",
       type: 'line',
