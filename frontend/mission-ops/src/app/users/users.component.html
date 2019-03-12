@@ -1,63 +1,65 @@
-<h1>Users</h1>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Email</th>
-      <th scope="col">Phone</th>
-      <th scope="col">Status</th>
-      <th scope="col">Administrator</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="userList; else tableSpinner">
-      <tr *ngFor="let user of userList.items">
-        <td>{{user.email}}</td>
-        <td>{{user.phone}}</td>
-        <td>{{user.status}}</td>
-        <td>
-          <div class="form-check">
-            <input [ngModel]="user.administrator" type="checkbox" class="form-check-input" disabled>
-          </div>
-        </td>
-        <td class="text-right">
-          <a class="btn btn-outline-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
-          <button (click)="promptDeleteUser(user)" class="btn btn-outline-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
-        </td>
-      </tr>
-    </ng-container>
-    <ng-template #tableSpinner>
-      <tr>
-        <td colspan="3">
-          <div class="text-center">
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </tbody>
-</table>
-
 <div class="container">
-  <div class="row">
-    <div class="col-sm-auto">
-      <app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
-    </div>
-    <div class="col-sm-2">
-      <select [(ngModel)]="userLimit" class="form-control">
-        <option value="2">2</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="100">100</option>
-      </select>
-    </div>
-    <div class="col-sm text-right">
-      <a class="btn btn-outline-primary" role="button" href="/users/create">
-        New User
-      </a>
+  <h1>Users</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Status</th>
+        <th scope="col">Administrator</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="userList; else tableSpinner">
+        <tr *ngFor="let user of userList.items">
+          <td>{{user.email}}</td>
+          <td>{{user.phone}}</td>
+          <td>{{user.status}}</td>
+          <td>
+            <div class="form-check">
+              <input [ngModel]="user.administrator" type="checkbox" class="form-check-input" disabled>
+            </div>
+          </td>
+          <td class="text-right">
+            <a class="btn btn-outline-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
+            <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
+          </td>
+        </tr>
+      </ng-container>
+      <ng-template #tableSpinner>
+        <tr>
+          <td colspan="3">
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-auto">
+        <app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
+      </div>
+      <div class="col-sm-2">
+        <select [(ngModel)]="userLimit" class="form-control">
+          <option value="2">2</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="col-sm text-right">
+        <a class="btn btn-outline-primary" role="button" href="/users/create">
+          New User
+        </a>
+      </div>
     </div>
   </div>
 </div>
