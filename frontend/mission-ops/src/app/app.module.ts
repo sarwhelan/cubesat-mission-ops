@@ -41,6 +41,7 @@ import { PresetTelecommandDetailsComponent } from './preset-telecommand-details/
 import { HomePageComponent } from './home-page/home-page.component';
 import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-subscription.component';
 import { TelecommandDropdownComponent } from './telecommand-dropdown/telecommand-dropdown.component';
+import { CreatePassComponent } from './create-pass/create-pass.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { TelecommandDropdownComponent } from './telecommand-dropdown/telecommand
     HomePageComponent,
     AnomalySubscriptionComponent,
     TelecommandDropdownComponent,
+    CreatePassComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,6 +98,7 @@ import { TelecommandDropdownComponent } from './telecommand-dropdown/telecommand
     CreateComponentComponent,
     CreateComponentTelemetryComponent,
     CreateQueuedTelecommandComponent,
+    CreatePassComponent,
   ]
 })
 export class AppModule { }
