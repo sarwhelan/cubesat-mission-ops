@@ -26,14 +26,15 @@
       <div class = "row">
         <form class = "d-flex" [formGroup] = "chooseDataRangeForm" (ngSubmit) = "submitDataRange()">
               <label for ="startDate" class = "align-self-start" style="padding-right: 5px;padding-top: 5px;">From:</label>
-              <app-datetime-picker dateFormControlName = "startDate" timeFormControlName = "startTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+              <app-datetime-picker class = "border" dateFormControlName = "startDate" timeFormControlName = "startTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
               <label for ="endDate" class = "align-self-start" style="padding-right: 5px;padding-top: 5px;padding-left:5px;">To:</label>
-              <app-datetime-picker dateFormControlName = "endDate" timeFormControlName = "endTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+              <app-datetime-picker class = "border" dateFormControlName = "endDate" timeFormControlName = "endTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
               <button class = "btn btn-success align-self-start" style="margin-left:5px" [disabled] = "!chooseDataRangeForm.valid">
                 Refresh
               </button>
         </form>
       </div>
+      <br/>
       <div class = "row">
         <div *ngIf = "selectedComponent">
             <app-component-telemetry [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
