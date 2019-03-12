@@ -27,7 +27,7 @@ router.route('/:id')
         try {
             var batchID = req.params.id;
             
-            db.query('SELECT presetTelecommands.*, telecommands.name from presetTelecommands JOIN telecommands on presetTelecommands.telecommandID = telecommands.telecommandID WHERE batchID = ? ORDER BY dayDelay, hourDelay, minuteDelay', batchID, function (error, results, fields) {
+            db.query('SELECT presetTelecommands.*, telecommands.name from presetTelecommands JOIN telecommands on presetTelecommands.telecommandID = telecommands.telecommandID WHERE batchID = ? ORDER BY dayDelay, hourDelay, minuteDelay, secondDelay', batchID, function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);

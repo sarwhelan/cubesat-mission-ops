@@ -38,9 +38,9 @@ router.route('/:batchID')
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
 
-            var updateParams = [req.body.name, req.body.totalPowerConsumption, req.body.totalBandwidthUsage, req.params.batchID];
+            var updateParams = [req.body.name, req.params.batchID];
 
-            db.query("UPDATE telecommandBatches SET name = ?, totalPowerConsumption = ?, totalBandwidthUsage = ? WHERE batchID = ?;", updateParams, function (error, results, fields) {
+            db.query("UPDATE telecommandBatches SET name = ? WHERE batchID = ?;", updateParams, function (error, results, fields) {
                 if (error) throw error;
 
                 res.send(results);
