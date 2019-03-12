@@ -1,0 +1,48 @@
+<h3>Anomalies</h3>
+
+<div *ngIf="anomalies && anomalies.length > 0; else noAnoms">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Collection DateTime</th>
+      <th scope="col">Telemetry Specification</th>
+      <th scope="col">Component Name</th>
+      <th scope="col">System Name</th>
+      <th scope="col">Upper Bound</th>
+      <th scope="col">Lower Bound</th>
+      <th scope="col">Reading</th>
+      <th scope="col">Unit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let anom of anomalies">
+      <!--th scope="row">{{ anom.telemDataId }}</th>-->
+      <td>{{ anom.collectionTime}}</td>
+      <td>{{ anom.compTelemName}}</td>
+      <td>{{ anom.compName}}</td>
+      <td>{{ anom.sysName}}</td>
+      <td>{{ anom.upperBound | number }}</td>
+      <td>{{ anom.lowerBound | number }}</td>
+      <td>{{ anom.reading | number}}</td>
+      <td>{{ anom.unit}}</td>
+    </tr>
+    </tbody>
+  </table>
+  
+  <!---div class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+    </ngb-pagination>
+  
+    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
+      <option [ngValue]="2">2 items per page</option>
+      <option [ngValue]="4">4 items per page</option>
+      <option [ngValue]="6">6 items per page</option>
+    </select>
+  </div>
+</div>-->
+
+<ng-template #noAnoms>
+  <p>
+    There are no anomalies to display. Check back soon!
+  </p>
+</ng-template>

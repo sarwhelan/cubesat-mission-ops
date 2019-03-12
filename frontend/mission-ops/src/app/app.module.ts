@@ -42,6 +42,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { AnomalySubscriptionComponent } from './anomaly-subscription/anomaly-subscription.component';
 import { TelecommandDropdownComponent } from './telecommand-dropdown/telecommand-dropdown.component';
 import { CreatePassComponent } from './create-pass/create-pass.component';
+import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { CreatePassComponent } from './create-pass/create-pass.component';
     AnomalySubscriptionComponent,
     TelecommandDropdownComponent,
     CreatePassComponent,
+    AnomalyTableComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
     new HeaderItem("Telecommands", "/telecommands"),
     new HeaderItem("Telecommand Batches", "/telecommandBatches"),
     new HeaderItem("Telemetry", "/telemetry"),
+    new HeaderItem("Anomalies", "/anomalies"),
   ];
 
   isCollapsed = true;

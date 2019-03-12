@@ -22,6 +22,7 @@ var transmissionQueue = require('./routes/transmission-queue');
 var subscriptions = require('./routes/subscriptions');
 var passLimits = require('./routes/pass-limits');
 var executionQueue = require('./routes/execution-queue');
+var anomalies = require('./routes/anomalies');
 const logger = require('./logger');
 
 const port = 3000;
@@ -53,6 +54,7 @@ app.use('/transmission-queue', transmissionQueue);
 app.use('/subscriptions', subscriptions);
 app.use('/pass-limits', passLimits);
 app.use('/execution-queue', executionQueue);
+app.use('/anomalies', anomalies);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
