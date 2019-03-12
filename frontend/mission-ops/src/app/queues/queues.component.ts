@@ -18,12 +18,14 @@ import { PresetTelecommandService } from '../services/presetTelecommand/preset-t
 import { PassSum } from 'src/classes/pass-sum';
 import { CreatePassComponent } from '../create-pass/create-pass.component';
 
+import { ToastrService } from 'ngx-toastr';
+
 const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queues',
   templateUrl: './queues.component.html',
-  styleUrls: ['./queues.component.scss']
+  styleUrls: ['./queues.component.scss','../../../node_modules/ngx-toastr/toastr.css']
 })
 export class QueuesComponent implements OnInit {
 
@@ -51,7 +53,8 @@ export class QueuesComponent implements OnInit {
     private presetTelecommandService: PresetTelecommandService,
     private queuedTelecommandService: QueuedTelecommandService,
     private passLimitService: PassLimitService,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.executionQueue = false;
@@ -128,6 +131,7 @@ export class QueuesComponent implements OnInit {
       this.passService.createPass(newPass)
         .subscribe(pass => {
           this.getPasses();
+          this.toastr.success('Successfully created a new pass.');
         });
     }).catch((error) => {
       // Modal closed without submission
@@ -153,7 +157,6 @@ export class QueuesComponent implements OnInit {
       var createQtc = (self, maxBandwidth, maxPower, activePasses) => {
         var activeTelecommand = this.telecommands.find(x => x.telecommandID == result.telecommandID);
         var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime, maxBandwidth, maxPower);
-        // TODO: Actually exit this..
         if (transID === -1 || execID === -1) return of(null);
         var newQtc = new QueuedTelecommand(
           execID,
@@ -253,9 +256,12 @@ export class QueuesComponent implements OnInit {
       .subscribe(() => {
         console.log('sub');
         if (this.additionFailureStr === ""){
-          alert(this.additionSuccessStr);
+          var additionSuccesses = this.additionSuccessStr.split('\n');
+          for (var i = 0; i < additionSuccesses.length-1; i++){
+            this.toastr.success(additionSuccesses[i]);
+          }
         } else {
-          alert(this.additionFailureStr);
+          this.toastr.error(this.additionFailureStr);
         }
         this.additionFailureStr = "";
         this.additionSuccessStr = "";
