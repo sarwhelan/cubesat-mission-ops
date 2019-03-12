@@ -7,14 +7,32 @@
     </div>
     <br />
     <br />
-    <ul class="list-group">
-        <li *ngFor="let pass of passes"
-        (click)="onSelect(pass)"
-        [class.active]="pass === selectedPass"
-        class="list-group-item">
-          <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
-        </li>
-      </ul> 
+    <ngb-tabset>
+      <ngb-tab title="Past">
+        <ng-template ngbTabContent>
+          <ul class="list-group">
+            <li *ngFor="let pass of pastPasses"
+              (click)="onSelect(pass)"
+              [class.active]="pass === selectedPass"
+              class="list-group-item">
+                <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
+              </li>
+            </ul> 
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Future">
+          <ng-template ngbTabContent>
+            <ul class="list-group">
+              <li *ngFor="let pass of futurePasses"
+                (click)="onSelect(pass)"
+                [class.active]="pass === selectedPass"
+                class="list-group-item">
+                  <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
+                </li>
+              </ul> 
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
   </div>
   <div class = "col">
     <ngb-tabset *ngIf="selectedPass">
