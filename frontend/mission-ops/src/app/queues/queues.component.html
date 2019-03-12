@@ -1,13 +1,14 @@
+<div class = "row justify-content-center">
+    <div class="btn-group" role="group">
+        <button class = "btn btn-outline-success" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
+        <button class = "btn btn-outline-success" (click) = "promptAddQueuedTelecommandBatch()">Add Telecommand Batch to Queue</button>
+        <button class="btn btn-outline-success" (click)="promptAddPass()">Add New Pass</button>
+    </div>
+</div>
+<br />
 <div class = "row">
   <div class = "col">
-    <div class="btn-group" role="group">
-      <button class = "btn btn-outline-success" (click) = "promptAddQueuedTelecommand()">Add Telecommand to Queue</button>
-      <button class = "btn btn-outline-success" (click) = "promptAddQueuedTelecommandBatch()">Add Telecommand Batch to Queue</button>
-      <button class="btn btn-outline-success" (click)="promptAddPass()">Add New Pass</button>
-    </div>
-    <br />
-    <br />
-    <ngb-tabset>
+    <ngb-tabset activeId="ngb-tab-1">
       <ngb-tab title="Past">
         <ng-template ngbTabContent>
           <ul class="list-group">
