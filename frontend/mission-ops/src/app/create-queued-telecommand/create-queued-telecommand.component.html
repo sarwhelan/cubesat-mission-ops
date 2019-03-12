@@ -47,8 +47,8 @@
                   (change) = "updateTelecommandBatch($event.target.value)">
             <option *ngFor="let tc of telecommandBatches, let i = index" 
                     [attr.selected] = "i == 0 ? true : null" 
-                    [value] = "tc.id"
-                    [attr.value] = "tc.id">
+                    [value] = "tc.batchID"
+                    [attr.value] = "tc.batchID">
                       {{tc.name}}
             </option>
           </select>
