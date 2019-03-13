@@ -3,15 +3,19 @@
   <div class = "col-md-3">
     <div class = "container">
       <h4>Systems</h4>
-      <ul class="list-group">
+      <ng-container *ngIf="systems && systems.length > 0; else noAvailableSystems">
+        <ul class="list-group">
           <li *ngFor="let system of systems"
           (click)="onSelectSys(system)"
           [class.active]="system === selectedSystem"
           class="list-group-item">
-            <span class="badge badge-light"> ID: {{system.systemID}}</span>
             {{system.systemName}}
           </li>
         </ul>
+      </ng-container>
+      <ng-template #noAvailableSystems>
+        <p>No systems have been registered.</p>
+      </ng-template>
         <button type="button" class="btn btn-outline-success" (click)="promptAddSystem()">Add <i class="fa fa-plus-square"></i></button>
         <button type="button" class="btn btn-outline-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit <i class="fa fa-edit"></i></button>
         <button type="button" class="btn btn-outline-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete <i class="fa fa-trash"></i></button>
@@ -20,21 +24,25 @@
   <div class = "col-md-3">
     <div class = "container">
       <h4>Components</h4>
-      <div *ngIf = "selectedSystem; else noSystem">
+      <div *ngIf = "selectedSystem && components && components.length > 0; else noSystem">
           <ul class="list-group">
               <li *ngFor="let component of components"
               (click)="onSelectComp(component)"
               [class.active]="component === selectedComponent"
               class="list-group-item">
-                <span class="badge badge-light"> ID: {{component.componentID}}</span>
                 {{component.name}}
               </li>
             </ul>
-            <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
-            <button type="button" class="btn btn-outline-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
-            <button type="button" class="btn btn-outline-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
       </div>
+      <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
+      <button type="button" class="btn btn-outline-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
+      <button type="button" class="btn btn-outline-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
       <ng-template #noSystem>
+        <ng-container *ngIf = "selectedSystem && components && components.length == 0; else pleaseSelectSystem">
+          <p>No components have been registered to this system.</p>
+        </ng-container>
+      </ng-template>
+      <ng-template #pleaseSelectSystem>
         <p>
           Please select a system to view, modify and delete components.
         </p>
@@ -44,13 +52,12 @@
   <div class = "col-md-6">
     <div class = "container">
       <h4>Component Telemetry</h4>
-      <div *ngIf = "selectedComponent; else noComponent">
+      <div *ngIf = "selectedComponent && compTelemetries && compTelemetries.length > 0; else noComponent">
           <ul class="list-group">
               <li *ngFor="let compTelem of compTelemetries"
               (click)="onSelectCompTelem(compTelem)"
               [class.active]="compTelem === selectedCompTelem"
               class="list-group-item">
-                <span class="badge badge-light"> ID: {{compTelem.componentTelemetryID}}</span>
                 {{compTelem.name}}
                 <div *ngIf = "compTelem.upperBound">
                     <span class="badge badge-warning"> UB: {{compTelem.upperBound}}</span>
@@ -59,13 +66,18 @@
                 <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
               </li>
             </ul>
-            <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
-            <button type="button" class="btn btn-outline-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
-            <button type="button" class="btn btn-outline-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
       </div>
+      <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
+      <button type="button" class="btn btn-outline-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
+      <button type="button" class="btn btn-outline-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
       <ng-template #noComponent>
+        <ng-container *ngIf = "selectedComponent && compTelemetries && compTelemetries.length == 0; else pleaseSelectComp">
+          <p>No component telemetry have been registered to this system.</p>
+        </ng-container>
+      </ng-template>
+      <ng-template #pleaseSelectComp>
         <p>
-          Please select a component to view, modify and delete component telemetries.
+          Please select a component to view, modify and delete component telemetry.
         </p>
       </ng-template>
     </div>
