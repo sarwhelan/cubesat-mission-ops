@@ -11,7 +11,8 @@ export const environment = {
     region: 'us-east-2',
     userPoolId: 'us-east-2_YZSlXzFlB',
     userPoolClientId: '1bn896ocv98neen3r2djed4r7i'
-  }
+  },
+  groundStationIP: 'http://0.0.0.0:3700'
 };
 
 /*

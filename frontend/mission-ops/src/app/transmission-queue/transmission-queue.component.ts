@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
 import { Telecommand } from 'src/classes/telecommand';
 import { User } from 'src/classes/user';
 import { UsersService } from 'src/app/services/users/users.service';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-transmission-queue',
@@ -21,7 +24,10 @@ export class TransmissionQueueComponent implements OnInit {
   private passQueuedTelecommands: QueuedTelecommand[];
   users: User[]
 
-  constructor(private userService: UsersService, private queuedTelecommandService: QueuedTelecommandService) { }
+  constructor(private userService: UsersService, 
+    private queuedTelecommandService: QueuedTelecommandService,
+    private http: HttpClient,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.userService.getUsers(Number.MAX_SAFE_INTEGER - 1)
@@ -42,5 +48,16 @@ export class TransmissionQueueComponent implements OnInit {
   reloadQueuedTelecommands(){
     this.queuedTelecommandService.getQueuedTelecommandsTransmission(this.selectedPass)
       .subscribe(qtc => this.passQueuedTelecommands = qtc);
+  }
+
+  submitTransmissionQueueToGroundStation(){
+    try {
+      this.http.post(`${env.groundStationIP}/queue/${this.selectedPass.passID}`, { queue: this.passQueuedTelecommands})
+      .subscribe(_ => {
+        this.toastr.success('Transmitted queue to ground station successfully.');
+      });
+    } catch (error) {
+      this.toastr.error('Error transmitting to the ground station: Something went wrong.');
+    }
   }
 }
