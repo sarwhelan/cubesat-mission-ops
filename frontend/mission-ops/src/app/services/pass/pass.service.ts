@@ -13,7 +13,9 @@ interface State {
 
 interface DividedPass {
   pastPasses: Pass[],
-  futurePasses: Pass[]
+  futurePasses: Pass[],
+  pastPassTotal: number,
+  futurePassTotal: number
 }
 
 /**
@@ -48,10 +50,11 @@ export class PassService {
     this._refreshPasses.pipe(
       switchMap(() => this._getPasses(true))
     ).subscribe(result => {
+      console.log(result);
       this._pastPasses.next(result.pastPasses);
       this._futurePasses.next(result.futurePasses);
-      this._futureTotal.next(result.futurePasses.length);
-      this._pastTotal.next(result.pastPasses.length);
+      this._futureTotal.next(result.futurePassTotal);
+      this._pastTotal.next(result.pastPassTotal);
     });
 
     this._refreshPasses.next();
@@ -68,6 +71,7 @@ export class PassService {
 
   private _set(patch: Partial<State>) {
     Object.assign(this._state, patch);
+    console.log(this._state);
     this._refreshPasses.next();
   }
 
@@ -80,11 +84,13 @@ export class PassService {
     return this.http.get<Pass[]>(this.passesUrl)
       .pipe(mergeMap(result => {
         var pastPasses = result.filter(x => x.passHasOccurred);
+        const pastPassTotal = pastPasses.length;
         var futurePasses = result.filter(x => !x.passHasOccurred);
-        if (!isPaginated) return of({pastPasses, futurePasses});
+        const futurePassTotal = futurePasses.length;
+        if (!isPaginated) return of({pastPasses, futurePasses, pastPassTotal, futurePassTotal});
         pastPasses = pastPasses.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
         futurePasses = futurePasses.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-        return of({pastPasses, futurePasses});
+        return of({pastPasses, futurePasses, pastPassTotal, futurePassTotal});
       }));
   }
 
