@@ -134,7 +134,7 @@ buildChart() : void
       categories: msLabels,
       type: 'datetime',
       labels: {
-        format: '{value:%Y-%m-%d}',
+        format: '{value:%Y-%m-%d %H:%M:%S}',
       }
     },
     yAxis: {
