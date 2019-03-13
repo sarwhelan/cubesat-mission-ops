@@ -83,6 +83,32 @@
     </div>
   </div>
 </div>
+<br/>
+<br/>
+<div class = "row">
+  <div class = "col-md-3">
+    <div class = "container">
+      <h4>Telemetry Types</h4>
+      <ng-container *ngIf = "telemetryTypes && telemetryTypes.length > 0; else noTelemetryTypes">
+        <ul class = "list-group">
+          <li *ngFor="let tt of telemetryTypes"
+          (click)="onSelectTelemetryType(tt)"
+          [class.active]="tt===selectedTelemetryType"
+          class="list-group-item">
+            {{tt.name}}
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #noTelemetryTypes>
+        <p>No telemetry types have been registered.</p>
+      </ng-template>
+        <button type="button" class="btn btn-outline-success" (click)="promptAddTelemetryType()">Add <i class="fa fa-plus-square"></i></button>
+        <button type="button" class="btn btn-outline-info" (click)="promptEditTelemetryType()" [disabled]="!selectedTelemetryType">Edit <i class="fa fa-edit"></i></button>
+        <button type="button" class="btn btn-outline-danger" (click)="promptDeleteTelemetryType()" [disabled]="!selectedTelemetryType">Delete <i class="fa fa-trash"></i></button>
+      </div>
+    </div>
+  <div class = "col-md-9"></div>
+</div>
 
 <app-modal #deleteSystemModal>
   <ng-container modal-title>
@@ -128,4 +154,19 @@
       </button>
     </ng-container>
   </app-modal>
+
+<app-modal #deleteTelemetryTypeModal>
+  <ng-container modal-title>
+    <h1>Are You Sure?</h1>
+  </ng-container>
+  <ng-container modal-body>
+    <p>Are you sure you want to delete telemetry type <span class="text-primary">{{selectedTelemetryType?.name}}</span>?</p>
+    <p>It will be deleted <span class="text-danger">permanently</span> and can never be recovered.</p>
+  </ng-container>
+  <ng-container modal-footer>
+    <button (click)="deleteTelemetryType()" class="btn btn-outline-danger">
+      Delete Telemetry Type
+    </button>
+  </ng-container>
+</app-modal>
   

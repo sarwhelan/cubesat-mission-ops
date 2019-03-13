@@ -4,9 +4,9 @@ export class TelemetryType {
     name: string;
     hasBounds: boolean;
 
-    constructor(telemetryUnit: string, name: string, hasBounds: boolean){
+    constructor(telemetryUnit: string, name: string){
         this.telemetryUnit = telemetryUnit;
         this.name = name;
-        this.hasBounds = hasBounds;
+        this.hasBounds = true;
     }
 }

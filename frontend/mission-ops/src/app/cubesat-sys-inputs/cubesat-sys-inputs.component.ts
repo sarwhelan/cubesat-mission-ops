@@ -12,6 +12,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateComponentComponent } from '../create-component/create-component.component';
 import { CreateComponentTelemetryComponent } from '../create-component-telemetry/create-component-telemetry.component';
 import { ModalComponent } from '../modal/modal.component';
+import { ToastrService } from 'ngx-toastr';
+import { CreateTelemetryTypeComponent } from '../create-telemetry-type/create-telemetry-type.component';
 
 /**
  * Manages CubeSat system inputs, i.e. the systems, components and component telemetries to organize 
@@ -29,6 +31,8 @@ export class CubesatSysInputsComponent implements OnInit {
   private deleteComponentModal: ModalComponent;
   @ViewChild('deleteCompTelemModal')
   private deleteCompTelemModal: ModalComponent;
+  @ViewChild('deleteTelemetryTypeModal')
+  private deleteTelemetryTypeModal: ModalComponent;
 
   systems: System[];
   components: CubeSatComp[];
@@ -36,6 +40,7 @@ export class CubesatSysInputsComponent implements OnInit {
   selectedComponent: CubeSatComp;
   compTelemetries: ComponentTelemetry[];
   selectedCompTelem: ComponentTelemetry;
+  selectedTelemetryType: TelemetryType;
   telemetryTypes: TelemetryType[];
 
   /**
@@ -50,12 +55,44 @@ export class CubesatSysInputsComponent implements OnInit {
               private componentService: ComponentService,
               private compTelemetriesService: ComponentTelemetryService,
               private telemetryTypesService: TelemetryTypesService,
-              private modalService: NgbModal) 
+              private modalService: NgbModal,
+              private toastr: ToastrService) 
               { }
 
   ngOnInit() {
     this.getSystems();
     this.getTelemetryTypes();
+  }
+
+  promptAddTelemetryType() : void
+  {
+    const modalRef = this.modalService.open(CreateTelemetryTypeComponent);
+    modalRef.componentInstance.isEditing = false;
+    modalRef.result.then((result) => {
+      this.telemetryTypesService.createTelemetryType(new TelemetryType(result.telemetryUnit, result.name))
+        .subscribe(_ => {
+          this.getTelemetryTypes();
+        });
+    }).catch((error) => {
+      // Modal closed without submission
+      console.log(error);
+    });
+  }
+
+  promptEditTelemetryType() : void
+  {
+    const modalRef = this.modalService.open(CreateTelemetryTypeComponent);
+    modalRef.componentInstance.isEditing = true;
+    modalRef.componentInstance.selectedTelemetryType = this.selectedTelemetryType;
+    modalRef.result.then((result) => {
+      this.selectedTelemetryType.name = result.name;
+      this.selectedTelemetryType.telemetryUnit = result.telemetryUnit;
+      this.telemetryTypesService.updateTelemetryType(this.selectedTelemetryType)
+        .subscribe(_ => { });
+    }).catch((error) => {
+      // Modal closed without submission
+      console.log(error);
+    });
   }
 
   /**
@@ -181,6 +218,11 @@ export class CubesatSysInputsComponent implements OnInit {
      });
    }
 
+  promptDeleteTelemetryType() : void
+  {
+    this.deleteTelemetryTypeModal.open();
+  }
+
   /**
   * Generates and handles the modal to delete the selected {@link System} element.
   */
@@ -200,6 +242,11 @@ export class CubesatSysInputsComponent implements OnInit {
   */
   promptDeleteCompTelem(): void {
     this.deleteCompTelemModal.open();
+  }
+
+  onSelectTelemetryType(telemetryType: TelemetryType) : void
+  {
+    this.selectedTelemetryType = telemetryType;
   }
 
   /**
@@ -294,6 +341,26 @@ export class CubesatSysInputsComponent implements OnInit {
   getTelemetryType(telemetryTypeId: number) : TelemetryType
   {
     return this.telemetryTypes.find(x => x.telemetryTypeID == telemetryTypeId);
+  }
+
+  deleteTelemetryType() : void
+  {
+    if (!this.selectedTelemetryType) return;
+    this.compTelemetriesService.getComponentTelemetryWithType(this.selectedTelemetryType.telemetryTypeID)
+      .subscribe(cts => {
+        if (cts.length > 0) {
+          this.toastr.error('Error: cannot delete telemetry type when it is associated with an existing component telemetry.');
+          this.deleteTelemetryTypeModal.close();
+          return;
+        }
+        // Otherwise, delete the type.
+        this.telemetryTypesService.removeTelemetryType(this.selectedTelemetryType)
+          .subscribe(_ => {
+            this.getTelemetryTypes();
+            this.selectedTelemetryType = null;
+            this.deleteTelemetryTypeModal.close();
+          });
+      });
   }
 
   /**

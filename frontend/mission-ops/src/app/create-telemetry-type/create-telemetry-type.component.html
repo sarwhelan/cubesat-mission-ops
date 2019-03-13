@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{modalTitle}}</h4>
+    <button type="button" class="close" aria-label="Close"
+     (click)="activeModal.dismiss('Cross click')">
+    </button>
+  </div>
+  <form [formGroup] = "createTelemetryTypeForm" (ngSubmit) = "submitNewTelemetryType()">
+    <div class = "modal-body">
+      <div class = "container">
+        <div class = "form-group">
+          <label for = "name">Telemetry Type Name</label>
+          <input type = "text"
+            class = "form-control"
+            formControlName = "name"
+            placeholder="Telemetry name"/>
+        </div>
+        <div class = "form-group">
+            <label for = "telemetryUnit">Unit</label>
+            <input type = "text"
+              class = "form-control"
+              formControlName = "telemetryUnit"
+              placeholder="Unit"/>
+          </div>
+      </div>
+    </div>
+  <div class="modal-footer">
+    <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"
+    [disabled] = "!createTelemetryTypeForm.valid">
+      {{modalSubmit}}
+    </button>
+  </div>
+  </form>

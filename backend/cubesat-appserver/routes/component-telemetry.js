@@ -9,10 +9,17 @@ router.route('/')
     // GET /component-telemetry returns all componentTelemetry entries
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("SELECT * FROM componentTelemetry", function (error, results, fields) {
-                if (error) throw error;
-                res.send(results);
-            });
+            if (req.query.telemetryTypeID) {
+                db.query("SELECT * FROM componentTelemetry WHERE telemetryTypeID = ?", req.query.telemetryTypeID, function (error, results, fields) {
+                    if (error) throw error;
+                    res.send(results);
+                });
+            } else {
+                db.query("SELECT * FROM componentTelemetry", function (error, results, fields) {
+                    if (error) throw error;
+                    res.send(results);
+                });
+            }
         } catch (err) {
             console.log(err);
             res.send(err);

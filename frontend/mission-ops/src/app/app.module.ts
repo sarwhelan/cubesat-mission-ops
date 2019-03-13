@@ -49,6 +49,7 @@ import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
 import { PanoramaViewerComponent } from './panorama-viewer/panorama-viewer.component';
 import { MediaLibraryComponent } from './media-library/media-library.component';
 import { MediaViewComponent } from './media-view/media-view.component';
+import { CreateTelemetryTypeComponent } from './create-telemetry-type/create-telemetry-type.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { MediaViewComponent } from './media-view/media-view.component';
     PanoramaViewerComponent,
     MediaLibraryComponent,
     MediaViewComponent,
+    CreateTelemetryTypeComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,6 +115,7 @@ import { MediaViewComponent } from './media-view/media-view.component';
     CreateComponentTelemetryComponent,
     CreateQueuedTelecommandComponent,
     CreatePassComponent,
+    CreateTelemetryTypeComponent,
   ]
 })
 export class AppModule { }
