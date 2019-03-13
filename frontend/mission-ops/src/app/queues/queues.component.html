@@ -13,7 +13,7 @@
         <ng-template ngbTabContent>
           <ul class="list-group">
             <ng-container *ngIf = "pastPasses && pastPasses.length > 0; else noPastPasses">
-              <li *ngFor="let pass of pastPasses"
+              <li *ngFor="let pass of pastPassesObs | async"
               (click)="onSelect(pass)"
               [class.active]="pass === selectedPass"
               class="list-group-item">
@@ -21,20 +21,38 @@
               </li>
             </ng-container>
             </ul> 
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [collectionSize]="(pastPassesTotal | async)" [(page)]="passService.page" [pageSize]="passService.pageSize">
+            </ngb-pagination>
+              <select class="custom-select" style="width: auto" name="passService.pageSize" [(ngModel)]="passService.pageSize">
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="20">20 items per page</option>
+              </select>
+            </div>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Future">
           <ng-template ngbTabContent>
             <ul class="list-group">
               <ng-container *ngIf = "futurePasses && futurePasses.length > 0; else noFuturePasses">
-                  <li *ngFor="let pass of futurePasses"
+                  <li *ngFor="let pass of futurePassesObs | async"
                   (click)="onSelect(pass)"
                   [class.active]="pass === selectedPass"
                   class="list-group-item">
                     <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
                   </li>
               </ng-container>
-              </ul> 
+              </ul>
+              <div class="d-flex justify-content-between p-2">
+                <ngb-pagination
+                  [collectionSize]="(futurePassesTotal | async)" [(page)]="passService.page" [pageSize]="passService.pageSize">
+              </ngb-pagination>
+                <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="passService.pageSize">
+                  <option [ngValue]="10">10 items per page</option>
+                  <option [ngValue]="20">20 items per page</option>
+                </select>
+              </div>
           </ng-template>
         </ngb-tab>
       </ngb-tabset>
