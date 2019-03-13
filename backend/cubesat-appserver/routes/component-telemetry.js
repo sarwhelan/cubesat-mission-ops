@@ -30,8 +30,9 @@ router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
             // NOTE upperBound and lowerBound can be null
-            var insertParams = [req.body.telemetryTypeID, req.body.componentID, req.body.name, req.body.upperBound, req.body.lowerBound];
-            db.query('INSERT INTO componentTelemetry (telemetryTypeID, componentID, name, upperBound, lowerBound) VALUES (?, ?, ?, ?, ?)', insertParams, (error, results, fields) => {
+            hasBounds = req.body.hasBounds ? 1 : 0;
+            var insertParams = [req.body.telemetryTypeID, req.body.componentID, req.body.name, hasBounds, req.body.upperBound, req.body.lowerBound];
+            db.query('INSERT INTO componentTelemetry (telemetryTypeID, componentID, name, hasBounds, upperBound, lowerBound) VALUES (?, ?, ?, ?, ?, ?)', insertParams, (error, results, fields) => {
                 if (error) throw error;
                 res.json({newCompTelem: results.insertId});
                 //res.json(200);
@@ -59,9 +60,9 @@ router.route('/:ID')
     // PUT /component-telemetry/:componentTelemetryID updates the fields of the componentTelemetryID specified
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            var updateParams = [req.body.telemetryTypeID, req.body.componentID, req.body.name, req.body.upperBound, req.body.lowerBound, req.params.ID];
+            var updateParams = [req.body.telemetryTypeID, req.body.componentID, req.body.name, req.body.hasBounds, req.body.upperBound, req.body.lowerBound, req.params.ID];
 
-            db.query("UPDATE componentTelemetry SET telemetryTypeID = ?, componentID = ?, name = ?, upperBound = ?, lowerBound = ? " +
+            db.query("UPDATE componentTelemetry SET telemetryTypeID = ?, componentID = ?, name = ?, hasBounds = ?, upperBound = ?, lowerBound = ? " +
                 "WHERE componentTelemetryID = ?", updateParams, function (error, results, fields) {
                 if (error) throw error;
                 res.json({updateCompTelem:results.insertId});

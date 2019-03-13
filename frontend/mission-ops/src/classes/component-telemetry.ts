@@ -31,6 +31,8 @@ export class ComponentTelemetry {
      */
     name: string;
 
+    hasBounds: boolean;
+
     /**
      * The upper acceptable limit of the component telemetry data.
      * 
@@ -58,11 +60,13 @@ export class ComponentTelemetry {
     constructor(telemetryTypeID: number, 
                 componentID: number,
                 name: string,
+                hasBounds: boolean = false,
                 upperBound: number = null,
                 lowerBound: number = null) {
         this.telemetryTypeID = telemetryTypeID;
         this.componentID = componentID;
         this.name = name;
+        this.hasBounds = hasBounds;
         this.upperBound = upperBound;
         this.lowerBound = lowerBound;
     }
