@@ -15,6 +15,7 @@ export class CreateTelemetryTypeComponent implements OnInit {
   selectedTelemetryType: TelemetryType;
   modalTitle: string;
   modalSubmit: string;
+  newTelemetryTypeErrorMsgs: string[];
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
 
@@ -37,9 +38,44 @@ export class CreateTelemetryTypeComponent implements OnInit {
     });
   }
 
+  private isFormValid(newTelemetryType: TelemetryType) : boolean
+  {
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+    if (newTelemetryType.name.trim() == "")
+    {
+      errorMessages.push("Telemetry type must have a name.");
+    }
+
+    if (newTelemetryType.telemetryUnit.trim() == "")
+    {
+      errorMessages.push("Telemetry type must specify a unit.");
+    }
+
+    if (errorMessages.length > 1)
+    {
+      this.newTelemetryTypeErrorMsgs = errorMessages;
+      return false;
+    } else {
+      this.newTelemetryTypeErrorMsgs = [];
+      return true;
+    }
+  }
+
   submitNewTelemetryType() : void
   {
-    this.activeModal.close(this.createTelemetryTypeForm.value);
+    if (!this.isEditing){
+      var newTT = new TelemetryType(this.createTelemetryTypeForm.value.telemetryUnit, this.createTelemetryTypeForm.value.name)
+      if (!this.isFormValid(newTT)) return;
+      this.newTelemetryTypeErrorMsgs = [];
+      this.activeModal.close(newTT);
+    } else {
+      this.selectedTelemetryType.name = this.createTelemetryTypeForm.value.name;
+      this.selectedTelemetryType.telemetryUnit = this.createTelemetryTypeForm.value.telemetryUnit;
+      if (!this.isFormValid(this.selectedTelemetryType)) return;
+      this.newTelemetryTypeErrorMsgs = [];
+      this.activeModal.close(this.selectedTelemetryType);
+    }
   }
 
   closeModal() : void

@@ -69,7 +69,7 @@ export class CubesatSysInputsComponent implements OnInit {
     const modalRef = this.modalService.open(CreateTelemetryTypeComponent);
     modalRef.componentInstance.isEditing = false;
     modalRef.result.then((result) => {
-      this.telemetryTypesService.createTelemetryType(new TelemetryType(result.telemetryUnit, result.name))
+      this.telemetryTypesService.createTelemetryType(result)
         .subscribe(_ => {
           this.getTelemetryTypes();
         });
@@ -85,9 +85,7 @@ export class CubesatSysInputsComponent implements OnInit {
     modalRef.componentInstance.isEditing = true;
     modalRef.componentInstance.selectedTelemetryType = this.selectedTelemetryType;
     modalRef.result.then((result) => {
-      this.selectedTelemetryType.name = result.name;
-      this.selectedTelemetryType.telemetryUnit = result.telemetryUnit;
-      this.telemetryTypesService.updateTelemetryType(this.selectedTelemetryType)
+      this.telemetryTypesService.updateTelemetryType(result)
         .subscribe(_ => { });
     }).catch((error) => {
       // Modal closed without submission

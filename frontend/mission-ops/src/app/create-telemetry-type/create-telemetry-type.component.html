@@ -22,6 +22,10 @@
               placeholder="Unit"/>
           </div>
       </div>
+      <div *ngFor="let error of newTelemetryTypeErrorMsgs">
+          <label style="color:red;">{{error}}</label>
+          <br />
+      </div>
     </div>
   <div class="modal-footer">
     <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"
