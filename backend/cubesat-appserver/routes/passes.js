@@ -8,7 +8,7 @@ var db = require('../database');
 router.route('/')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("SELECT * FROM passes;", function (error, results, fields) {
+            db.query("SELECT passes.*, count( exeQueuedTelecommands.telecommandID ) as numberOfTelecommandsToBeExecuted, count( transQueuedTelecommands.telecommandID ) as numberOfTelecommandsToBeTransmitted FROM passes LEFT OUTER JOIN queuedTelecommands as exeQueuedTelecommands ON passes.passID = exeQueuedTelecommands.executionPassID LEFT OUTER JOIN queuedTelecommands as transQueuedTelecommands ON passes.passID = transQueuedTelecommands.transmissionPassID group by passes.passID;", function (error, results, fields) {
                 if (error) throw error;
 
                 res.send(results);
