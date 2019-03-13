@@ -48,13 +48,12 @@
       <div class="col-sm-auto">
         <app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
       </div>
-      <div class="col-sm-2">
-        <select [(ngModel)]="userLimit" class="form-control">
-          <option value="2">2</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="100">100</option>
+      <div class="col-sm-auto">
+        <select [(ngModel)]="userLimit" class="custom-select" style="width: auto">
+          <option value="5">5 items per page</option>
+          <option value="10">10 items per page</option>
+          <option value="25">25 items per page</option>
+          <option value="100">100 items per page</option>
         </select>
       </div>
       <div class="col-sm text-right">
