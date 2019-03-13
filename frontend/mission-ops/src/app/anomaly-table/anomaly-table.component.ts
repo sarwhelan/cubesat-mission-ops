@@ -1,34 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import { AnomaliesService } from '../services/anomalies/anomalies.service';
 import { Anomaly } from '../../classes/anomaly';
+import { DecimalPipe } from '@angular/common';
+import { Observable } from 'rxjs';
+import { SortableDirective, SortEvent } from '../services/anomalies/sortable.directive';
+
 const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-anomaly-table',
   templateUrl: './anomaly-table.component.html',
-  styleUrls: ['./anomaly-table.component.scss']
+  styleUrls: ['./anomaly-table.component.scss'],
+  providers: [AnomaliesService, DecimalPipe]
 })
-export class AnomalyTableComponent implements OnInit {
+export class AnomalyTableComponent {
+  anomalies$: Observable<Anomaly[]>;
+  total$: Observable<number>;
 
-  constructor(private anomService: AnomaliesService) { }
+  @ViewChildren(SortableDirective) headers: QueryList<SortableDirective>;
 
-  anomalies: Anomaly[];
-  collectionSize: number;
-
-  ngOnInit() {
-    this.getAnomalies();
+  constructor(public service: AnomaliesService) {
+    this.anomalies$ = service.anomalies$;
+    this.total$ = service.total$;
   }
 
-  getFormatedDate(unformatedDate: Date)
+  onSort({column, direction}: SortEvent) {
+
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    this.service.sortColumn = column;
+    this.service.sortDirection = direction;
+  }
+
+  getFormattedDate(unformattedDate: Date)
   {
-    return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
+    return dateFormat(unformattedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
   }
-
-  getAnomalies() {
-    this.anomService.getAnomalies().subscribe(anoms => {
-      this.anomalies = anoms;
-      this.collectionSize = this.anomalies.length;
-    })
-  }
-
 }

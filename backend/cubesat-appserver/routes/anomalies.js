@@ -16,7 +16,6 @@ router.route('/')
             "ON tt.telemetryTypeID = ct.telemetryTypeID) AS everything WHERE reading > upperBound OR reading < lowerBound " +
             "ORDER BY collectionTime DESC", [], function(error, results, fields) {
                 if (error) throw error;
-                console.log("returning data... " + JSON.stringify(results));
                 res.send(results);
             })
         } catch (err) {

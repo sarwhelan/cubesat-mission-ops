@@ -46,6 +46,7 @@ import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
 import { PanoramaViewerComponent } from './panorama-viewer/panorama-viewer.component';
 import { MediaLibraryComponent } from './media-library/media-library.component';
 import { MediaViewComponent } from './media-view/media-view.component';
+import { SortableDirective } from './services/anomalies/sortable.directive';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { MediaViewComponent } from './media-view/media-view.component';
     PanoramaViewerComponent,
     MediaLibraryComponent,
     MediaViewComponent,
+    SortableDirective,
   ],
   imports: [
     BrowserModule,
