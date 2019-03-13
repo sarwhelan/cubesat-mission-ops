@@ -89,11 +89,12 @@ export class QueuesComponent implements OnInit {
 
   getPasses(isPaginated: boolean = false) : void{   
     this.selectedPass = null; 
-    this.passService.getPasses(isPaginated)
-      .subscribe(passes => {
-        this.pastPasses = passes.pastPasses;
-        this.futurePasses = passes.futurePasses;
+    this.futurePassesObs.subscribe(passes => {
+        this.futurePasses = passes;
       });
+    this.pastPassesObs.subscribe(passes => {
+      this.pastPasses = passes;
+    })
   }
 
   getTelecommands() : void

@@ -3,7 +3,7 @@ import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { Pass } from '../../../classes/pass';
 import { HttpClient } from '@angular/common/http';
 import { PassSum } from 'src/classes/pass-sum';
-import { mergeMap, switchMap } from 'rxjs/operators';
+import { mergeMap, switchMap, delay } from 'rxjs/operators';
 import { environment as env } from 'src/environments/environment';
 
 interface State {
@@ -46,13 +46,15 @@ export class PassService {
    */
   constructor(private http: HttpClient) { 
     this._refreshPasses.pipe(
-      switchMap(() => this.getPasses(true))
+      switchMap(() => this._getPasses(true))
     ).subscribe(result => {
       this._pastPasses.next(result.pastPasses);
       this._futurePasses.next(result.futurePasses);
       this._futureTotal.next(result.futurePasses.length);
       this._pastTotal.next(result.pastPasses.length);
-    })
+    });
+
+    this._refreshPasses.next();
   }
 
   get pastPasses() { return this._pastPasses.asObservable() }
@@ -72,7 +74,7 @@ export class PassService {
   /**
    * Gets all {@link Pass} objects from the app server.
    */
-  getPasses(isPaginated: boolean = false) : Observable<DividedPass>
+  private _getPasses(isPaginated: boolean) : Observable<DividedPass>
   {
     const {pageSize, page} = this._state;
     return this.http.get<Pass[]>(this.passesUrl)

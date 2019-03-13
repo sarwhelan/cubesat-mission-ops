@@ -13,7 +13,7 @@
         <ng-template ngbTabContent>
           <ul class="list-group">
             <ng-container *ngIf = "pastPasses && pastPasses.length > 0; else noPastPasses">
-              <li *ngFor="let pass of pastPasses"
+              <li *ngFor="let pass of pastPassesObs | async"
               (click)="onSelect(pass)"
               [class.active]="pass === selectedPass"
               class="list-group-item">
