@@ -1,9 +1,9 @@
 import { Component, OnInit, Directive, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
-import { AnomaliesService } from '../services/anomalies/anomalies.service';
-import { Anomaly } from '../../classes/anomaly';
+import { AnomaliesService } from 'src/app/services/anomalies/anomalies.service';
+import { Anomaly } from 'src/classes/anomaly';
 import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { SortableDirective, SortEvent } from '../services/anomalies/sortable.directive';
+import { SortableDirective, SortEvent } from 'src/app/services/anomalies/sortable.directive';
 
 const dateFormat = require('dateformat');
 

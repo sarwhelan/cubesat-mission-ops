@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionsService } from '../services/subscriptions/subscriptions.service';
+import { SubscriptionsService } from 'src/app/services/subscriptions/subscriptions.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from '../../classes/subscription';
-import { System } from '../../classes/system';
-import { SystemService } from '../services/system/system.service';
+import { Subscription } from 'src/classes/subscription';
+import { System } from 'src/classes/system';
+import { SystemService } from 'src/app/services/system/system.service';
 
 @Component({
   selector: 'app-anomaly-subscription',

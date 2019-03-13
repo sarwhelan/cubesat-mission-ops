@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Telecommand } from '../../../classes/telecommand';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Telecommand } from 'src/classes/telecommand';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class TelecommandService {
 
   constructor(private http: HttpClient) { }
 
-  private telecommandsUrl = "http://localhost:3000/telecommands"
+  private telecommandsUrl = `${env.apiRouteBase}/telecommands`
 
   getTelecommands() : Observable<Telecommand[]>
   {

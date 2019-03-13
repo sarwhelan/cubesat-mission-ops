@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SystemService } from '../services/system/system.service';
+import { SystemService } from 'src/app/services/system/system.service';
 import { System } from 'src/classes/system';
 import { Component as CubeSatComp } from 'src/classes/component';
-import { ComponentService } from '../services/component/component.service';
-import { ComponentTelemetryService } from '../services/component-telemetry/component-telemetry.service';
+import { ComponentService } from 'src/app/services/component/component.service';
+import { ComponentTelemetryService } from 'src/app/services/component-telemetry/component-telemetry.service';
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { TelemetryType } from 'src/classes/telemetry-type';
-import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
+import { TelemetryTypesService } from 'src/app/services/telemetry-types/telemetry-types.service';
 import { CreateSystemComponent } from '../create-system/create-system.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateComponentComponent } from '../create-component/create-component.component';

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment as env } from 'src/environments/environment';
 
 import { PanoramicMedia } from 'src/classes/panoramic-media';
 import { PagedList } from 'src/classes/paged-list';
@@ -11,6 +12,7 @@ import { PagedList } from 'src/classes/paged-list';
 })
 export class PanoramicMediaService {
 
+  private mediaApiUrl = `${env.apiRouteBase}/media`
   private media: Array<PanoramicMedia>;
   private mediaObs$: Observable<Array<PanoramicMedia>>;
 
@@ -29,13 +31,13 @@ export class PanoramicMediaService {
    * @memberof PanoramicMediaService
    */
   private fetchMediaList(): Observable<Array<PanoramicMedia>> {
-    return this.http.get('http://localhost:3000/media').pipe(
+    return this.http.get(this.mediaApiUrl).pipe(
       map((val) => val as Array<PanoramicMedia>),
       map((val) => {
         for(let i = 0; i < val.length; i++) {
           // Replace source fields with full urls
-          val[i].src = `http://localhost:3000${val[i].src}`;
-          val[i].previewSrc = `http://localhost:3000${val[i].previewSrc}`;
+          val[i].src = `${env.apiRouteBase}${val[i].src}`;
+          val[i].previewSrc = `${env.apiRouteBase}${val[i].previewSrc}`;
         }
         return val;
       })

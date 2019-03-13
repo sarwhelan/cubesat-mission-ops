@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subscription } from '../../../classes/subscription';
+import { Subscription } from 'src/classes/subscription';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SubscriptionsService {
 
   constructor(private http: HttpClient) { }
 
-  private systemUrl = "http://localhost:3000/subscriptions/";
+  private systemUrl = `${env.apiRouteBase}/subscriptions/`;
 
   getSubscriptions(userID): Observable<Subscription[]>
   {

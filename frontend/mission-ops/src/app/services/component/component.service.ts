@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Component } from '../../../classes/component';
+import { Component } from 'src/classes/component';
 import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 /**
  * Service handling all {@link Component} app server routing.
@@ -20,7 +21,7 @@ export class ComponentService {
   /**
    * Route URL for components.
    */
-  private componentUrl = "http://localhost:3000/components";
+  private componentUrl = `${env.apiRouteBase}/components`;
 
   /**
    * Gets all {@link Component} objects from the app server.

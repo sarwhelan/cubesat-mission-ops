@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Pass } from '../../classes/pass';
-import { PassService } from '../services/pass/pass.service';
+import { Pass } from 'src/classes/pass';
+import { PassService } from 'src/app/services/pass/pass.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateQueuedTelecommandComponent } from '../create-queued-telecommand/create-queued-telecommand.component';
-import { TelecommandService } from '../services/telecommand/telecommand.service';
+import { TelecommandService } from 'src/app/services/telecommand/telecommand.service';
 import { Telecommand } from 'src/classes/telecommand';
-import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
-import { AuthService } from '../services/auth/auth.service';
+import { QueuedTelecommandService } from 'src/app/services/queuedTelecommand/queued-telecommand.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Observable, forkJoin, empty, of } from 'rxjs';
 import { mergeMap, delay } from 'rxjs/operators';
-import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
+import { TelecommandBatchService } from 'src/app/services/telecommandBatch/telecommand-batch.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
-import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
+import { PresetTelecommandService } from 'src/app/services/presetTelecommand/preset-telecommand.service';
 import { PassSum } from 'src/classes/pass-sum';
 import { CreatePassComponent } from '../create-pass/create-pass.component';
 
