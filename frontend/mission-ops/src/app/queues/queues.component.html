@@ -59,12 +59,14 @@
   </div>
   <div class = "col">
     <ngb-tabset *ngIf="selectedPass">
-      <ngb-tab title="Transmission Queue">
-        <ng-template ngbTabContent>
-          <app-transmission-queue [selectedPass] = "selectedPass" [telecommands] = "telecommands"></app-transmission-queue>
+      <ngb-tab>
+        <ng-template ngbTabTitle>Transmission Queue <span class="badge badge-info">{{selectedPass.numberOfTelecommandsToBeTransmitted}}</span></ng-template>
+          <ng-template ngbTabContent>
+            <app-transmission-queue [selectedPass] = "selectedPass" [telecommands] = "telecommands"></app-transmission-queue>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="Execution Queue">
+      <ngb-tab>
+        <ng-template ngbTabTitle>Execution Queue <span class="badge badge-info">{{selectedPass.numberOfTelecommandsToBeExecuted}}</span></ng-template>
         <ng-template ngbTabContent>
             <app-execution-queue [selectedPass] = "selectedPass" [telecommands] = "telecommands"></app-execution-queue>
         </ng-template>

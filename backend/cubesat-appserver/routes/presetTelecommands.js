@@ -8,10 +8,10 @@ var db = require('../database');
 router.route('/')
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            var insertParameters = [req.body.telecommandID, req.body.batchID, req.body.minuteDelay, req.body.hourDelay, req.body.dayDelay, req.body.priorityLevel, req.body.commandParameters];
+            var insertParameters = [req.body.telecommandID, req.body.batchID, req.body.secondDelay, req.body.minuteDelay, req.body.hourDelay, req.body.dayDelay, req.body.priorityLevel, req.body.commandParameters];
 
             // using this pattern of using ? in our query builder does the escaping for us! No need to worry about sql injection
-            db.query('INSERT INTO presetTelecommands(telecommandID, batchID, minuteDelay, hourDelay, dayDelay, priorityLevel, commandParameters) VALUES (?, ?, ?, ?, ?, ?, ?)', insertParameters, function (error, results, fields) {
+            db.query('INSERT INTO presetTelecommands(telecommandID, batchID, secondDelay, minuteDelay, hourDelay, dayDelay, priorityLevel, commandParameters) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', insertParameters, function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);
@@ -40,9 +40,9 @@ router.route('/:id')
     .put(parseUrlencoded, parseJSON, (req, res) => {
         try {
             var presetTelecommandID = req.params.id;
-            var updateParams = [req.body.minuteDelay, req.body.hourDelay, req.body.dayDelay, req.body.priorityLevel, req.body.commandParameters, presetTelecommandID];
+            var updateParams = [req.body.secondDelay, req.body.minuteDelay, req.body.hourDelay, req.body.dayDelay, req.body.priorityLevel, req.body.commandParameters, presetTelecommandID];
             
-            db.query('UPDATE presetTelecommands SET minuteDelay = ?, hourDelay = ?, dayDelay = ?, priorityLevel = ?, commandParameters = ? WHERE presetTelecommandID = ?;', updateParams, function (error, results, fields) {
+            db.query('UPDATE presetTelecommands SET secondDelay = ?, minuteDelay = ?, hourDelay = ?, dayDelay = ?, priorityLevel = ?, commandParameters = ? WHERE presetTelecommandID = ?;', updateParams, function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);
