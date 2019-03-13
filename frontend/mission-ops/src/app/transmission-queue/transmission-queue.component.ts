@@ -3,13 +3,14 @@ import { Pass } from 'src/classes/pass';
 import { PassService } from 'src/app/services/pass/pass.service';
 import { QueuedTelecommandService } from 'src/app/services/queuedTelecommand/queued-telecommand.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
-import { Observable } from 'rxjs';
+import { Observable, of, empty } from 'rxjs';
 import { Telecommand } from 'src/classes/telecommand';
 import { User } from 'src/classes/user';
 import { UsersService } from 'src/app/services/users/users.service';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { retry, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transmission-queue',
@@ -51,13 +52,20 @@ export class TransmissionQueueComponent implements OnInit {
   }
 
   submitTransmissionQueueToGroundStation(){
-    try {
       this.http.post(`${env.groundStationIP}/queue/${this.selectedPass.passID}`, { queue: this.passQueuedTelecommands})
+      .pipe(
+        retry(1),
+        catchError(val => {
+          this.handleSubmitError(val);
+          return empty();
+        }))
       .subscribe(_ => {
         this.toastr.success('Transmitted queue to ground station successfully.');
       });
-    } catch (error) {
-      this.toastr.error('Error transmitting to the ground station: Something went wrong.');
-    }
+  }
+
+  handleSubmitError(error){
+    console.log(error);
+    this.toastr.error(`Error transmitting to the ground station: ${error.statusText}`);
   }
 }
