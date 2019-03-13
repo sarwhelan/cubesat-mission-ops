@@ -16,6 +16,7 @@ export class CreateSystemComponent implements OnInit {
   selectedSystem: System;
   modalTitle: string;
   modalSubmit: string;
+  newSystemErrorMsgs: string[];
 
   constructor(public activeModal: NgbActiveModal, 
     private formBuilder: FormBuilder) 
@@ -39,9 +40,37 @@ export class CreateSystemComponent implements OnInit {
     });
   }
 
+  private isFormValid(newSystem: System) : boolean
+  {
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+    if (newSystem.systemName.trim() == "")
+    {
+      errorMessages.push("System must have a name.");
+    }
+
+    if (errorMessages.length > 1) {
+      this.newSystemErrorMsgs = errorMessages;
+      return false;
+    } else {
+      this.newSystemErrorMsgs = [];
+      return true;
+    }
+  }
+
   submitNewSys() : void
   {
-    this.activeModal.close(this.createSysForm.value);
+    if (!this.isEditing){
+      var newSys = new System(this.createSysForm.value.systemName);
+      if (!this.isFormValid(newSys)) return;
+      this.newSystemErrorMsgs = [];
+      this.activeModal.close(newSys);
+    } else {
+      this.selectedSystem.systemName = this.createSysForm.value.systemName;
+      if (!this.isFormValid(this.selectedSystem)) return;
+      this.newSystemErrorMsgs = [];
+      this.activeModal.close(this.selectedSystem);
+    }
   }
 
   closeModal() : void

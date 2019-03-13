@@ -33,6 +33,14 @@ export class ComponentTelemetryService {
     return this.http.get<ComponentTelemetry[]>(getComponentUrl);
   }
 
+  getComponentTelemetryWithType(telemetryTypeID: number) : Observable<ComponentTelemetry[]>
+  {
+    const params = {
+      'telemetryTypeID': telemetryTypeID.toString()
+    }
+    return this.http.get<ComponentTelemetry[]>(this.componentTelemetryUrl, { params: params });
+  }
+
   /**
    * Saves the given {@link ComponentTelemetry} in the 'componentTelemetry' database 
    * table.

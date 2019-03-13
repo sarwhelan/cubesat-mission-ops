@@ -2,6 +2,7 @@
     <h4 class="modal-title">{{modalTitle}}</h4>
     <button type="button" class="close" aria-label="Close"
      (click)="activeModal.dismiss('Cross click')">
+     <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <form [formGroup] = "createCompForm" (ngSubmit) = "submitNewComp()">
@@ -22,6 +23,10 @@
             formControlName = "name"/>
         </div>
       </div>
+      <div *ngFor="let error of newCompErrorMsgs">
+        <label style="color:red;">{{error}}</label>
+        <br />
+    </div>
     </div>
   <div class="modal-footer">
     <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"

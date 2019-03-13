@@ -12,24 +12,28 @@
       <ngb-tab title="Past">
         <ng-template ngbTabContent>
           <ul class="list-group">
-            <li *ngFor="let pass of pastPasses"
+            <ng-container *ngIf = "pastPasses && pastPasses.length > 0; else noPastPasses">
+              <li *ngFor="let pass of pastPasses"
               (click)="onSelect(pass)"
               [class.active]="pass === selectedPass"
               class="list-group-item">
                 <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
               </li>
+            </ng-container>
             </ul> 
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Future">
           <ng-template ngbTabContent>
             <ul class="list-group">
-              <li *ngFor="let pass of futurePasses"
-                (click)="onSelect(pass)"
-                [class.active]="pass === selectedPass"
-                class="list-group-item">
-                  <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
-                </li>
+              <ng-container *ngIf = "futurePasses && futurePasses.length > 0; else noFuturePasses">
+                  <li *ngFor="let pass of futurePasses"
+                  (click)="onSelect(pass)"
+                  [class.active]="pass === selectedPass"
+                  class="list-group-item">
+                    <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
+                  </li>
+              </ng-container>
               </ul> 
           </ng-template>
         </ngb-tab>
@@ -50,3 +54,25 @@
     </ngb-tabset>
   </div>
 </div>
+
+<ng-template #noPastPasses>
+  <ng-container *ngIf = "pastPasses && pastPasses.length == 0; else spinner">
+    <br/>
+    <p class = "font-weight-bolder">No past passes are available to view.</p>
+  </ng-container>
+</ng-template>
+
+<ng-template #noFuturePasses>
+  <ng-container *ngIf = "futurePasses && futurePasses.length == 0; else spinner">
+    <br/>
+    <p class = "font-weight-bolder">No future passes are available to view.</p>
+  </ng-container>
+</ng-template>
+
+<ng-template #spinner>
+  <div class = "text-center">
+    <div class = "spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>

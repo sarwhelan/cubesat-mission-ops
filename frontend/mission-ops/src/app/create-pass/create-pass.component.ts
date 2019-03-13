@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Pass } from 'src/classes/pass';
 
 @Component({
   selector: 'app-create-pass',
@@ -10,6 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class CreatePassComponent implements OnInit {
 
   @Input() createPassForm: FormGroup;
+  newPassErrorMsgs: string[];
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
 
@@ -37,9 +39,39 @@ export class CreatePassComponent implements OnInit {
     });
   }
 
+  private isFormValid(newPass: Pass) : boolean
+  {
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+    var today = new Date().getTime();
+    if (newPass.estimatedPassDateTime.getTime() <= today){
+      errorMessages.push("Pass must exist in the future. Provide a date and time that exceed the current time.");
+    }
+
+    if (errorMessages.length > 1)
+    {
+      this.newPassErrorMsgs = errorMessages;
+      return false;
+    } else {
+      this.newPassErrorMsgs = [];
+      return true;
+    }
+  }
+
   submitPass() : void
   {
-    this.activeModal.close(this.createPassForm.value);
+    var newPassDate = new Date(Date.UTC(
+      this.createPassForm.value.passDate.year,
+      this.createPassForm.value.passDate.month-1,
+      this.createPassForm.value.passDate.day,
+      this.createPassForm.value.passTime.hour,
+      this.createPassForm.value.passTime.minute,
+      this.createPassForm.value.passTime.second,
+    ));
+    var newPass = new Pass(newPassDate);
+    if (!this.isFormValid(newPass)) return;
+    this.newPassErrorMsgs = [];
+    this.activeModal.close(newPass);
   }
 
   closeModal() : void

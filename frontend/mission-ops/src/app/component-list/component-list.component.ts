@@ -4,6 +4,9 @@ import { ComponentService } from '../services/component/component.service';
 import { SystemService } from '../services/system/system.service';
 import { System } from 'src/classes/system';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
+import { TelemetryType } from 'src/classes/telemetry-type';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-component-list',
@@ -13,15 +16,21 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class ComponentListComponent implements OnInit {
   components: CubeSatComp[];
   systems: System[];
+  telemetryTypes: TelemetryType[];
   selectedSystem: System;
   selectedComponent: CubeSatComp;
   @Input() chooseDataRangeForm: FormGroup;
   dateRangeObj : any;
 
-  constructor(private systemService: SystemService, private componentService: ComponentService, private formBuilder: FormBuilder) { }
+  constructor(private systemService: SystemService, 
+    private componentService: ComponentService, 
+    private formBuilder: FormBuilder,
+    private telemetryTypeService : TelemetryTypesService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getSystems();
+    this.getTelemetryTypes();
     this.createForm();
   }
 
@@ -54,7 +63,34 @@ export class ComponentListComponent implements OnInit {
     this.chooseDataRangeForm = this.formBuilder.group(this.dateRangeObj);
   }
 
+  private isDateRangeValid() : boolean
+  {
+    var startDate = new Date(Date.UTC(
+      this.chooseDataRangeForm.value.startDate.year,
+      this.chooseDataRangeForm.value.startDate.month-1,
+      this.chooseDataRangeForm.value.startDate.day,
+      this.chooseDataRangeForm.value.startTime.hour,
+      this.chooseDataRangeForm.value.startTime.minute,
+      this.chooseDataRangeForm.value.startTime.second,
+      ));
+    var endDate = new Date(Date.UTC(
+      this.chooseDataRangeForm.value.endDate.year,
+      this.chooseDataRangeForm.value.endDate.month-1,
+      this.chooseDataRangeForm.value.endDate.day,
+      this.chooseDataRangeForm.value.endTime.hour,
+      this.chooseDataRangeForm.value.endTime.minute,
+      this.chooseDataRangeForm.value.endTime.second,
+      ));
+    
+    if (startDate.getTime() > endDate.getTime()){
+      this.toastr.error('The From datetime cannot exceed the To datetime. Please try again.');
+      return false;
+    }
+    return true;
+  }
+
   submitDataRange() {
+    if (!this.isDateRangeValid()) return;
     this.dateRangeObj = this.chooseDataRangeForm.value;
   }
 
@@ -68,6 +104,11 @@ export class ComponentListComponent implements OnInit {
 
   onSelectComp(component: CubeSatComp): void {
     this.selectedComponent = component;
+  }
+
+  getTelemetryTypes() : void {
+    this.telemetryTypeService.getTelemetryTypes()
+      .subscribe(tts => this.telemetryTypes = tts);
   }
 
   getSystems() : void {

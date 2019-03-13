@@ -2,6 +2,7 @@
   <h4 class="modal-title">{{modalTitle}}</h4>
   <button type="button" class="close" aria-label="Close"
     (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <form [formGroup] = "createQtcForm" (ngSubmit) = "submitQtc()">
@@ -66,6 +67,10 @@
         <label for = "executionDate">Execution Datetime</label>
         <app-datetime-picker dateFormControlName = "executionDate" timeFormControlName = "executionTime" [formGroup] = "createQtcForm"></app-datetime-picker>
       </div>
+    </div>
+    <div *ngFor="let error of newQtcErrorMsgs">
+      <label style="color:red;">{{error}}</label>
+      <br />
     </div>
   </div>
   <div class="modal-footer">

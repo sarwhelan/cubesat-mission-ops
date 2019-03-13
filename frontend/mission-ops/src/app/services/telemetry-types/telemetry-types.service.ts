@@ -16,4 +16,19 @@ export class TelemetryTypesService {
   {
     return this.http.get<TelemetryType[]>(this.telemetryTypeUrl);
   }
+
+  createTelemetryType(telemetryType: TelemetryType) : Observable<TelemetryType>
+  {
+    return this.http.post<TelemetryType>(this.telemetryTypeUrl, telemetryType);
+  }
+
+  updateTelemetryType(telemetryType: TelemetryType) : Observable<any>
+  {
+    return this.http.put(`${this.telemetryTypeUrl}/${telemetryType.telemetryTypeID}`, telemetryType);
+  }
+
+  removeTelemetryType(telemetryType: TelemetryType) : Observable<any>
+  {
+    return this.http.delete(`${this.telemetryTypeUrl}/${telemetryType.telemetryTypeID}`);
+  }
 }

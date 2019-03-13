@@ -17,6 +17,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
   modalTitle: string;
   modalSubmit: string;
   isBatch: boolean;
+  newQtcErrorMsgs: string[];
 
   public telecommands: Telecommand[];
   public telecommandBatches: TelecommandBatch[];
@@ -71,6 +72,62 @@ export class CreateQueuedTelecommandComponent implements OnInit {
     }
   }
 
+  private isFormValid(){
+    var today = new Date();
+    var executionTime = new Date(Date.UTC(
+      this.createQtcForm.value.executionDate.year,
+      this.createQtcForm.value.executionDate.month-1, // Indexed from 0. Why. WHY.
+      this.createQtcForm.value.executionDate.day,
+      this.createQtcForm.value.executionTime.hour,
+      this.createQtcForm.value.executionTime.minute,
+      this.createQtcForm.value.executionTime.second
+    ));
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+    if (this.isBatch && !this.createQtcForm.value.telecommandBatchID)
+    {
+      errorMessages.push("A telecommand batch must be selected.");
+    }
+
+    if (!this.isBatch && !this.createQtcForm.value.telecommandID)
+    {
+      errorMessages.push("A telecommand must be selected.");
+    }
+
+    if (executionTime.getTime() <= today.getTime())
+    {
+      var addWord = "";
+      if (this.isBatch) {
+        addWord = "batch";
+      }
+      errorMessages.push(`A telecommand ${addWord} must be scheduled in the future, not the past.`);
+    }
+
+    if (!this.isBatch && !this.isJSON(this.createQtcForm.value.commandParams))
+    {
+      errorMessages.push("Command parameters must be specified and be valid JSON.");
+    }
+
+    if (errorMessages.length > 1) {
+      this.newQtcErrorMsgs = errorMessages;
+      return false;
+    } else {
+      this.newQtcErrorMsgs = [];
+      return true;
+    }
+  }
+
+  private isJSON(str) :boolean {  
+    try {
+      var obj = JSON.parse(str);
+      return !!obj && typeof(obj) === 'object';
+    } catch (e) {
+      /* ignore */
+    }
+  
+    return false;
+  }
+
   updateTelecommand(id: number) : void
   {
     this.selectedTelecommand = this.telecommands.find(x => x.telecommandID == id);
@@ -83,6 +140,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
 
   submitQtc() : void
   {
+    if (!this.isFormValid()) return;
     this.activeModal.close(this.createQtcForm.value);
   }
 

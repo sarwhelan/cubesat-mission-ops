@@ -2,6 +2,7 @@
   <h4 class="modal-title">Create New Pass</h4>
   <button type="button" class="close" aria-label="Close"
     (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <form [formGroup] = "createPassForm" (ngSubmit) = "submitPass()">
@@ -11,6 +12,10 @@
           <label for = "passDate">Pass Datetime</label>
           <app-datetime-picker dateFormControlName = "passDate" timeFormControlName = "passTime" [formGroup] = "createPassForm"></app-datetime-picker>
         </div>
+      </div>
+      <div *ngFor="let error of newPassErrorMsgs">
+        <label style="color:red;">{{error}}</label>
+        <br />
       </div>
     </div>
     <div class="modal-footer">

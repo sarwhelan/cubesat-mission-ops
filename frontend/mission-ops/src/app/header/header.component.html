@@ -4,7 +4,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav" [ngbCollapse]="isCollapsed">
-    <ul  *ngIf="auth.isAuthenticated()" class="navbar-nav mr-auto">
+    <ul  *ngIf="auth.isAuthenticated()" class="navbar-nav">
       <li *ngFor="let header of headers"
       (click)="onSelect(header)"
       [class.active]="header == activeHeader"
@@ -12,6 +12,7 @@
         <a class="nav-link" routerLink={{header.route}}>{{header.friendlyValue}}</a>
       </li>
     </ul>
+    <ul class="navbar-nav mr-auto"></ul>
     <ul class="navbar-nav">
       <li *ngIf="!auth.isAuthenticated(); else alreadyAuthenticated" class="nav-item">
         <a class="nav-link" routerLink="/login">Login</a>

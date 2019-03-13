@@ -18,6 +18,7 @@ export class CreateComponentComponent implements OnInit {
   selectedComponent: CubeSatComp;
   modalTitle: string;
   modalSubmit: string;
+  newCompErrorMsgs: string[];
 
   constructor(public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder) 
@@ -42,9 +43,38 @@ export class CreateComponentComponent implements OnInit {
     });
   }
 
+  private isFormValid(newComp: CubeSatComp) : boolean
+  {
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+    if (newComp.name.trim() == "")
+    {
+      errorMessages.push("Component must have a name.");
+    }
+
+    if (errorMessages.length > 1)
+    {
+      this.newCompErrorMsgs = errorMessages;
+      return false;
+    } else {
+      this.newCompErrorMsgs = [];
+      return true;
+    }
+  }
+
   submitNewComp() : void
   {
-    this.activeModal.close(this.createCompForm.value);
+    if (!this.isEditing){
+      var newComp = new CubeSatComp(this.system.systemID, this.createCompForm.value.name);
+      if (!this.isFormValid(newComp)) return;
+      this.newCompErrorMsgs = [];
+      this.activeModal.close(newComp);
+    } else {
+      this.selectedComponent.name = this.createCompForm.value.name;
+      if (!this.isFormValid(this.selectedComponent)) return;
+      this.newCompErrorMsgs = [];
+      this.activeModal.close(this.selectedComponent);
+    }
   }
 
   closeModal() : void

@@ -2,6 +2,7 @@
     <h4 class="modal-title">{{modalTitle}}</h4>
     <button type="button" class="close" aria-label="Close"
      (click)="activeModal.dismiss('Cross click')">
+     <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <form [formGroup] = "createSysForm" (ngSubmit) = "submitNewSys()">
@@ -14,6 +15,10 @@
             formControlName = "systemName"/>
         </div>
       </div>
+      <div *ngFor="let error of newSystemErrorMsgs">
+        <label style="color:red;">{{error}}</label>
+        <br />
+    </div>
     </div>
   <div class="modal-footer">
     <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"

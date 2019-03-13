@@ -3,8 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // TODO: Before deployment, maybe refine this to only the modules we need to reduce package size
 import { HttpClientModule } from '@angular/common/http'; 
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HighchartsChartModule } from 'highcharts-angular';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -47,6 +50,7 @@ import { PanoramaViewerComponent } from './panorama-viewer/panorama-viewer.compo
 import { MediaLibraryComponent } from './media-library/media-library.component';
 import { MediaViewComponent } from './media-view/media-view.component';
 import { SortableDirective } from './services/anomalies/sortable.directive';
+import { CreateTelemetryTypeComponent } from './create-telemetry-type/create-telemetry-type.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +94,7 @@ import { SortableDirective } from './services/anomalies/sortable.directive';
     MediaLibraryComponent,
     MediaViewComponent,
     SortableDirective,
+    CreateTelemetryTypeComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +105,9 @@ import { SortableDirective } from './services/anomalies/sortable.directive';
     HighchartsChartModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -109,6 +117,7 @@ import { SortableDirective } from './services/anomalies/sortable.directive';
     CreateComponentTelemetryComponent,
     CreateQueuedTelecommandComponent,
     CreatePassComponent,
+    CreateTelemetryTypeComponent,
   ]
 })
 export class AppModule { }

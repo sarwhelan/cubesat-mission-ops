@@ -32,4 +32,34 @@ router.route('/')
         }
     });
 
+router.route('/:id')
+    .put(parseUrlencoded, parseJSON, (req, res) => {
+        try {
+            var updateParams = [req.body.name, req.body.telemetryUnit, req.params.id];
+
+            db.query("UPDATE telemetryTypes SET name = ?, telemetryUnit = ? " +
+                "WHERE telemetryTypeID = ?", updateParams, function (error, results, fields) {
+                if (error) throw error;
+                res.json({updateTelemetryType:results.insertId});
+                //res.sendStatus(200);
+            });
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
+    })
+
+    .delete(parseUrlencoded, parseJSON, (req, res) => {
+        try {
+            db.query("DELETE FROM telemetryTypes WHERE telemetryTypeID = ?", req.params.id, function(error, results, fields) {
+                if (error) throw error;
+                res.json({byeTelemetryType:results.insertId});
+                //res.sendStatus(200);
+            })
+        } catch(err) {
+            console.log(err);
+            res.send(err);
+        }
+    })
+
 module.exports = router;

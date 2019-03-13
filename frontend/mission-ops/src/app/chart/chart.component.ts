@@ -100,14 +100,6 @@ export class ChartComponent implements OnInit {
 
 ngOnChanges(changes: SimpleChanges) {
   if (changes.values && this.Highcharts && this.Highcharts.charts.length > 0 && this.startDate && this.endDate) {
-    console.log('something changes', this.values, this.startDate, this.endDate);
-    /*var maxValues = new Array(this.values.length).fill(this.maxValue);
-    var minValues = new Array(this.values.length).fill(this.minValue);
-    this.Highcharts.charts[0].series[0].setData(this.values, false);
-    this.Highcharts.charts[0].xAxis[0].setCategories(this.labels, false);
-    this.Highcharts.charts[0].series[1].setData(maxValues, false);
-    this.Highcharts.charts[0].series[2].setData(minValues, false);
-    this.Highcharts.charts[0].redraw(true);*/
     this.buildChart();
   }
 }
@@ -118,7 +110,7 @@ buildChart() : void
   var maxValues = new Array(this.values.length).fill(this.maxValue);
   var minValues = new Array(this.values.length).fill(this.minValue);
   var zones;
-  console.log(this.maxValue, this.minValue);
+
   if (this.maxValue) {
     zones = [{
       value: this.minValue,
