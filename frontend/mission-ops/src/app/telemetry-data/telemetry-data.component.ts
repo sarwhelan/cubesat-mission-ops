@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { ComponentTelemetryDataService } from '../services/component-telemetry-data/component-telemetry-data.service';
-import { TelemetryData } from '../../classes/telemetry-data';
-import { ComponentTelemetry } from '../../classes/component-telemetry';
+import { ComponentTelemetryDataService } from 'src/app/services/component-telemetry-data/component-telemetry-data.service';
+import { TelemetryData } from 'src/classes/telemetry-data';
+import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { TelemetryType } from 'src/classes/telemetry-type';
 
 @Component({

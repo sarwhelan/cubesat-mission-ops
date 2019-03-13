@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pass } from '../../../classes/pass';
+import { Pass } from 'src/classes/pass';
 import { HttpClient } from '@angular/common/http';
 import { PassSum } from 'src/classes/pass-sum';
+import { environment as env } from 'src/environments/environment';
 
 /**
  * Service handling all {@link Pass} app server routing.
@@ -15,7 +16,7 @@ export class PassService {
   /**
    * Route URL for passes.
    */
-  private passesUrl = "http://localhost:3000/passes"
+  private passesUrl = `${env.apiRouteBase}/passes`;
 
   /**
    * Creates a new instance of {@link PassService}.

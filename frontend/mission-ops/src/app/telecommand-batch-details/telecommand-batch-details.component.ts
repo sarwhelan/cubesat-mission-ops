@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TelecommandBatch } from '../../classes/telecommandBatch';
+import { TelecommandBatch } from 'src/classes/telecommandBatch';
 
 @Component({
   selector: 'app-telecommand-batch-details',

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TelecommandBatch } from '../../classes/telecommandBatch';
-import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
-import { PresetTelecommand } from '../../classes/presetTelecommand';
-import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
-import { Telecommand } from '../../classes/telecommand';
-import { TelecommandService } from '../services/telecommand/telecommand.service';
+import { TelecommandBatch } from 'src/classes/telecommandBatch';
+import { TelecommandBatchService } from 'src/app/services/telecommandBatch/telecommand-batch.service';
+import { PresetTelecommand } from 'src/classes/presetTelecommand';
+import { PresetTelecommandService } from 'src/app/services/presetTelecommand/preset-telecommand.service';
+import { Telecommand } from 'src/classes/telecommand';
+import { TelecommandService } from 'src/app/services/telecommand/telecommand.service';
 
 @Component({
   selector: 'app-telecommand-batches',

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PresetTelecommand } from '../../classes/presetTelecommand';
-import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
+import { PresetTelecommand } from 'src/classes/presetTelecommand';
+import { PresetTelecommandService } from 'src/app/services/presetTelecommand/preset-telecommand.service';
 
 @Component({
   selector: 'app-preset-telecommand-details',

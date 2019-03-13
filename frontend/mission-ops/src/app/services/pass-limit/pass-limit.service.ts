@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PassLimit } from '../../../classes/pass-limit';
+import { PassLimit } from 'src/classes/pass-limit';
 import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 /**
  * Service handling all {@link PassLimit} app server routing.
@@ -14,7 +15,7 @@ export class PassLimitService {
   /**
    * Route URL for pass limits.
    */
-  private passLimitsUrl = "http://localhost:3000/pass-limits";
+  private passLimitsUrl = `${env.apiRouteBase}/pass-limits`;
 
   /**
    * Creates a new instance of {@link PassLimitService}.

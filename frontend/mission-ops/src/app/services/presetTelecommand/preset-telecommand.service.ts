@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { PresetTelecommand } from '../../../classes/presetTelecommand';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { PresetTelecommand } from 'src/classes/presetTelecommand';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class PresetTelecommandService {
 
-  private presetTelecommandUrl = "http://localhost:3000/preset-telecommands"
+  private presetTelecommandUrl = `${env.apiRouteBase}/preset-telecommands`
 
   constructor(private http: HttpClient) { }
 

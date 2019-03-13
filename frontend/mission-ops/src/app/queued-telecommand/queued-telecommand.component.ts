@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { QueuedTelecommand } from '../../classes/queuedTelecommand';
+import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Telecommand } from 'src/classes/telecommand';
-import { UsersService } from '../services/users/users.service';
+import { UsersService } from 'src/app/services/users/users.service';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { QueuedTelecommandService } from '../services/queuedTelecommand/queued-telecommand.service';
-import { User } from '../../classes/user';
+import { QueuedTelecommandService } from 'src/app/services/queuedTelecommand/queued-telecommand.service';
+import { User } from 'src/classes/user';
 const dateFormat = require('dateformat');
 
 @Component({

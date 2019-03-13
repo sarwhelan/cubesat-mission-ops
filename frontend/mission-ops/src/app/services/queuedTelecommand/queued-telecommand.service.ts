@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { QueuedTelecommand } from '../../../classes/queuedTelecommand';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { PassService } from '../pass/pass.service';
-import { PassThrough } from 'stream';
+import { Observable } from 'rxjs';
+import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
+import { HttpClient } from '@angular/common/http';
 import { Pass } from 'src/classes/pass';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueuedTelecommandService {
   
-  private queuedTelecommandsUrl = "http://localhost:3000/queued-telecommands"
-  private transmissionQueueUrl = "http://localhost:3000/transmission-queue"
-  private executionQueueUrl = "http://localhost:3000/execution-queue"
+  private queuedTelecommandsUrl = `${env.apiRouteBase}/queued-telecommands`
+  private transmissionQueueUrl = `${env.apiRouteBase}/transmission-queue`
+  private executionQueueUrl = `${env.apiRouteBase}/execution-queue`
 
   constructor(private http: HttpClient) { }
 

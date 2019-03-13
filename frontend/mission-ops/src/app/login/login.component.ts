@@ -2,7 +2,7 @@ import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
 
-import { AuthService } from '../services/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
 import { ModalComponent } from '../modal/modal.component';
 
