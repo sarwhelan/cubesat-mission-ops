@@ -14,6 +14,10 @@
         {{batch.name}}
       </li>
     </ul>
+    <div *ngIf = "telecommandBatches && telecommandBatches.length == 0;">
+      <br/>
+      <p class = "font-weight-bolder">No telecommand batches have been created.</p>
+    </div>
   </div>
   <div class="col">
     <div *ngIf="selectedBatch">
