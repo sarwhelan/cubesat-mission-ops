@@ -50,7 +50,7 @@ export class AuthService {
   
   private get currentUser(): User {
     if (!this._currentUser) {
-      this._currentUser = JSON.parse(sessionStorage.getItem('currentUser')) as User;
+      this._currentUser = new User(JSON.parse(sessionStorage.getItem('currentUser')));
     }
     return this._currentUser;
   }
@@ -155,6 +155,8 @@ export class AuthService {
                 user.phone = att.getValue();
               } else if (att.getName() === 'custom:prefContactMethod') {
                 user.preferredContactMethod = att.getValue();
+              } else if (att.getName() === 'preferred_username') {
+                user.name = att.getValue();
               }
             });
             self.currentUser = user;
