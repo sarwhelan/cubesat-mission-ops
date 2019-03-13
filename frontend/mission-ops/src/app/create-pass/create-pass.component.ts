@@ -33,8 +33,8 @@ export class CreatePassComponent implements OnInit {
       second: 0
     };
 
-    var availablePower = 10;
-    var availableBandwidth = 10;
+    var availablePower = 100;
+    var availableBandwidth = 1500;
 
     this.createPassForm = this.formBuilder.group({
       passDate: passDate,

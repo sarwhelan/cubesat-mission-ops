@@ -262,8 +262,8 @@ export class QueuesComponent implements OnInit {
           break;
         }
 
-        var activePass = activePasses[i];
-        var passSum = this.sumExecutionResults.find(x => x.passID == activePasses[i-1].passID);
+        var activePass = activePasses[i - 1];
+        var passSum = this.sumExecutionResults.find(x => x.passID == activePass.passID);
 
         // Limit passes on power.
         if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= activePass.availablePower)
@@ -272,7 +272,7 @@ export class QueuesComponent implements OnInit {
             this.additionFailureStr = 'Error: Cannot add telecommand to queue. Telecommand power consumption exceeds the maximum power limitation in one pass.'
             break;
           }
-          calcExecID = activePasses[i].passID;
+          calcExecID = activePass.passID;
           if (!passSum) {
             console.log('pushed from exec', activeTelecommand);
             this.sumExecutionResults.push({passID: calcExecID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
