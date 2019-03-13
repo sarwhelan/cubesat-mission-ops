@@ -1,5 +1,12 @@
 <div class="col">
   <div *ngIf="selectedPass">
+    <br/>
+    <div *ngIf="!selectedPass.passHasOccurred" class = "row d-flex justify-content-center">
+      <button class = "btn btn-success" (click) = "submitTransmissionQueueToGroundStation()">
+        Save to Ground Station
+      </button>
+      <br/>
+    </div>
     <ul class = "list-group">
       <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length > 0; else noTelecommands">
         <div *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index">

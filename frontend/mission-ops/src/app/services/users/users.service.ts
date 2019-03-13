@@ -102,6 +102,8 @@ export class UsersService {
               user.phone = att.Value;
             } else if (att.Name === 'custom:prefContactMethod') {
               user.preferredContactMethod = att.Value;
+            } else if (att.Name === 'preferred_username') {
+              user.name = att.Value;
             }
           });
           user.status = data.UserStatus;
@@ -136,6 +138,10 @@ export class UsersService {
     attributes.push({
       Name: 'custom:prefContactMethod',
       Value: user.preferredContactMethod
+    });
+    attributes.push({
+      Name: 'preferred_username',
+      Value: user.name
     });
     
     const obs$ = new Observable<void>((subscriber) => {
@@ -188,10 +194,16 @@ export class UsersService {
         Value: phone
       });
     }
+    if (username) {
+      attributes.push({
+        Name: 'preferred_username',
+        Value: username
+      });
+    }
 
     this.cognitoIdentityServiceProvider.adminCreateUser({
       UserPoolId: env.cognito.userPoolId,
-      Username: username,
+      Username: email,
       TemporaryPassword: password,
       UserAttributes: attributes,
       DesiredDeliveryMediums: [
@@ -241,6 +253,8 @@ export class UsersService {
                 user.phone = att.Value;
               } else if (att.Name === 'custom:prefContactMethod') {
                 user.preferredContactMethod = att.Value;
+              } else if (att.Name === 'preferred_username') {
+                user.name = att.Value;
               }
             });
             user.status = u.UserStatus;
@@ -285,7 +299,7 @@ export class UsersService {
     const obs$ = new Observable<void>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminDeleteUser({
         UserPoolId: env.cognito.userPoolId,
-        Username: user.email
+        Username: user.id
       }, (err, data) => {
         if (err) {
           subscriber.error(err);
@@ -311,7 +325,7 @@ export class UsersService {
     const obs$ = new Observable<void>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminResetUserPassword({
         UserPoolId: env.cognito.userPoolId,
-        Username: user.email
+        Username: user.id
       }, (err, data) => {
         if (err) {
           subscriber.error(err);

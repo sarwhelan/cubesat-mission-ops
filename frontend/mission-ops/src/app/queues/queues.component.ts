@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Pass } from 'src/classes/pass';
-import { PassService } from 'src/app/services/pass/pass.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
+import { Pass } from '../../classes/pass';
+import { PassService } from '../services/pass/pass.service';
+import { NgbModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { CreateQueuedTelecommandComponent } from '../create-queued-telecommand/create-queued-telecommand.component';
 import { TelecommandService } from 'src/app/services/telecommand/telecommand.service';
 import { Telecommand } from 'src/classes/telecommand';
@@ -17,20 +17,26 @@ import { PassSum } from 'src/classes/pass-sum';
 import { CreatePassComponent } from '../create-pass/create-pass.component';
 
 import { ToastrService } from 'ngx-toastr';
+import { async } from '@angular/core/testing';
 
 const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queues',
   templateUrl: './queues.component.html',
-  styleUrls: ['./queues.component.scss','../../../node_modules/ngx-toastr/toastr.css']
+  styleUrls: ['./queues.component.scss','../../../node_modules/ngx-toastr/toastr.css'],
+  providers: [PassService]
 })
 export class QueuesComponent implements OnInit {
 
   executionQueue: boolean;
   transmissionQueue: boolean;
   futurePasses: Pass[];
+  futurePassesObs: Observable<Pass[]>;
+  futurePassesTotal: Observable<number>;
   pastPasses: Pass[];
+  pastPassesObs: Observable<Pass[]>;
+  pastPassesTotal: Observable<number>;
   telecommands: Telecommand[];
   telecommandBatches: TelecommandBatch[];
   selectedPass: Pass;
@@ -50,12 +56,23 @@ export class QueuesComponent implements OnInit {
     private presetTelecommandService: PresetTelecommandService,
     private queuedTelecommandService: QueuedTelecommandService,
     private auth: AuthService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService) {
+      this.pastPassesObs = passService.pastPasses;
+      this.futurePassesObs = passService.futurePasses;
+      this.pastPassesTotal = passService.pastTotal;
+      this.futurePassesTotal = passService.futureTotal;
+     }
+
+  private tabSet: NgbTabset;
+
+  @ViewChild(NgbTabset) set content(content: NgbTabset) {
+    this.tabSet = content;
+  };
 
   ngOnInit() {
     this.executionQueue = false;
     this.transmissionQueue = true;
-    this.getPasses();
+    this.getPasses(true);
     this.getTelecommands();
     this.getTelecommandBatches();
   }
@@ -65,30 +82,19 @@ export class QueuesComponent implements OnInit {
     return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
   }
 
-  selectExecution(): void{  
-    console.log('exec');
-    this.executionQueue = true;
-    this.transmissionQueue = false;
-  }
-
-  selectTransmission(): void{  
-    console.log('trans');
-    this.executionQueue = false;
-    this.transmissionQueue = true;
-  }
-
   onSelect(pass: Pass) : void
   {
     this.selectedPass = pass;
   }
 
-  getPasses() : void{   
+  getPasses(isPaginated: boolean = false) : void{   
     this.selectedPass = null; 
-    this.passService.getPasses()
-      .subscribe(passes => {
-        this.pastPasses = passes.filter(x => x.passHasOccurred);
-        this.futurePasses = passes.filter(x => !x.passHasOccurred);
+    this.futurePassesObs.subscribe(passes => {
+        this.futurePasses = passes;
       });
+    this.pastPassesObs.subscribe(passes => {
+      this.pastPasses = passes;
+    })
   }
 
   getTelecommands() : void
@@ -262,8 +268,8 @@ export class QueuesComponent implements OnInit {
           break;
         }
 
-        var activePass = activePasses[i];
-        var passSum = this.sumExecutionResults.find(x => x.passID == activePasses[i-1].passID);
+        var activePass = activePasses[i - 1];
+        var passSum = this.sumExecutionResults.find(x => x.passID == activePass.passID);
 
         // Limit passes on power.
         if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= activePass.availablePower)
@@ -272,7 +278,7 @@ export class QueuesComponent implements OnInit {
             this.additionFailureStr = 'Error: Cannot add telecommand to queue. Telecommand power consumption exceeds the maximum power limitation in one pass.'
             break;
           }
-          calcExecID = activePasses[i].passID;
+          calcExecID = activePass.passID;
           if (!passSum) {
             console.log('pushed from exec', activeTelecommand);
             this.sumExecutionResults.push({passID: calcExecID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});

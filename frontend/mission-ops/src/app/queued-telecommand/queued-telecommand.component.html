@@ -47,7 +47,7 @@
       </ng-container>
       <div *ngIf="user" class = "form-group">
         <label>Responsible User</label>
-        <input [ngModel] = "user.email"  class="form-control" name= "queuedTelecommandUser" readonly>
+        <input [ngModel] = "user.getName()"  class="form-control" name= "queuedTelecommandUser" readonly>
       </div>
     </form>
   </div>

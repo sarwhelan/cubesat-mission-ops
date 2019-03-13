@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('resetPwdModal')
   private resetPwdModal: ModalComponent;
 
-  private username: string;
+  private email: string;
   private password: string;
 
   private processing: boolean = false;
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Signs the user into the application using the username and password
+   * Signs the user into the application using the email and password
    * provided in the input fields. Errors are displayed in a dismissable
    * alert. If the user needs to change their password, a modal is openned
    * to handle that.
@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit {
     this.loginAlert.hide();
 
     let errorList = [];
-    if (!this.username) {
-      errorList.push('Username field cannot be blank.');
+    if (!this.email) {
+      errorList.push('Email field cannot be blank.');
     }
     if (!this.password) {
       errorList.push('Password field cannot be blank.');
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.auth.signIn(this.username, this.password, {
+    this.auth.signIn(this.email, this.password, {
       onSuccess: () => {
         this.processing = false;
         this.router.navigateByUrl('/');
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
           // Only display real error when developing to avoid information leaks
           this.loginAlert.show(err.name, err.message, 'danger');
         } else {
-          this.loginAlert.show('Error', 'Username or Password is Incorrect', 'danger');
+          this.loginAlert.show('Error', 'Email or Password is Incorrect', 'danger');
         }
       },
       mfaRequired: (challengeName: any, challengeParameters: any) => {
@@ -148,13 +148,13 @@ export class LoginComponent implements OnInit {
     this.loginAlert.hide();
     this.processing = true;
 
-    if (!this.username) {
+    if (!this.email) {
       this.processing = false;
-      this.loginAlert.show('Error', 'Username field cannot be blank.', 'danger');
+      this.loginAlert.show('Error', 'Email field cannot be blank.', 'danger');
       return;
     }
 
-    this.auth.forgotPassword(this.username).subscribe(() => {
+    this.auth.forgotPassword(this.email).subscribe(() => {
       this.processing = false;
       this.resetPwdModal.open();
     }, (err) => {

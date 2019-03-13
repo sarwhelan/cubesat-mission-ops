@@ -8,7 +8,7 @@ var db = require('../database');
 router.route('/')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            db.query("SELECT * FROM passes;", function (error, results, fields) {
+            db.query("SELECT passes.*, count( exeQueuedTelecommands.telecommandID ) as numberOfTelecommandsToBeExecuted, count( transQueuedTelecommands.telecommandID ) as numberOfTelecommandsToBeTransmitted FROM passes LEFT OUTER JOIN queuedTelecommands as exeQueuedTelecommands ON passes.passID = exeQueuedTelecommands.executionPassID LEFT OUTER JOIN queuedTelecommands as transQueuedTelecommands ON passes.passID = transQueuedTelecommands.transmissionPassID group by passes.passID;", function (error, results, fields) {
                 if (error) throw error;
 
                 res.send(results);
@@ -20,10 +20,10 @@ router.route('/')
     })
     .post(parseUrlencoded, parseJSON, (req, res) => {
         try {
-            var insertParameters = [req.body.passHasOccurred, req.body.estimatedPassDateTime];
+            var insertParameters = [req.body.passHasOccurred, req.body.estimatedPassDateTime, req.body.availablePower, req.body.availableBandwidth];
 
             // using this pattern of using ? in our query builder does the escaping for us! No need to worry about sql injection
-            db.query('INSERT INTO passes (passHasOccurred, estimatedPassDateTime) VALUES (?, ?)', insertParameters, function (error, results, fields) {
+            db.query('INSERT INTO passes (passHasOccurred, estimatedPassDateTime, availablePower, availableBandwidth) VALUES (?, ?, ?, ?)', insertParameters, function (error, results, fields) {
                 if (error) throw error;
 
                 res.json(results);

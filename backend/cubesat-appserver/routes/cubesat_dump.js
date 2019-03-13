@@ -19,6 +19,7 @@ router.route('/')
                 let nextUnoccurredPass = results[0].estimatedPassDateTime;
                 db.query("UPDATE passes SET passHasOccurred = ?, actualPassDateTime = ? WHERE estimatedPassDateTime = ?", [1, now, nextUnoccurredPass], function(error, results, fields) {
                     if (error) throw error;
+                    res.json({success:results});
                 })
             })
 
@@ -26,9 +27,9 @@ router.route('/')
                 let insertParams = [req.body[reading].componentTelemetryID, req.body[reading].collectionDateTime, req.body[reading].telemetryValue];
                 db.query("INSERT INTO telemetryData (componentTelemetryID, collectionDateTime, telemetryValue) VALUES (?, ?, ?)", insertParams, function(error, results, fields) {
                     if (error) throw error;
+                    res.json({success:results});
                 })
             }
-            res.sendStatus(200);
 
         } catch (err) {
             console.log(err);

@@ -5,6 +5,8 @@
     actualPassDateTime: Date;
     availablePower: number;
     availableBandwidth: number;
+    numberOfTelecommandsToBeExecuted: number;
+    numberOfTelecommandsToBeTransmitted: number;
 
     constructor(estimatedPassDateTime : Date, availablePower: number, availableBandwidth: number) {
         this.passHasOccurred = false;
