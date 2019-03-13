@@ -1,7 +1,13 @@
 <div class="container text-center">
-  <h2>{{media.name}}</h2>
-  <div class="row justify-content-md-center">
-    <app-panorama-viewer [inputData]="media"></app-panorama-viewer>
-  </div>
-  <a class="btn btn-outline-secondary" href="/payloadData" role="button">Media Gallery</a>
+  <ng-container *ngIf="!errorMsg; else showError">
+    <h2>{{media?.name}}</h2>
+    <div class="row justify-content-md-center">
+      <app-panorama-viewer [inputData]="media"></app-panorama-viewer>
+    </div>
+  </ng-container>
+  <ng-template #showError>
+    <h2>Error</h2>
+    <p>{{errorMsg}}</p>
+  </ng-template>
+  <a class="btn btn-outline-secondary" href="/payloadData" role="button">Payload Data Gallery</a>
 </div>

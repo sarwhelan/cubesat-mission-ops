@@ -12,15 +12,26 @@ import { PanoramicMedia } from 'src/classes/panoramic-media';
 export class MediaViewComponent implements OnInit {
 
   private media: PanoramicMedia;
+  private errorMsg: string;
 
   constructor(private route: ActivatedRoute, private mediaService: PanoramicMediaService) { 
     const mediaId = this.route.snapshot.queryParamMap.get('id');
     if (mediaId) {
       this.mediaService.getMedia(Number(mediaId)).subscribe((val) => {
-        this.media = val;
+        console.log(val);
+        if (val) {
+          console.log(`Setting media to ${val}`);
+          this.media = val;
+        } else {
+          console.log('no media, setting error msg');
+          this.errorMsg = `No payload data with id ${mediaId} found`;
+        }
       }, (err) => {
         console.log(err);
+        this.errorMsg = 'Something went wrong';
       });
+    } else {
+      this.errorMsg = 'No payload data id provided';
     }
   }
 

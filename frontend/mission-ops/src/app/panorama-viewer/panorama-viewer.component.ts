@@ -75,11 +75,11 @@ export class PanoramaViewerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.inputData.type === 'video') {
-      // Pause the video if it exists, since destroying it doesn't stop it for some reason.
-      this.viewer.getVideo().pause();
-    }
     if (this.viewer) {
+      if (this.inputData && this.inputData.type === 'video') {
+        // Pause the video if it exists, since destroying it doesn't stop it for some reason.
+        this.viewer.getVideo().pause();
+      }
       this.viewer.destroy();
     }
   }
