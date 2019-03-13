@@ -22,8 +22,8 @@ export class CreateComponentTelemetryComponent implements OnInit {
   selectedCompTelem: ComponentTelemetry;
   modalTitle: string;
   modalSubmit: string;
-
   selectedTelemetryType: TelemetryType;
+  newCompTelemErrorMsgs: string[];
 
   constructor(public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder) 
@@ -52,9 +52,37 @@ export class CreateComponentTelemetryComponent implements OnInit {
     })
   }
 
+  private isFormValid(newCompTelem: ComponentTelemetry) : boolean
+  {
+    var errorMessages: string[];
+    errorMessages = ["Error: "];
+    if (newCompTelem.name.trim() == "")
+    {
+      errorMessages.push("Component telemetry must have a name.");
+    }
+
+    if (!newCompTelem.telemetryTypeID)
+    {
+      errorMessages.push("Component telemetry must have an associated telemetry type.");
+    }
+
+    if (newCompTelem.upperBound < newCompTelem.lowerBound)
+    {
+      errorMessages.push("Lower bound must not exceed upper bound.");
+    }
+
+    if (errorMessages.length > 1)
+    {
+      this.newCompTelemErrorMsgs = errorMessages;
+      return false;
+    } else {
+      this.newCompTelemErrorMsgs = [];
+      return true;
+    }
+  }
+
   updateTelemetryType(id: number) : void
   {
-    console.log(this.createCompTelemForm);
     this.selectedTelemetryType = this.telemetryTypes.find(x => x.telemetryTypeID == id);
     var boundReset = 0;
     // If the selected telemetry type doesn't have bounds, null out bounds.
@@ -73,6 +101,24 @@ export class CreateComponentTelemetryComponent implements OnInit {
 
   submitNewCompTelem() : void
   {
+    if (!this.isEditing){
+      var newCT = new ComponentTelemetry(this.createCompTelemForm.value.telemetryTypeID, 
+        this.component.componentID,
+        this.createCompTelemForm.value.name, 
+        this.createCompTelemForm.value.upperBound, 
+        this.createCompTelemForm.value.lowerBound);
+      if (!this.isFormValid(newCT)) return;
+      this.newCompTelemErrorMsgs = [];
+      this.activeModal.close(newCT);
+    } else {
+      this.selectedCompTelem.name = this.createCompTelemForm.value.name;
+      this.selectedCompTelem.telemetryTypeID = this.createCompTelemForm.value.telemetryTypeID;
+      this.selectedCompTelem.upperBound = this.createCompTelemForm.value.upperBound;
+      this.selectedCompTelem.lowerBound = this.createCompTelemForm.value.lowerBound;
+      if (!this.isFormValid(this.selectedCompTelem)) return;
+      this.newCompTelemErrorMsgs = [];
+      this.activeModal.close(this.selectedCompTelem);
+    }
     this.activeModal.close(this.createCompTelemForm.value);
   }
 

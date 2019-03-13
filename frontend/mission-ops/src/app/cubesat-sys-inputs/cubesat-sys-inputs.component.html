@@ -34,7 +34,7 @@
               </li>
             </ul>
       </div>
-      <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()">Add <i class="fa fa-plus-square"></i></button>
+      <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()" [disabled] = "!selectedSystem">Add <i class="fa fa-plus-square"></i></button>
       <button type="button" class="btn btn-outline-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
       <button type="button" class="btn btn-outline-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
       <ng-template #noSystem>
@@ -67,7 +67,7 @@
               </li>
             </ul>
       </div>
-      <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()">Add <i class="fa fa-plus-square"></i></button>
+      <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()" [disabled] = "!selectedSystem || !selectedComponent">Add <i class="fa fa-plus-square"></i></button>
       <button type="button" class="btn btn-outline-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
       <button type="button" class="btn btn-outline-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
       <ng-template #noComponent>
