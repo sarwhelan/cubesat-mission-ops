@@ -13,6 +13,10 @@
           <app-datetime-picker dateFormControlName = "passDate" timeFormControlName = "passTime" [formGroup] = "createPassForm"></app-datetime-picker>
         </div>
       </div>
+      <div *ngFor="let error of newPassErrorMsgs">
+        <label style="color:red;">{{error}}</label>
+        <br />
+      </div>
     </div>
     <div class="modal-footer">
       <button class = "btn btn-success"

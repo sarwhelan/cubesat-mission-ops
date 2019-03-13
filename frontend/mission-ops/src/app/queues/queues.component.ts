@@ -119,16 +119,7 @@ export class QueuesComponent implements OnInit {
   promptAddPass() : void{
     const modalRef = this.modalService.open(CreatePassComponent);
     modalRef.result.then((result) => {
-      var newPassDate = new Date(Date.UTC(
-        result.passDate.year,
-        result.passDate.month-1,
-        result.passDate.day,
-        result.passTime.hour,
-        result.passTime.minute,
-        result.passTime.second,
-      ));
-      var newPass = new Pass(newPassDate);
-      this.passService.createPass(newPass)
+      this.passService.createPass(result)
         .subscribe(pass => {
           this.getPasses();
           this.toastr.success('Successfully created a new pass.');
