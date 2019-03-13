@@ -138,9 +138,9 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.componentInstance.system = this.selectedSystem;
      modalRef.componentInstance.isEditing = false;
      modalRef.result.then((result) => {
-       this.componentService.createComponent(new CubeSatComp(this.selectedSystem.systemID, result.name))
+       this.componentService.createComponent(result)
         .subscribe(comp => {
-          this.getComponents(this.selectedComponent.systemID);
+          this.getComponents(result.systemID);
         })
      }).catch((error) => {
       // Modal closed without submission
@@ -159,8 +159,7 @@ export class CubesatSysInputsComponent implements OnInit {
      modalRef.componentInstance.isEditing = true;
      modalRef.componentInstance.selectedComponent = this.selectedComponent;
      modalRef.result.then((result) => {
-       this.selectedComponent.name = result.name;
-       this.componentService.updateComponent(this.selectedComponent)
+       this.componentService.updateComponent(result)
         .subscribe(sys => { });
      }).catch((error) => {
        // Modal closed without submission
