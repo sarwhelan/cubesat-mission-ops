@@ -18,12 +18,9 @@ export class MediaViewComponent implements OnInit {
     const mediaId = this.route.snapshot.queryParamMap.get('id');
     if (mediaId) {
       this.mediaService.getMedia(Number(mediaId)).subscribe((val) => {
-        console.log(val);
         if (val) {
-          console.log(`Setting media to ${val}`);
           this.media = val;
         } else {
-          console.log('no media, setting error msg');
           this.errorMsg = `No payload data with id ${mediaId} found`;
         }
       }, (err) => {
