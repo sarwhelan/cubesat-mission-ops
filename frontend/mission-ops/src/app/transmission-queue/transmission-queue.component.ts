@@ -60,12 +60,11 @@ export class TransmissionQueueComponent implements OnInit {
           return empty();
         }))
       .subscribe(_ => {
-        this.toastr.success('Transmitted queue to ground station successfully.');
+        this.toastr.success(`Transmitted queue for Pass ${this.selectedPass.passID} to ground station successfully.`);
       });
   }
 
   handleSubmitError(error){
-    console.log(error);
     this.toastr.error(`Error transmitting to the ground station: ${error.statusText}`);
   }
 }
