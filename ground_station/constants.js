@@ -12,8 +12,8 @@ function define(name, value) {
 * Server constants.
 */
 define("PORT", 3700);
-if (process.env.NODE_ENV !== 'production') {
-    define("APP_SERVER_HOST", '127.0.0.1');
+if (process.env.NODE_ENV == 'production') {
+    define("APP_SERVER_HOST", '10.0.0.81');
 }
 
 /*
