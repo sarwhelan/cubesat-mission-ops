@@ -44,16 +44,20 @@
                         </option>
             </select>
         </div>
-        <div *ngIf = "selectedTelemetryType && selectedTelemetryType.hasBounds">
+        <div class="form-check">
+          <input [checked]="hasBounds"  formControlName = "newComponentTelemetryHasBounds" type="checkbox" class="form-check-input" (change)="hasBounds = !hasBounds">
+          <label>Has Range</label>
+        </div>
+        <div *ngIf = "hasBounds">
           <div class = "form-group">
-              <label for = "upperBound">Upper Bound</label>
-              <input type = "number"
-                class = "form-control"
-                formControlName = "upperBound"/>
               <label for = "lowerBound">Lower Bound</label>
               <input type = "number"
                 class = "form-control"
                 formControlName = "lowerBound"/>
+              <label for = "upperBound">Upper Bound</label>
+              <input type = "number"
+                class = "form-control"
+                formControlName = "upperBound"/>
           </div>
         </div>
       </div>

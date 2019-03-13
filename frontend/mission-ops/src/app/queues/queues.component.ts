@@ -189,6 +189,7 @@ export class QueuesComponent implements OnInit {
             this.additionSuccessStr = "";
             for (var i = 0; i < ptcs.length; i++){
               if (!isValid) continue;
+
               var telecommandExecutionTime = new Date(executionTime.getTime());
               telecommandExecutionTime.setUTCDate(executionTime.getUTCDate() + ptcs[i].dayDelay);
               telecommandExecutionTime.setUTCHours(executionTime.getUTCHours() + ptcs[i].hourDelay);
@@ -206,6 +207,7 @@ export class QueuesComponent implements OnInit {
                 telecommandExecutionTime,
                 ptcs[i].commandParameters,
               )));
+
               this.additionSuccessStr += `Queued telecommand ${activeTelecommand.name} for transmission in pass ${transID} and execution in pass ${execID}.\n`;
             }
             if (isValid) {
@@ -237,7 +239,6 @@ export class QueuesComponent implements OnInit {
         return qtcCreation(this, this.futurePasses);
       }))
       .subscribe(() => {
-        console.log('sub');
         if (this.additionFailureStr === ""){
           var additionSuccesses = this.additionSuccessStr.split('\n');
           for (var i = 0; i < additionSuccesses.length-1; i++){
@@ -262,7 +263,9 @@ export class QueuesComponent implements OnInit {
     } 
     else {
       for (var i = 0; i < activePasses.length; i++) {
-        if (executionTime.getTime() > new Date(activePasses[i].estimatedPassDateTime).getTime()) continue;
+        var activePassDateTime = new Date(activePasses[i].estimatedPassDateTime);
+        activePassDateTime.setUTCHours(activePassDateTime.getUTCHours() - activePassDateTime.getTimezoneOffset() / 60);
+        if (executionTime.getTime() > activePassDateTime.getTime()) continue;
         if (i == 0) {
           this.additionFailureStr = 'No pass exists to execute this command. Create a new pass and try again.';
           break;

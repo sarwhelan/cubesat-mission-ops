@@ -60,10 +60,10 @@
               class="list-group-item">
                 {{compTelem.name}}
                 <div *ngIf = "compTelem.upperBound">
-                    <span class="badge badge-warning"> UB: {{compTelem.upperBound}}</span>
-                    <span class="badge badge-warning"> LB: {{compTelem.lowerBound}}</span>
+                  <span class="badge badge-warning"> LB: {{compTelem.lowerBound}}</span>
+                  <span class="badge badge-warning"> UB: {{compTelem.upperBound}}</span>
                 </div>
-                <span class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</span>
+                <div class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</div>
               </li>
             </ul>
       </div>

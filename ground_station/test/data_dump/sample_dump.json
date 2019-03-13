@@ -1,11 +1,42 @@
-{
-    "hash": "3A6DF940BE021FA487A43BD70643E943DF3D7BF1",
-    "dump": [
-        {
-            "id": 1
-        },
-        {
-            "id": 2
-        }
-    ]
-}
+[
+    { 
+    	"componentTelemetryID": 23,
+    	"collectionDateTime": "2019-03-13 17:52:37",
+    	"telemetryValue": 54
+    },
+    { 
+    	"componentTelemetryID": 22,
+    	"collectionDateTime": "2019-03-13 17:56:40",
+    	"telemetryValue": 121
+    },
+    { 
+    	"componentTelemetryID": 50,
+    	"collectionDateTime": "2019-03-13 17:55:12",
+    	"telemetryValue": 3.1
+    },
+    { 
+    	"componentTelemetryID": 50,
+    	"collectionDateTime": "2019-03-13 17:56:39",
+    	"telemetryValue": 1.2
+    },
+    { 
+    	"componentTelemetryID": 23,
+    	"collectionDateTime": "2019-03-13 18:02:32",
+    	"telemetryValue": 35
+    },
+    { 
+    	"componentTelemetryID": 23,
+    	"collectionDateTime": "2019-03-13 18:10:43",
+    	"telemetryValue": 39
+    },
+    { 
+    	"componentTelemetryID": 25,
+    	"collectionDateTime": "2019-03-13 18:11:43",
+    	"telemetryValue": 45
+    },
+    { 
+    	"componentTelemetryID": 25,
+    	"collectionDateTime": "2019-03-13 18:12:59",
+    	"telemetryValue": 51
+    }
+]

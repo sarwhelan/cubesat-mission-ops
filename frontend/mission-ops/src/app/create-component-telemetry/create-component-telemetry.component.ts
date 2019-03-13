@@ -19,6 +19,7 @@ export class CreateComponentTelemetryComponent implements OnInit {
   public component: CubeSatComp;
   public telemetryTypes: TelemetryType[];
   isEditing: boolean;
+  hasBounds: boolean;
   selectedCompTelem: ComponentTelemetry;
   modalTitle: string;
   modalSubmit: string;
@@ -38,6 +39,8 @@ export class CreateComponentTelemetryComponent implements OnInit {
       this.modalSubmit = "Save Changes";
     }
 
+    
+    this.hasBounds = this.isEditing ? this.selectedCompTelem.hasBounds : false;;
     this.updateTelemetryType(this.isEditing ? this.selectedCompTelem.telemetryTypeID : this.telemetryTypes[0].telemetryTypeID);
     this.createForm();
   }
@@ -47,9 +50,10 @@ export class CreateComponentTelemetryComponent implements OnInit {
     this.createCompTelemForm = this.formBuilder.group({
       name: this.isEditing ? this.selectedCompTelem.name : '',
       telemetryTypeID: this.selectedTelemetryType.telemetryTypeID,
+      newComponentTelemetryHasBounds: this.isEditing ? this.selectedCompTelem.hasBounds : false,
       upperBound: this.isEditing ? this.selectedCompTelem.upperBound : 0,
       lowerBound: this.isEditing ? this.selectedCompTelem.lowerBound : 0,
-    })
+    });
   }
 
   private isFormValid(newCompTelem: ComponentTelemetry) : boolean
@@ -66,9 +70,23 @@ export class CreateComponentTelemetryComponent implements OnInit {
       errorMessages.push("Component telemetry must have an associated telemetry type.");
     }
 
-    if (newCompTelem.upperBound < newCompTelem.lowerBound)
+    if (newCompTelem.hasBounds)
     {
-      errorMessages.push("Lower bound must not exceed upper bound.");
+      // isNaN doesn't catch null so we need to this
+      if ((!newCompTelem.lowerBound && newCompTelem.lowerBound != 0) || isNaN(newCompTelem.lowerBound))
+      {
+        errorMessages.push("Lower bound must be a valid number.");
+      }
+  
+      if ((!newCompTelem.upperBound && newCompTelem.upperBound != 0) || isNaN(newCompTelem.upperBound))
+      {
+        errorMessages.push("Upper bound must be a valid number.");
+      }
+  
+      if (newCompTelem.upperBound < newCompTelem.lowerBound)
+      {
+        errorMessages.push("Lower bound must not exceed upper bound.");
+      }
     }
 
     if (errorMessages.length > 1)
@@ -85,14 +103,12 @@ export class CreateComponentTelemetryComponent implements OnInit {
   {
     this.selectedTelemetryType = this.telemetryTypes.find(x => x.telemetryTypeID == id);
     var boundReset = 0;
-    // If the selected telemetry type doesn't have bounds, null out bounds.
-    if (this.createCompTelemForm && !this.selectedTelemetryType.hasBounds) {
-      boundReset = null;
-    }
+
     if (this.createCompTelemForm) {
       this.createCompTelemForm.setValue({
         upperBound: boundReset, 
         lowerBound: boundReset,
+        newComponentTelemetryHasBounds: this.hasBounds,
         telemetryTypeID: this.createCompTelemForm.get('telemetryTypeID').value,
         name: this.createCompTelemForm.get('name').value
       });
@@ -101,21 +117,30 @@ export class CreateComponentTelemetryComponent implements OnInit {
 
   submitNewCompTelem() : void
   {
+    // if we are adding a new componentTelemetry
     if (!this.isEditing){
       var newCT = new ComponentTelemetry(this.createCompTelemForm.value.telemetryTypeID, 
         this.component.componentID,
         this.createCompTelemForm.value.name, 
-        this.createCompTelemForm.value.upperBound, 
-        this.createCompTelemForm.value.lowerBound);
+        this.createCompTelemForm.value.newComponentTelemetryHasBounds,
+        this.createCompTelemForm.value.newComponentTelemetryHasBounds ? this.createCompTelemForm.value.upperBound : null, 
+        this.createCompTelemForm.value.newComponentTelemetryHasBounds ? this.createCompTelemForm.value.lowerBound : null);
       if (!this.isFormValid(newCT)) return;
+
       this.newCompTelemErrorMsgs = [];
       this.activeModal.close(newCT);
-    } else {
+    }
+
+    // if we are editing an existing component
+    else {
       this.selectedCompTelem.name = this.createCompTelemForm.value.name;
       this.selectedCompTelem.telemetryTypeID = this.createCompTelemForm.value.telemetryTypeID;
-      this.selectedCompTelem.upperBound = this.createCompTelemForm.value.upperBound;
-      this.selectedCompTelem.lowerBound = this.createCompTelemForm.value.lowerBound;
+      this.selectedCompTelem.hasBounds = this.createCompTelemForm.value.newComponentTelemetryHasBounds;
+      this.selectedCompTelem.upperBound = this.createCompTelemForm.value.newComponentTelemetryHasBounds ? this.createCompTelemForm.value.upperBound : null;
+      this.selectedCompTelem.lowerBound = this.createCompTelemForm.value.newComponentTelemetryHasBounds ? this.createCompTelemForm.value.lowerBound : null;
+
       if (!this.isFormValid(this.selectedCompTelem)) return;
+
       this.newCompTelemErrorMsgs = [];
       this.activeModal.close(this.selectedCompTelem);
     }
