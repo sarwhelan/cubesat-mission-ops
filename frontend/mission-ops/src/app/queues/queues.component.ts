@@ -10,8 +10,6 @@ import { AuthService } from '../services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { Observable, forkJoin, empty, of } from 'rxjs';
 import { mergeMap, delay } from 'rxjs/operators';
-import { PassLimitService } from '../services/pass-limit/pass-limit.service';
-import { PassLimit } from 'src/classes/pass-limit';
 import { TelecommandBatchService } from '../services/telecommandBatch/telecommand-batch.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
 import { PresetTelecommandService } from '../services/presetTelecommand/preset-telecommand.service';
@@ -35,7 +33,6 @@ export class QueuesComponent implements OnInit {
   pastPasses: Pass[];
   telecommands: Telecommand[];
   telecommandBatches: TelecommandBatch[];
-  passLimits: PassLimit[];
   selectedPass: Pass;
   calculatedTransmissionID: number;
   calculatedExecutionID: number;
@@ -52,7 +49,6 @@ export class QueuesComponent implements OnInit {
     private telecommandBatchService: TelecommandBatchService,
     private presetTelecommandService: PresetTelecommandService,
     private queuedTelecommandService: QueuedTelecommandService,
-    private passLimitService: PassLimitService,
     private auth: AuthService,
     private toastr: ToastrService) { }
 
@@ -61,7 +57,6 @@ export class QueuesComponent implements OnInit {
     this.transmissionQueue = true;
     this.getPasses();
     this.getTelecommands();
-    this.getPassLimits();
     this.getTelecommandBatches();
   }
 
@@ -110,12 +105,6 @@ export class QueuesComponent implements OnInit {
       .subscribe(tbs => this.telecommandBatches = tbs);
   }
 
-  getPassLimits() : void
-  {
-    this.passLimitService.getPassLimits()
-      .subscribe(pls => this.passLimits = pls);
-  }
-
   promptAddPass() : void{
     const modalRef = this.modalService.open(CreatePassComponent);
     modalRef.result.then((result) => {
@@ -145,9 +134,9 @@ export class QueuesComponent implements OnInit {
         result.executionTime.minute,
         result.executionTime.second
       ));
-      var createQtc = (self, maxBandwidth, maxPower, activePasses) => {
+      var createQtc = (self, activePasses) => {
         var activeTelecommand = this.telecommands.find(x => x.telecommandID == result.telecommandID);
-        var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime, maxBandwidth, maxPower);
+        var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime);
         if (transID === -1 || execID === -1) return of(null);
         var newQtc = new QueuedTelecommand(
           execID,
@@ -188,7 +177,7 @@ export class QueuesComponent implements OnInit {
       ));
       this.presetTelecommandService.getPresetTelecommands(result.telecommandBatchID)
         .subscribe(ptcs => {
-          var createQtc = (self, maxBandwidth, maxPower, activePasses) => {
+          var createQtc = (self, activePasses) => {
             var pQtcBatch = [];
             var isValid = true;
             this.additionSuccessStr = "";
@@ -200,7 +189,7 @@ export class QueuesComponent implements OnInit {
               telecommandExecutionTime.setUTCMinutes(executionTime.getUTCMinutes() + ptcs[i].minuteDelay);
               telecommandExecutionTime.setUTCSeconds(executionTime.getUTCSeconds() + ptcs[i].secondDelay);
               var activeTelecommand = this.telecommands.find(x => x.telecommandID == ptcs[i].telecommandID);
-              var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, telecommandExecutionTime, maxBandwidth, maxPower);
+              var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, telecommandExecutionTime);
               if (transID === -1 || execID === -1) isValid = false;
               pQtcBatch.push(Object.values(new QueuedTelecommand(
                 execID,
@@ -231,18 +220,15 @@ export class QueuesComponent implements OnInit {
   /**
    * Must have at least one active pass and pass limits must exist.
    */
-  createQueuedTelecommands(qtcCreation: (self, maxB: number, maxP: number, activeP: Pass[]) => Observable<any>) : void
+  createQueuedTelecommands(qtcCreation: (self, activeP: Pass[]) => Observable<any>) : void
   {
-    var maxBandwidth = this.passLimits.find(x => x.name == "bandwidthUsage").maxValue;
-    var maxPower = this.passLimits.find(x => x.name == "powerConsumption").maxValue;
-
     let passTransmissionSums = this.passService.getPassTransmissionSums();
     let passExecutionSums = this.passService.getPassExecutionSums();
     forkJoin([passTransmissionSums, passExecutionSums])
       .pipe(mergeMap(results => {
         this.sumTransmissionResults = results[0];
         this.sumExecutionResults = results[1];
-        return qtcCreation(this, maxBandwidth, maxPower, this.futurePasses);
+        return qtcCreation(this, this.futurePasses);
       }))
       .subscribe(() => {
         console.log('sub');
@@ -260,7 +246,7 @@ export class QueuesComponent implements OnInit {
       });
   }
 
-  calculatePassIDs(activePasses: Pass[], activeTelecommand: Telecommand, executionTime: Date, maxBandwidth: number, maxPower: number) : [number, number]
+  calculatePassIDs(activePasses: Pass[], activeTelecommand: Telecommand, executionTime: Date) : [number, number]
   {
     var calcTransID, calcExecID;
     
@@ -275,12 +261,14 @@ export class QueuesComponent implements OnInit {
           this.additionFailureStr = 'No pass exists to execute this command. Create a new pass and try again.';
           break;
         }
+
+        var activePass = activePasses[i];
         var passSum = this.sumExecutionResults.find(x => x.passID == activePasses[i-1].passID);
 
         // Limit passes on power.
-        if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= maxPower)
+        if (!passSum || passSum.sumPower + activeTelecommand.powerConsumption <= activePass.availablePower)
         {
-          if (!passSum && activeTelecommand.powerConsumption > maxPower){
+          if (!passSum && activeTelecommand.powerConsumption > activePass.availablePower){
             this.additionFailureStr = 'Error: Cannot add telecommand to queue. Telecommand power consumption exceeds the maximum power limitation in one pass.'
             break;
           }
@@ -309,11 +297,12 @@ export class QueuesComponent implements OnInit {
     else {
       for (var i = 0; i < activePasses.length; i++) {
         var passSum = this.sumTransmissionResults.find(x => x.passID == activePasses[i].passID);
+        var activePass = activePasses[i];
 
         // Limit passes on bandwidth.
-        if (!passSum || passSum.sumBandwidth + activeTelecommand.bandwidthUsage <= maxBandwidth)
+        if (!passSum || passSum.sumBandwidth + activeTelecommand.bandwidthUsage <= activePass.availableBandwidth)
         {
-          if (!passSum && activeTelecommand.bandwidthUsage > maxBandwidth){
+          if (!passSum && activeTelecommand.bandwidthUsage > activePass.availableBandwidth){
             this.additionFailureStr = 'Error: Cannot add telecommand to queue. Telecommand bandwidth usage exceeds the maximum bandwidth limitation in one pass.'
             break;
           }

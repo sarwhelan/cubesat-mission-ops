@@ -33,9 +33,14 @@ export class CreatePassComponent implements OnInit {
       second: 0
     };
 
+    var availablePower = 10;
+    var availableBandwidth = 10;
+
     this.createPassForm = this.formBuilder.group({
       passDate: passDate,
       passTime: passTime,
+      availablePower: availablePower,
+      availableBandwidth: availableBandwidth,
     });
   }
 
@@ -46,6 +51,16 @@ export class CreatePassComponent implements OnInit {
     var today = new Date().getTime();
     if (newPass.estimatedPassDateTime.getTime() <= today){
       errorMessages.push("Pass must exist in the future. Provide a date and time that exceed the current time.");
+    }
+
+    if (isNaN(newPass.availablePower) || newPass.availablePower < 0)
+    {
+      errorMessages.push("The available power of a pass must be a positive number.");
+    }
+    
+    if (isNaN(newPass.availableBandwidth) || newPass.availableBandwidth < 0)
+    {
+      errorMessages.push("The available bandwidth of a pass must be a positive number.");
     }
 
     if (errorMessages.length > 1)
@@ -68,7 +83,7 @@ export class CreatePassComponent implements OnInit {
       this.createPassForm.value.passTime.minute,
       this.createPassForm.value.passTime.second,
     ));
-    var newPass = new Pass(newPassDate);
+    var newPass = new Pass(newPassDate, this.createPassForm.value.availablePower, this.createPassForm.value.availableBandwidth);
     if (!this.isFormValid(newPass)) return;
     this.newPassErrorMsgs = [];
     this.activeModal.close(newPass);
