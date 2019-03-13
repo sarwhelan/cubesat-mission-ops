@@ -68,6 +68,10 @@
         <app-datetime-picker dateFormControlName = "executionDate" timeFormControlName = "executionTime" [formGroup] = "createQtcForm"></app-datetime-picker>
       </div>
     </div>
+    <div *ngFor="let error of newQtcErrorMsgs">
+      <label style="color:red;">{{error}}</label>
+      <br />
+    </div>
   </div>
   <div class="modal-footer">
     <button class = "btn btn-success"
