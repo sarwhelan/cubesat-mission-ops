@@ -103,7 +103,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
       errorMessages.push(`A telecommand ${addWord} must be scheduled in the future, not the past.`);
     }
 
-    if (!this.isBatch && this.isJSON(this.createQtcForm.value.commandParams))
+    if (!this.isBatch && !this.isJSON(this.createQtcForm.value.commandParams))
     {
       errorMessages.push("Command parameters must be specified and be valid JSON.");
     }
