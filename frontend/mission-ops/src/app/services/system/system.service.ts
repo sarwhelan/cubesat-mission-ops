@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { System } from '../../../classes/system';
+import { System } from 'src/classes/system';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SystemService {
 
   constructor(private http: HttpClient) { }
 
-  private systemUrl = "http://localhost:3000/systems";
+  private systemUrl = `${env.apiRouteBase}/systems`;
 
   getSystems(): Observable<System[]>
   {

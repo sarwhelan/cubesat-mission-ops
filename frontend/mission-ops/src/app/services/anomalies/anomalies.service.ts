@@ -1,8 +1,9 @@
 import {Injectable, PipeTransform} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import { environment as env } from 'src/environments/environment';
 
-import { Anomaly } from '../../../classes/anomaly';
+import { Anomaly } from 'src/classes/anomaly';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap, mergeMap } from 'rxjs/operators';
 import { SortDirection } from './sortable.directive';
@@ -61,7 +62,7 @@ export class AnomaliesService {
     sortDirection: ''
   };
 
-  private systemUrl = "http://localhost:3000/anomalies";
+  private systemUrl = `${env.apiRouteBase}/anomalies`;
 
   constructor(private pipe: DecimalPipe, private http: HttpClient) {
     this._search$.pipe(

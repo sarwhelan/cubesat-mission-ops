@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UsersService } from '../services/users/users.service';
-import { User } from '../../classes/user';
+import { UsersService } from 'src/app/services/users/users.service';
+import { User } from 'src/classes/user';
 import { ModalComponent } from '../modal/modal.component';
-import { AuthService } from '../services/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
 import { PagedList } from 'src/classes/paged-list';
 import { PageChangeEvent, PaginationComponent } from '../pagination/pagination.component';

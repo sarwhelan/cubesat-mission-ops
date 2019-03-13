@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Telecommand } from '../../classes/telecommand';
+import { Telecommand } from 'src/classes/telecommand';
 
 @Component({
   selector: 'app-telecommand-dropdown',

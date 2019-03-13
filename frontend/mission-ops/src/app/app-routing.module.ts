@@ -19,10 +19,10 @@ import { AnomalyTableComponent } from './anomaly-table/anomaly-table.component';
 import { MediaLibraryComponent } from './media-library/media-library.component';
 import { MediaViewComponent } from './media-view/media-view.component';
 
-import { AuthGuardService } from './services/auth-guard/auth-guard.service';
-import { AntiAuthGuardService } from './services/anti-auth-guard/anti-auth-guard.service';
-import { AdminGuardService } from './services/admin-guard/admin-guard.service';
-import { AdminOrSelfGuardService } from './services/admin-or-self-guard/admin-or-self-guard.service';
+import { AuthGuardService } from 'src/app/services/auth-guard/auth-guard.service';
+import { AntiAuthGuardService } from 'src/app/services/anti-auth-guard/anti-auth-guard.service';
+import { AdminGuardService } from 'src/app/services/admin-guard/admin-guard.service';
+import { AdminOrSelfGuardService } from 'src/app/services/admin-or-self-guard/admin-or-self-guard.service';
 
 const routes: Routes = [
   { path : '', component: HomePageComponent },

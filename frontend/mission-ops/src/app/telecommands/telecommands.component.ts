@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Telecommand } from '../../classes/telecommand';
-import { TelecommandService } from '../services/telecommand/telecommand.service';
+import { Telecommand } from 'src/classes/telecommand';
+import { TelecommandService } from 'src/app/services/telecommand/telecommand.service';
 
 @Component({
   selector: 'app-telecommands',

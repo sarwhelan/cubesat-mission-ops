@@ -4,6 +4,7 @@ import { Pass } from '../../../classes/pass';
 import { HttpClient } from '@angular/common/http';
 import { PassSum } from 'src/classes/pass-sum';
 import { mergeMap, switchMap } from 'rxjs/operators';
+import { environment as env } from 'src/environments/environment';
 
 interface State {
   page: number;
@@ -36,9 +37,8 @@ export class PassService {
   /**
    * Route URL for passes.
    */
-  private passesUrl = "http://localhost:3000/passes"
-  
   private _refreshPasses = new Subject<void>();
+  private passesUrl = `${env.apiRouteBase}/passes`;
 
   /**
    * Creates a new instance of {@link PassService}.

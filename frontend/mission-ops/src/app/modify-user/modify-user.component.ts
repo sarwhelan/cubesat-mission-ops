@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../../classes/user';
-import { UsersService } from '../services/users/users.service';
-import { AuthService } from '../services/auth/auth.service';
+import { User } from 'src/classes/user';
+import { UsersService } from 'src/app/services/users/users.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { AlertComponent } from '../alert/alert.component';
 import { ModalComponent } from '../modal/modal.component';
 

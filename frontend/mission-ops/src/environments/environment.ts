@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiRouteBase: 'http://localhost:3000',
+  cognito: {
+    accessKeyId: 'AKIAITKTCDI7BY3DPTFA',
+    secretAccessKey: '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',
+    region: 'us-east-2',
+    userPoolId: 'us-east-2_YZSlXzFlB',
+    userPoolClientId: '1bn896ocv98neen3r2djed4r7i'
+  }
 };
 
 /*

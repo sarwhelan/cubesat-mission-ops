@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, isDevMode } from '@angular/core';
 
-import { UsersService } from '../services/users/users.service';
+import { UsersService } from 'src/app/services/users/users.service';
 import { AlertComponent } from '../alert/alert.component';
-import { AuthService } from '../services/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 /**
  * A component for creating new users for the application.

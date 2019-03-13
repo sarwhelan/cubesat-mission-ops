@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ComponentTelemetryService } from '../services/component-telemetry/component-telemetry.service';
+import { ComponentTelemetryService } from 'src/app/services/component-telemetry/component-telemetry.service';
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
-import { Component as CubeSatComp } from '../../classes/component';
-import { TelemetryTypesService } from '../services/telemetry-types/telemetry-types.service';
+import { Component as CubeSatComp } from 'src/classes/component';
+import { TelemetryTypesService } from 'src/app/services/telemetry-types/telemetry-types.service';
 import { TelemetryType } from 'src/classes/telemetry-type';
  
 @Component({

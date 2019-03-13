@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ComponentTelemetry } from '../../../classes/component-telemetry';
+import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 /**
  * Service handling all {@link ComponentTelemetry} app server routing.
@@ -20,7 +21,7 @@ export class ComponentTelemetryService {
   /**
    * Route URL for component telemetries.
    */
-  private componentTelemetryUrl = "http://localhost:3000/component-telemetry";
+  private componentTelemetryUrl = `${env.apiRouteBase}/component-telemetry`;
 
   /**
    * Gets all {@link ComponentTelemetry} objects associated with the given {@link Component}

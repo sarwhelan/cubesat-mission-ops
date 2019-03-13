@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession, CognitoAccessToken, CognitoIdToken, CognitoRefreshToken } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
-import  * as CognitoUserPoolClient from 'amazon-cognito-identity-js/src/client';
+import { environment as env } from 'src/environments/environment';
+
 import { User } from 'src/classes/user';
-import { stringList } from 'aws-sdk/clients/datapipeline';
 
 /**
  * Callback object for the signin process.
@@ -40,8 +40,8 @@ export class AuthService {
   private userPool: CognitoUserPool;
   // TODO: move this configuration information somewhere appropriate
   private poolData = { 
-    UserPoolId : 'us-east-2_YZSlXzFlB',                 //CognitoUserPool
-    ClientId : '1bn896ocv98neen3r2djed4r7i'                    //CognitoUserPoolClient 
+    UserPoolId: env.cognito.userPoolId,                     //CognitoUserPool
+    ClientId: env.cognito.userPoolClientId                  //CognitoUserPoolClient 
   };
 
   private _currentUser: User;

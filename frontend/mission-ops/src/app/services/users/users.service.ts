@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { environment as env } from 'src/environments/environment';
 
-import { User } from '../../../classes/user';
-import { PagedList } from '../../../classes/paged-list';
+import { User } from 'src/classes/user';
+import { PagedList } from 'src/classes/paged-list';
 
 export interface ICreateUserCallback {
   onSuccess: () => void,
@@ -29,9 +30,9 @@ export class UsersService {
   constructor() { 
     // TODO: move this configuration information somewhere appropriate
     this.cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({
-      accessKeyId: 'AKIAITKTCDI7BY3DPTFA',
-      secretAccessKey: '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',
-      region: 'us-east-2'
+      accessKeyId: env.cognito.accessKeyId,
+      secretAccessKey: env.cognito.secretAccessKey,
+      region: env.cognito.region
     });
 
     this.userListObs$ = this.fetchUsers();
@@ -83,7 +84,7 @@ export class UsersService {
   public getUser(userId: string): Observable<User> {
     const obs$ = new Observable<User>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminGetUser({
-        UserPoolId: 'us-east-2_YZSlXzFlB',
+        UserPoolId: env.cognito.userPoolId,
         Username: userId
       }, (err, data) => {
         if (err) {
@@ -139,7 +140,7 @@ export class UsersService {
     
     const obs$ = new Observable<void>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminUpdateUserAttributes({
-        UserPoolId: 'us-east-2_YZSlXzFlB',
+        UserPoolId: env.cognito.userPoolId,
         Username: user.id,
         UserAttributes: attributes
       }, (err, data) => {
@@ -189,7 +190,7 @@ export class UsersService {
     }
 
     this.cognitoIdentityServiceProvider.adminCreateUser({
-      UserPoolId: 'us-east-2_YZSlXzFlB',
+      UserPoolId: env.cognito.userPoolId,
       Username: username,
       TemporaryPassword: password,
       UserAttributes: attributes,
@@ -217,7 +218,7 @@ export class UsersService {
   private fetchUsers(paginationToken: string = null): Observable<Array<User>> {
     const obs$ = new Observable<Array<User>>((subscriber) => {
       this.cognitoIdentityServiceProvider.listUsers({
-        UserPoolId: 'us-east-2_YZSlXzFlB',
+        UserPoolId: env.cognito.userPoolId,
         PaginationToken: paginationToken
       }, (err, data) => {
         if (err) {
@@ -283,7 +284,7 @@ export class UsersService {
   public deleteUser(user: User): Observable<void> {
     const obs$ = new Observable<void>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminDeleteUser({
-        UserPoolId: 'us-east-2_YZSlXzFlB',
+        UserPoolId: env.cognito.userPoolId,
         Username: user.email
       }, (err, data) => {
         if (err) {
@@ -309,7 +310,7 @@ export class UsersService {
   public resetUserPassword(user: User): Observable<void> {
     const obs$ = new Observable<void>((subscriber) => {
       this.cognitoIdentityServiceProvider.adminResetUserPassword({
-        UserPoolId: 'us-east-2_YZSlXzFlB',
+        UserPoolId: env.cognito.userPoolId,
         Username: user.email
       }, (err, data) => {
         if (err) {

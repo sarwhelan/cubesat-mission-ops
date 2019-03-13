@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { TelecommandBatch } from '../../../classes/telecommandBatch';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { TelecommandBatch } from 'src/classes/telecommandBatch';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ export class TelecommandBatchService {
 
   constructor(private http: HttpClient) { }
 
-  private telecommandBatchesUrl = "http://localhost:3000/telecommand-batches"
+  private telecommandBatchesUrl = `${env.apiRouteBase}/telecommand-batches`
 
   getTelecommandBatches() : Observable<TelecommandBatch[]>
   {
