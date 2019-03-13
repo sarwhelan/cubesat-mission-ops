@@ -95,7 +95,7 @@
           (click)="onSelectTelemetryType(tt)"
           [class.active]="tt===selectedTelemetryType"
           class="list-group-item">
-            {{tt.name}}
+            {{tt.name}} <span class = "badge badge-secondary">{{tt.telemetryUnit}}</span>
           </li>
         </ul>
       </ng-container>
