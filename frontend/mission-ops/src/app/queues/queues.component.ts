@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
 import { Pass } from '../../classes/pass';
 import { PassService } from '../services/pass/pass.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { CreateQueuedTelecommandComponent } from '../create-queued-telecommand/create-queued-telecommand.component';
 import { TelecommandService } from '../services/telecommand/telecommand.service';
 import { Telecommand } from 'src/classes/telecommand';
@@ -19,20 +19,26 @@ import { PassSum } from 'src/classes/pass-sum';
 import { CreatePassComponent } from '../create-pass/create-pass.component';
 
 import { ToastrService } from 'ngx-toastr';
+import { async } from '@angular/core/testing';
 
 const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queues',
   templateUrl: './queues.component.html',
-  styleUrls: ['./queues.component.scss','../../../node_modules/ngx-toastr/toastr.css']
+  styleUrls: ['./queues.component.scss','../../../node_modules/ngx-toastr/toastr.css'],
+  providers: [PassService]
 })
 export class QueuesComponent implements OnInit {
 
   executionQueue: boolean;
   transmissionQueue: boolean;
   futurePasses: Pass[];
+  futurePassesObs: Observable<Pass[]>;
+  futurePassesTotal: Observable<number>;
   pastPasses: Pass[];
+  pastPassesObs: Observable<Pass[]>;
+  pastPassesTotal: Observable<number>;
   telecommands: Telecommand[];
   telecommandBatches: TelecommandBatch[];
   passLimits: PassLimit[];
@@ -54,12 +60,23 @@ export class QueuesComponent implements OnInit {
     private queuedTelecommandService: QueuedTelecommandService,
     private passLimitService: PassLimitService,
     private auth: AuthService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService) {
+      this.pastPassesObs = passService.pastPasses;
+      this.futurePassesObs = passService.futurePasses;
+      this.pastPassesTotal = passService.pastTotal;
+      this.futurePassesTotal = passService.futureTotal;
+     }
+
+  private tabSet: NgbTabset;
+
+  @ViewChild(NgbTabset) set content(content: NgbTabset) {
+    this.tabSet = content;
+  };
 
   ngOnInit() {
     this.executionQueue = false;
     this.transmissionQueue = true;
-    this.getPasses();
+    this.getPasses(true);
     this.getTelecommands();
     this.getPassLimits();
     this.getTelecommandBatches();
@@ -70,29 +87,17 @@ export class QueuesComponent implements OnInit {
     return dateFormat(unformatedDate, "dddd, mmmm dS, yyyy, HH:MM:ss");
   }
 
-  selectExecution(): void{  
-    console.log('exec');
-    this.executionQueue = true;
-    this.transmissionQueue = false;
-  }
-
-  selectTransmission(): void{  
-    console.log('trans');
-    this.executionQueue = false;
-    this.transmissionQueue = true;
-  }
-
   onSelect(pass: Pass) : void
   {
     this.selectedPass = pass;
   }
 
-  getPasses() : void{   
+  getPasses(isPaginated: boolean = false) : void{   
     this.selectedPass = null; 
-    this.passService.getPasses()
+    this.passService.getPasses(isPaginated)
       .subscribe(passes => {
-        this.pastPasses = passes.filter(x => x.passHasOccurred);
-        this.futurePasses = passes.filter(x => !x.passHasOccurred);
+        this.pastPasses = passes.pastPasses;
+        this.futurePasses = passes.futurePasses;
       });
   }
 
