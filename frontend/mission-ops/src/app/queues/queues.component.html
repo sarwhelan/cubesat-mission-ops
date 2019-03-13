@@ -17,7 +17,7 @@
               (click)="onSelect(pass)"
               [class.active]="pass === selectedPass"
               class="list-group-item">
-                <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
+                <b>Pass {{pass.passID}}</b> Actual Pass Time: {{getFormatedDate(pass.actualPassDateTime)}}
               </li>
             </ng-container>
             </ul> 
