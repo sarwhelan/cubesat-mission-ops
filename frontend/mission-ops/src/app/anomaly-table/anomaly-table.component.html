@@ -1,48 +1,55 @@
 <h3>Anomalies</h3>
 
-<div *ngIf="anomalies && anomalies.length > 0; else noAnoms">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col">Collection DateTime</th>
-      <th scope="col">Telemetry Specification</th>
-      <th scope="col">Component Name</th>
-      <th scope="col">System Name</th>
-      <th scope="col">Upper Bound</th>
-      <th scope="col">Lower Bound</th>
-      <th scope="col">Reading</th>
-      <th scope="col">Unit</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let anom of anomalies">
-      <!--th scope="row">{{ anom.telemDataId }}</th>-->
-      <td>{{ getFormatedDate(anom.collectionTime)}}</td>
-      <td>{{ anom.compTelemName}}</td>
-      <td>{{ anom.compName}}</td>
-      <td>{{ anom.sysName}}</td>
-      <td>{{ anom.upperBound | number }}</td>
-      <td>{{ anom.lowerBound | number }}</td>
-      <td>{{ anom.reading | number}}</td>
-      <td>{{ anom.unit}}</td>
-    </tr>
-    </tbody>
-  </table>
+  <form>
+    <div class="form-group form-inline">
+        Search anomalies: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="service.searchTerm"/>
+        <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+    </div>
   
-  <!---div class="d-flex justify-content-between p-2">
-    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
-    </ngb-pagination>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col"sortable="collectionTime" (sort)="onSort($event)">Collection datetime</th>
+        <th scope="col" sortable="compTelemName" (sort)="onSort($event)">Telemetry</th>
+        <th scope="col" sortable="compName" (sort)="onSort($event)">Component name</th>
+        <th scope="col" sortable="sysName" (sort)="onSort($event)">System name</th>
+        <th scope="col" sortable="upperBound" (sort)="onSort($event)">Upper bound</th>
+        <th scope="col" sortable="lowerBound" (sort)="onSort($event)">Lower bound</th>
+        <th scope="col" sortable="reading" (sort)="onSort($event)">Reading</th>
+        <th scope="col" sortable="unit" (sort)="onSort($event)">Unit</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let anom of anomalies$ | async">
+        <td><ngb-highlight [result]="getFormattedDate(anom.collectionTime)" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.compTelemName" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.compName" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.sysName" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.upperBound | number" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.lowerBound | number" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.reading | number" [term]="service.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="anom.unit" [term]="service.searchTerm"></ngb-highlight></td>
+      </tr>
+      </tbody>
+    </table>
   
-    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
-      <option [ngValue]="2">2 items per page</option>
-      <option [ngValue]="4">4 items per page</option>
-      <option [ngValue]="6">6 items per page</option>
-    </select>
-  </div>
-</div>-->
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="(total$ | async)" [(page)]="service.page" [pageSize]="service.pageSize">
+      </ngb-pagination>
+  
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="20">20 items per page</option>
+      </select>
+    </div>
+  
+  </form>
 
+<!---
 <ng-template #noAnoms>
   <p>
     There are no anomalies to display. Check back soon!
   </p>
 </ng-template>
+-->
