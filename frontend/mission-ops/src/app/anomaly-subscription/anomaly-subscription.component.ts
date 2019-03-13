@@ -62,6 +62,7 @@ export class AnomalySubscriptionComponent implements OnInit {
     this.subService.deleteSubscription(this.selectedSub.systemID, userID)
       .subscribe(response => {
         this.getSubscriptions(userID);
+        this.selectedSub = null;
       })
   }
 
