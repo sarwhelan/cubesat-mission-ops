@@ -37,13 +37,13 @@ function sort(anomalies: Anomaly[], column: string, direction: string): Anomaly[
 
 function matches(anomaly: Anomaly, term: string, pipe: PipeTransform) {
   return anomaly.sysName.toLowerCase().includes(term)
-    || pipe.transform(anomaly.compName.toLowerCase()).includes(term)
-    || pipe.transform(anomaly.compTelemName.toLowerCase()).includes(term)
-    || pipe.transform(anomaly.collectionTime).includes(term)
+    || anomaly.compName.toLowerCase().includes(term)
+    || anomaly.compTelemName.toLowerCase().includes(term)
+    || anomaly.collectionTime.includes(term)
     || pipe.transform(anomaly.reading).includes(term)
     || pipe.transform(anomaly.upperBound).includes(term)
     || pipe.transform(anomaly.lowerBound).includes(term)
-    || pipe.transform(anomaly.unit.toLowerCase()).includes(term);
+    || anomaly.unit.toLowerCase().includes(term);
 }
 
 @Injectable({providedIn: 'root'})
@@ -62,7 +62,6 @@ export class AnomaliesService {
   };
 
   private systemUrl = "http://localhost:3000/anomalies";
-  private anomaliesFromDb: Anomaly[];
 
   constructor(private pipe: DecimalPipe, private http: HttpClient) {
     this._search$.pipe(
@@ -100,12 +99,13 @@ export class AnomaliesService {
   private _search(): Observable<SearchResult> {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
-    this.http.get<Anomaly[]>(this.systemUrl)
+    return this.http.get<Anomaly[]>(this.systemUrl)
       .pipe(mergeMap(result => {
         // 1. sort
         let anomalies = sort(result, sortColumn, sortDirection);
 
         // 2. filter
+        console.log("searchTerm is: " + searchTerm);
         anomalies = anomalies.filter(anomaly => matches(anomaly, searchTerm, this.pipe));
         const total = anomalies.length;
 
@@ -114,12 +114,6 @@ export class AnomaliesService {
         return of({anomalies, total});   
       }));
 
-  }
-
-  async getAnomsFromDb() {
-    await this.http.get<Anomaly[]>(this.systemUrl).subscribe(anoms => {
-      this.anomaliesFromDb = anoms;
-    });
   }
   
 }

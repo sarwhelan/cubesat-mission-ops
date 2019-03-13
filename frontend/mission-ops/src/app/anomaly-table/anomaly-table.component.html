@@ -21,7 +21,6 @@
       </thead>
       <tbody>
       <tr *ngFor="let anom of anomalies$ | async">
-        <!--th scope="row">{{ anom.telemDataId }}</th>--->
         <td><ngb-highlight [result]="getFormattedDate(anom.collectionTime)" [term]="service.searchTerm"></ngb-highlight></td>
         <td><ngb-highlight [result]="anom.compTelemName" [term]="service.searchTerm"></ngb-highlight></td>
         <td><ngb-highlight [result]="anom.compName" [term]="service.searchTerm"></ngb-highlight></td>
