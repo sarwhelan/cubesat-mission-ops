@@ -18,6 +18,10 @@
               [class.active]="pass === selectedPass"
               class="list-group-item">
                 <b>Pass {{pass.passID}}</b> Actual Pass Time: {{getFormatedDate(pass.actualPassDateTime)}}
+                <br/>
+                <small class="text-muted">Total Allowed Bandwidth: <b>{{pass.availableBandwidth}}</b></small>
+                &nbsp;
+                <small class="text-muted">Total Allowed Power: <b>{{pass.availablePower}}</b></small>
               </li>
             </ng-container>
             </ul> 
@@ -41,6 +45,10 @@
                   [class.active]="pass === selectedPass"
                   class="list-group-item">
                     <b>Pass {{pass.passID}}</b> Estimated Pass Time: {{getFormatedDate(pass.estimatedPassDateTime)}}
+                    <br/>
+                    <small class="text-muted">Total Allowed Bandwidth: <b>{{pass.availableBandwidth}}</b></small>
+                    &nbsp;
+                    <small class="text-muted">Total Allowed Power: <b>{{pass.availablePower}}</b></small>
                   </li>
               </ng-container>
               </ul>
