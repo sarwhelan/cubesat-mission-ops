@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, never } from 'rxjs';
+import { map, retry, catchError } from 'rxjs/operators';
 import { environment as env } from 'src/environments/environment';
 
 import { PanoramicMedia } from 'src/classes/panoramic-media';
 import { PagedList } from 'src/classes/paged-list';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class PanoramicMediaService {
   private media: Array<PanoramicMedia>;
   private mediaObs$: Observable<Array<PanoramicMedia>>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastr: ToastrService) {
     this.mediaObs$ = this.fetchMediaList();
   }
 
@@ -32,6 +33,11 @@ export class PanoramicMediaService {
    */
   private fetchMediaList(): Observable<Array<PanoramicMedia>> {
     return this.http.get(this.mediaApiUrl).pipe(
+      retry(3),
+      catchError(val => {
+        this.handleRequestError(val, "fetching");
+        return never();
+      }),
       map((val) => val as Array<PanoramicMedia>),
       map((val) => {
         for(let i = 0; i < val.length; i++) {
@@ -68,6 +74,11 @@ export class PanoramicMediaService {
     }
 
     return obs$.pipe(
+      retry(3),
+      catchError(val => {
+        this.handleRequestError(val, "retrieving");
+        return never();
+      }),
       map((val) => new PagedList<PanoramicMedia>({
         items: val.slice(pageSize * page, pageSize * (page + 1)),
         page: page,
@@ -94,7 +105,16 @@ export class PanoramicMediaService {
       });
     }
     return obs$.pipe(
+      retry(3),
+      catchError(val => {
+        this.handleRequestError(val, "getting a");
+        return never();
+      }),
       map((val) => val.find((m) => m.id === id))
     );
+  }
+
+  private handleRequestError(error, eventType: string){
+    this.toastr.error(`Server error on ${eventType} Panoramic Media: ${error.statusText} (Status ${error.status})`);
   }
 }
