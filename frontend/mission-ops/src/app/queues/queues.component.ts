@@ -249,7 +249,8 @@ export class QueuesComponent implements OnInit {
         }
         this.additionFailureStr = "";
         this.additionSuccessStr = "";
-        this.getPasses();
+        this.passService.refreshPasses();
+        this.getPasses();        
       });
   }
 
