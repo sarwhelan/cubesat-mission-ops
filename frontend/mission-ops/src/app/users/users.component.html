@@ -24,8 +24,10 @@
             </div>
           </td>
           <td class="text-right">
-            <a class="btn btn-outline-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
-            <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
+            <div class="btn-group" role="group">
+              <a class="btn btn-outline-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
+              <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
+            </div>
           </td>
         </tr>
       </ng-container>
