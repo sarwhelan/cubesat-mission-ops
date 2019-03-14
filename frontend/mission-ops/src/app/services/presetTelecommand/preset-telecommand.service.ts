@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, never } from 'rxjs';
 import { PresetTelecommand } from 'src/classes/presetTelecommand';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
+import { retry, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -12,31 +14,57 @@ export class PresetTelecommandService {
 
   private presetTelecommandUrl = `${env.apiRouteBase}/preset-telecommands`
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   getPresetTelecommands(batchID: number) : Observable<PresetTelecommand[]>
   {
-    var getURL = this.presetTelecommandUrl + "/" + batchID;
-
-    return this.http.get<PresetTelecommand[]>(getURL);
-  }
-
-  deletePresetTelecommand(presetTelecommandID: number) : Observable<any>
-  {
-    var deleteURL = this.presetTelecommandUrl + "/" + presetTelecommandID;
-
-    return this.http.delete<PresetTelecommand[]>(deleteURL);
-  }
-
-  updatePresetTelecommand(presetTelecommand: PresetTelecommand) : Observable<any>
-  {
-    var updateURL = this.presetTelecommandUrl + "/" + presetTelecommand.presetTelecommandID;
-
-    return this.http.put(updateURL, presetTelecommand);
+    return this.http.get<PresetTelecommand[]>(`${this.presetTelecommandUrl}/${batchID}`)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "retrieving");
+                return never();
+              })
+            );
   }
 
   addNewPresetTelecommand(presetTelecommand: PresetTelecommand): Observable<any>
   {
-    return this.http.post(this.presetTelecommandUrl, presetTelecommand);
+    return this.http.post(this.presetTelecommandUrl, presetTelecommand)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "creating");
+                return never();
+              })
+            );
+  }
+
+  updatePresetTelecommand(presetTelecommand: PresetTelecommand) : Observable<any>
+  {
+    return this.http.put(`${this.presetTelecommandUrl}/${presetTelecommand.presetTelecommandID}`, presetTelecommand)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "updating");
+                return never();
+              })
+            );
+  }
+
+  deletePresetTelecommand(presetTelecommandID: number) : Observable<any>
+  {
+    return this.http.delete<PresetTelecommand[]>(`${this.presetTelecommandUrl}/${presetTelecommandID}`)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "deleting");
+                return never();
+              })
+            );
+  }
+
+  private handleRequestError(error, eventType: string){
+    this.toastr.error(`Server error on ${eventType} Preset Telecommand: ${error.statusText} (Status ${error.status})`);
   }
 }
