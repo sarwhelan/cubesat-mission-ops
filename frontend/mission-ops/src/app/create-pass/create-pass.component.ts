@@ -53,12 +53,12 @@ export class CreatePassComponent implements OnInit {
       errorMessages.push("Pass must exist in the future. Provide a date and time that exceed the current time.");
     }
 
-    if (isNaN(newPass.availablePower) || newPass.availablePower < 0)
+    if (!newPass.availablePower || isNaN(newPass.availablePower) || newPass.availablePower < 0)
     {
       errorMessages.push("The available power of a pass must be a positive number.");
     }
     
-    if (isNaN(newPass.availableBandwidth) || newPass.availableBandwidth < 0)
+    if (!newPass.availableBandwidth || isNaN(newPass.availableBandwidth) || newPass.availableBandwidth < 0)
     {
       errorMessages.push("The available bandwidth of a pass must be a positive number.");
     }
