@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription } from 'src/classes/subscription';
 import { environment as env } from 'src/environments/environment';
+import { retry, catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class SubscriptionsService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   private systemUrl = `${env.apiRouteBase}/subscriptions/`;
 
@@ -26,12 +28,23 @@ export class SubscriptionsService {
 
   addSubscription(systemID: Number, userID: String): Observable<Number>
   {
-    return this.http.post<Number>(this.systemUrl + userID, JSON.stringify({"systemID": systemID}), this.httpOptions);
+    return this.http.post<Number>(this.systemUrl + userID, JSON.stringify({"systemID": systemID}), this.httpOptions)
+      /*.pipe(
+        retry(3),
+        catchError(val => {
+          this.handleRequestError(val, "add");
+          return never();
+        })
+      );*/
   }
 
   deleteSubscription(systemID: Number, userID: String): Observable<Subscription>
   {
     return this.http.delete<Subscription>(this.systemUrl + userID + "." + systemID);
+  }
+
+  handleRequestError(err, eventType: string) {
+    this.toastr.error();
   }
   
 }

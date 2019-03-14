@@ -40,7 +40,7 @@ function matches(anomaly: Anomaly, term: string, pipe: PipeTransform) {
   return anomaly.sysName.toLowerCase().includes(term)
     || anomaly.compName.toLowerCase().includes(term)
     || anomaly.compTelemName.toLowerCase().includes(term)
-    || anomaly.collectionTime.includes(term)
+    || anomaly.collectionTime.toLowerCase().includes(term)
     || pipe.transform(anomaly.reading).includes(term)
     || pipe.transform(anomaly.upperBound).includes(term)
     || pipe.transform(anomaly.lowerBound).includes(term)
