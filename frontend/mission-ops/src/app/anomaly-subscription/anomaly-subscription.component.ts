@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'src/classes/subscription';
 import { System } from 'src/classes/system';
 import { SystemService } from 'src/app/services/system/system.service';
+import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-anomaly-subscription',
@@ -13,10 +15,9 @@ import { SystemService } from 'src/app/services/system/system.service';
 export class AnomalySubscriptionComponent implements OnInit {
 
   subscriptions: Subscription[];
-  selectedSub: Subscription;
   systems: System[];
 
-  constructor(private route: ActivatedRoute, private subService: SubscriptionsService, private systemService: SystemService) { }
+  constructor(private route: ActivatedRoute, private subService: SubscriptionsService, private systemService: SystemService, private toastr: ToastrService) { }
 
   ngOnInit() {
     const userID = this.route.snapshot.queryParamMap.get('id');
@@ -28,42 +29,58 @@ export class AnomalySubscriptionComponent implements OnInit {
       .subscribe(subscriptions => { 
         this.subscriptions = subscriptions;
         this.getSystems();
-      });
+      })
   }
 
-  addSubscription(systemID) {
+  addSubscription(systemID, systemName) {
     const userID = this.route.snapshot.queryParamMap.get('id');
     this.subService.addSubscription(systemID, userID)
       .subscribe(response => {
         this.getSubscriptions(userID);
-      })
+        this.toastr.success("You're now subscribed to " + systemName, "Yay!", {
+          timeOut: 4000,
+          positionClass: 'toast-bottom-right'
+        })
+      },
+      err => {
+        this.toastr.error("It looks like your subscription to " + systemName + " failed. Please try again soon.", "Oops!", {
+          timeOut: 4000,
+          positionClass: 'toast-bottom-right'
+        })
+      });
   }
 
   getSystems() {
     this.systemService.getSystems()
-      .subscribe(systems => {
-        for (var i = 0; i < this.subscriptions.length; i++) {
-          for (var j = 0; j < systems.length; j++) {
-            if (this.subscriptions[i].systemID == systems[j].systemID) {
-              systems.splice(j, 1);
-            }
-          }
-        }
-        this.systems = systems;
+    .subscribe(systems => {
+      this.systems = systems;
     })
   }
 
-  selectSub(sub: Subscription) {
-    this.selectedSub = sub;
-  }
-
-  removeSub() {
+  removeSub(systemID, systemName) {
     const userID = this.route.snapshot.queryParamMap.get('id');
-    this.subService.deleteSubscription(this.selectedSub.systemID, userID)
+    this.subService.deleteSubscription(systemID, userID)
       .subscribe(response => {
         this.getSubscriptions(userID);
-        this.selectedSub = null;
+        this.toastr.success("You're now unsubscribed from " + systemName, "Got it.", {
+          timeOut: 4000,
+          positionClass: 'toast-bottom-right'
+        }),
+        err => {
+          this.toastr.error("You have not been unsubscribed from " + systemName + ". Please try again soon.", "Oops!", {
+            timeOut: 4000,
+            positionClass: 'toast-bottom-right'
+          })
+        }
       })
   }
 
+  isSubscribed(systemID): boolean {
+    for (var i = 0; i < this.subscriptions.length; i++) {
+      if (systemID == this.subscriptions[i].systemID) {
+          return true;
+        }
+      }
+      return false;
+    }
 }
