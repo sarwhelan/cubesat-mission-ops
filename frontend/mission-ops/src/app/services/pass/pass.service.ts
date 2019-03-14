@@ -117,4 +117,10 @@ export class PassService {
   getPassExecutionSums() : Observable<PassSum[]>{
     return this.http.get<PassSum[]>(`${this.passesUrl}/execution-sum`);
   }
+
+  refreshPasses() :void
+  {
+    this._refreshPasses.next();
+
+  }
 }
