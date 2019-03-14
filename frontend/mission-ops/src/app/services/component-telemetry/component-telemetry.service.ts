@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, never } from 'rxjs';
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, retry } from 'rxjs/operators';
 
 /**
  * Service handling all {@link ComponentTelemetry} app server routing.
@@ -16,7 +18,7 @@ export class ComponentTelemetryService {
    * Creates a new instance of {@link ComponentTelemetryService}.
    * @param http The HttpClient service.
    */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   /**
    * Route URL for component telemetries.
@@ -30,8 +32,14 @@ export class ComponentTelemetryService {
    */
   getComponentTelemetries(componentID: number) : Observable<ComponentTelemetry[]>
   {
-    var getComponentUrl = this.componentTelemetryUrl + "/" + componentID;
-    return this.http.get<ComponentTelemetry[]>(getComponentUrl);
+    return this.http.get<ComponentTelemetry[]>(`${this.componentTelemetryUrl}/${componentID}`)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "retrieving");
+                return never();
+              })
+            );
   }
 
   getComponentTelemetryWithType(telemetryTypeID: number) : Observable<ComponentTelemetry[]>
@@ -39,7 +47,14 @@ export class ComponentTelemetryService {
     const params = {
       'telemetryTypeID': telemetryTypeID.toString()
     }
-    return this.http.get<ComponentTelemetry[]>(this.componentTelemetryUrl, { params: params });
+    return this.http.get<ComponentTelemetry[]>(this.componentTelemetryUrl, { params: params })
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "retrieving with telemetry type");
+                return never();
+              })
+            );
   }
 
   /**
@@ -49,7 +64,14 @@ export class ComponentTelemetryService {
    */
   createComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<Number>
   {
-    return this.http.post<Number>(this.componentTelemetryUrl, componentTelemetry);
+    return this.http.post<Number>(this.componentTelemetryUrl, componentTelemetry)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "creating");
+                return never();
+              })
+            );
   }
 
   /**
@@ -59,7 +81,14 @@ export class ComponentTelemetryService {
    */
   updateComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<Number>
   {
-    return this.http.put<Number>(`${this.componentTelemetryUrl}/${componentTelemetry.componentTelemetryID}`, componentTelemetry);
+    return this.http.put<Number>(`${this.componentTelemetryUrl}/${componentTelemetry.componentTelemetryID}`, componentTelemetry)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "updating");
+                return never();
+              })
+            );
   }
 
   /**
@@ -69,6 +98,17 @@ export class ComponentTelemetryService {
    */
   removeComponentTelemetry(componentTelemetry: ComponentTelemetry) : Observable<ComponentTelemetry>
   {
-    return this.http.delete<ComponentTelemetry>(`${this.componentTelemetryUrl}/${componentTelemetry.componentTelemetryID}`);
+    return this.http.delete<ComponentTelemetry>(`${this.componentTelemetryUrl}/${componentTelemetry.componentTelemetryID}`)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "deleting");
+                return never();
+              })
+            );
+  }
+
+  private handleRequestError(error, eventType: string){
+    this.toastr.error(`Server error on ${eventType} Component Telemetry: ${error.statusText} (Status ${error.status})`);
   }
 }
