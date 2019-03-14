@@ -1,42 +1,42 @@
 [
     { 
     	"componentTelemetryID": 23,
-    	"collectionDateTime": "2019-03-13 17:52:37",
-    	"telemetryValue": 54
+    	"collectionDateTime": "2019-03-14 01:51:37",
+    	"telemetryValue": 55
     },
     { 
     	"componentTelemetryID": 22,
-    	"collectionDateTime": "2019-03-13 17:56:40",
-    	"telemetryValue": 121
+    	"collectionDateTime": "2019-03-14 01:52:40",
+    	"telemetryValue": 122
     },
     { 
     	"componentTelemetryID": 50,
-    	"collectionDateTime": "2019-03-13 17:55:12",
-    	"telemetryValue": 3.1
+    	"collectionDateTime": "2019-03-14 01:53:12",
+    	"telemetryValue": 3.7
     },
     { 
     	"componentTelemetryID": 50,
-    	"collectionDateTime": "2019-03-13 17:56:39",
-    	"telemetryValue": 1.2
+    	"collectionDateTime": "2019-03-14 01:54:39",
+    	"telemetryValue": 1.3
     },
     { 
     	"componentTelemetryID": 23,
-    	"collectionDateTime": "2019-03-13 18:02:32",
-    	"telemetryValue": 35
+    	"collectionDateTime": "2019-03-14 01:05:32",
+    	"telemetryValue": 38
     },
     { 
     	"componentTelemetryID": 23,
-    	"collectionDateTime": "2019-03-13 18:10:43",
-    	"telemetryValue": 39
+    	"collectionDateTime": "2019-03-14 01:55:43",
+    	"telemetryValue": 32
     },
     { 
     	"componentTelemetryID": 25,
-    	"collectionDateTime": "2019-03-13 18:11:43",
-    	"telemetryValue": 45
+    	"collectionDateTime": "2019-03-14 01:56:43",
+    	"telemetryValue": 48
     },
     { 
     	"componentTelemetryID": 25,
-    	"collectionDateTime": "2019-03-13 18:12:59",
-    	"telemetryValue": 51
+    	"collectionDateTime": "2019-03-14 01:57:59",
+    	"telemetryValue": 41
     }
 ]
