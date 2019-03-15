@@ -37,16 +37,7 @@ export class AnomalySubscriptionComponent implements OnInit {
     this.subService.addSubscription(systemID, userID)
       .subscribe(response => {
         this.getSubscriptions(userID);
-        this.toastr.success("You're now subscribed to " + systemName, "Yay!", {
-          timeOut: 4000,
-          positionClass: 'toast-bottom-right'
-        })
-      },
-      err => {
-        this.toastr.error("It looks like your subscription to " + systemName + " failed. Please try again soon.", "Oops!", {
-          timeOut: 4000,
-          positionClass: 'toast-bottom-right'
-        })
+        this.toastr.success(`You're now subscribed to ${systemName}.`, "Success!");
       });
   }
 
@@ -62,17 +53,8 @@ export class AnomalySubscriptionComponent implements OnInit {
     this.subService.deleteSubscription(systemID, userID)
       .subscribe(response => {
         this.getSubscriptions(userID);
-        this.toastr.success("You're now unsubscribed from " + systemName, "Got it.", {
-          timeOut: 4000,
-          positionClass: 'toast-bottom-right'
-        }),
-        err => {
-          this.toastr.error("You have not been unsubscribed from " + systemName + ". Please try again soon.", "Oops!", {
-            timeOut: 4000,
-            positionClass: 'toast-bottom-right'
-          })
-        }
-      })
+        this.toastr.success(`You're now unsubscribed from ${systemName}.`, "Success!");
+      });
   }
 
   isSubscribed(systemID): boolean {
