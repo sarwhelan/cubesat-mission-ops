@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder } from '@angular/forms';
+
 import { System } from 'src/classes/system';
+import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({
   selector: 'app-create-system',
@@ -16,7 +18,8 @@ export class CreateSystemComponent implements OnInit {
   selectedSystem: System;
   modalTitle: string;
   modalSubmit: string;
-  newSystemErrorMsgs: string[];
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
 
   constructor(public activeModal: NgbActiveModal, 
     private formBuilder: FormBuilder) 
@@ -42,33 +45,26 @@ export class CreateSystemComponent implements OnInit {
 
   private isFormValid(newSystem: System) : boolean
   {
-    var errorMessages: string[];
-    errorMessages = ["Error: "];
+    this.alert.hide();
     if (newSystem.systemName.trim() == "")
     {
-      errorMessages.push("System must have a name.");
+      this.alert.show('Error', 'System must have a name.');
+      return false;
     }
 
-    if (errorMessages.length > 1) {
-      this.newSystemErrorMsgs = errorMessages;
-      return false;
-    } else {
-      this.newSystemErrorMsgs = [];
-      return true;
-    }
+    return true;
   }
 
   submitNewSys() : void
   {
+    this.alert.hide();
     if (!this.isEditing){
       var newSys = new System(this.createSysForm.value.systemName);
       if (!this.isFormValid(newSys)) return;
-      this.newSystemErrorMsgs = [];
       this.activeModal.close(newSys);
     } else {
       this.selectedSystem.systemName = this.createSysForm.value.systemName;
       if (!this.isFormValid(this.selectedSystem)) return;
-      this.newSystemErrorMsgs = [];
       this.activeModal.close(this.selectedSystem);
     }
   }

@@ -150,4 +150,10 @@ export class PassService {
   private handleRequestError(error, eventType: string){
     this.toastr.error(`Server error on ${eventType} Pass: ${error.statusText} (Status ${error.status})`);
   }
+
+  refreshPasses() :void
+  {
+    this._refreshPasses.next();
+
+  }
 }
