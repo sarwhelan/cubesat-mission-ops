@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TelemetryType } from 'src/classes/telemetry-type';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { TelemetryType } from 'src/classes/telemetry-type';
+import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({
   selector: 'app-create-telemetry-type',
@@ -15,7 +17,8 @@ export class CreateTelemetryTypeComponent implements OnInit {
   selectedTelemetryType: TelemetryType;
   modalTitle: string;
   modalSubmit: string;
-  newTelemetryTypeErrorMsgs: string[];
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
 
@@ -40,8 +43,9 @@ export class CreateTelemetryTypeComponent implements OnInit {
 
   private isFormValid(newTelemetryType: TelemetryType) : boolean
   {
-    var errorMessages: string[];
-    errorMessages = ["Error: "];
+    this.alert.hide();
+
+    var errorMessages: string[] = [];
     if (newTelemetryType.name.trim() == "")
     {
       errorMessages.push("Telemetry type must have a name.");
@@ -52,28 +56,30 @@ export class CreateTelemetryTypeComponent implements OnInit {
       errorMessages.push("Telemetry type must specify a unit.");
     }
 
-    if (errorMessages.length > 1)
-    {
-      this.newTelemetryTypeErrorMsgs = errorMessages;
+    if (errorMessages.length > 0) {
+      if (errorMessages.length > 1) {
+        this.alert.showList('Error', errorMessages);
+      } else {
+        this.alert.show('Error', errorMessages[0]);
+      }
+
       return false;
-    } else {
-      this.newTelemetryTypeErrorMsgs = [];
-      return true;
     }
+
+    return true;
   }
 
   submitNewTelemetryType() : void
   {
+    this.alert.hide();
     if (!this.isEditing){
       var newTT = new TelemetryType(this.createTelemetryTypeForm.value.telemetryUnit, this.createTelemetryTypeForm.value.name)
       if (!this.isFormValid(newTT)) return;
-      this.newTelemetryTypeErrorMsgs = [];
       this.activeModal.close(newTT);
     } else {
       this.selectedTelemetryType.name = this.createTelemetryTypeForm.value.name;
       this.selectedTelemetryType.telemetryUnit = this.createTelemetryTypeForm.value.telemetryUnit;
       if (!this.isFormValid(this.selectedTelemetryType)) return;
-      this.newTelemetryTypeErrorMsgs = [];
       this.activeModal.close(this.selectedTelemetryType);
     }
   }

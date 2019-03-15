@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { System } from 'src/classes/system';
 import { Component as CubeSatComp } from 'src/classes/component';
+import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({
   selector: 'app-create-component',
@@ -18,7 +20,8 @@ export class CreateComponentComponent implements OnInit {
   selectedComponent: CubeSatComp;
   modalTitle: string;
   modalSubmit: string;
-  newCompErrorMsgs: string[];
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
 
   constructor(public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder) 
@@ -45,34 +48,26 @@ export class CreateComponentComponent implements OnInit {
 
   private isFormValid(newComp: CubeSatComp) : boolean
   {
-    var errorMessages: string[];
-    errorMessages = ["Error: "];
+    this.alert.hide();
     if (newComp.name.trim() == "")
     {
-      errorMessages.push("Component must have a name.");
+      this.alert.show('Error', 'Component must have a name.');
+      return false;
     }
 
-    if (errorMessages.length > 1)
-    {
-      this.newCompErrorMsgs = errorMessages;
-      return false;
-    } else {
-      this.newCompErrorMsgs = [];
-      return true;
-    }
+    return true;
   }
 
   submitNewComp() : void
   {
+    this.alert.hide();
     if (!this.isEditing){
       var newComp = new CubeSatComp(this.system.systemID, this.createCompForm.value.name);
       if (!this.isFormValid(newComp)) return;
-      this.newCompErrorMsgs = [];
       this.activeModal.close(newComp);
     } else {
       this.selectedComponent.name = this.createCompForm.value.name;
       if (!this.isFormValid(this.selectedComponent)) return;
-      this.newCompErrorMsgs = [];
       this.activeModal.close(this.selectedComponent);
     }
   }

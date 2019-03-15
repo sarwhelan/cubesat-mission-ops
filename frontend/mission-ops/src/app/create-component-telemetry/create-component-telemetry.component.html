@@ -61,10 +61,7 @@
           </div>
         </div>
       </div>
-      <div *ngFor="let error of newCompTelemErrorMsgs">
-        <label style="color:red;">{{error}}</label>
-        <br />
-      </div>
+      <app-alert [alertStyle]="'danger'"></app-alert>
     </div>
   <div class="modal-footer">
     <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"
