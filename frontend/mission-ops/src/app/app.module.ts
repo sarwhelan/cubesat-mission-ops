@@ -107,7 +107,9 @@ import { CreateTelemetryTypeComponent } from './create-telemetry-type/create-tel
     ReactiveFormsModule,
     CommonModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],
