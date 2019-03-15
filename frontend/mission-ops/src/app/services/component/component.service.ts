@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, never } from 'rxjs';
 import { Component } from 'src/classes/component';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
+import { retry, catchError } from 'rxjs/operators';
 
 /**
  * Service handling all {@link Component} app server routing.
@@ -16,7 +18,7 @@ export class ComponentService {
    * Creates a new instance of {@link ComponentService}.
    * @param http The HttpClient service.
    */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   /**
    * Route URL for components.
@@ -28,7 +30,14 @@ export class ComponentService {
    */
   getComponents() : Observable<Component[]>
   {
-    return this.http.get<Component[]>(this.componentUrl);
+    return this.http.get<Component[]>(this.componentUrl)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "retrieving");
+                return never();
+              })
+            );
   }
 
   /**
@@ -38,7 +47,14 @@ export class ComponentService {
    */
   getComponentsFromSystem(systemId: number) : Observable<Component[]>
   {
-    return this.http.get<Component[]>(`${this.componentUrl}/${systemId}`);
+    return this.http.get<Component[]>(`${this.componentUrl}/${systemId}`)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "retrieving with system");
+                return never();
+              })
+            );
   }
 
   /**
@@ -47,7 +63,14 @@ export class ComponentService {
    */
   createComponent(component: Component) : Observable<Number>
   {
-    return this.http.post<Number>(this.componentUrl, component);
+    return this.http.post<Number>(this.componentUrl, component)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "creating");
+                return never();
+              })
+            );
   }
 
   /**
@@ -56,7 +79,14 @@ export class ComponentService {
    */
   updateComponent(component: Component) : Observable<Number>
   {
-    return this.http.put<Number>(`${this.componentUrl}/${component.componentID}`, component);
+    return this.http.put<Number>(`${this.componentUrl}/${component.componentID}`, component)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "updating");
+                return never();
+              })
+            );
   }
 
   /**
@@ -65,6 +95,17 @@ export class ComponentService {
    */
   removeComponent(component: Component) : Observable<Component>
   {
-    return this.http.delete<Component>(`${this.componentUrl}/${component.componentID}`);
+    return this.http.delete<Component>(`${this.componentUrl}/${component.componentID}`)
+            .pipe(
+              retry(3),
+              catchError(val => {
+                this.handleRequestError(val, "deleting");
+                return never();
+              })
+            );
+  }
+
+  private handleRequestError(error, eventType: string){
+    this.toastr.error(`Server error on ${eventType} Component: ${error.statusText} (Status ${error.status})`);
   }
 }
