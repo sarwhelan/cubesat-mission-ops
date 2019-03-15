@@ -83,7 +83,7 @@ export class ComponentListComponent implements OnInit {
       ));
     
     if (startDate.getTime() > endDate.getTime()){
-      this.toastr.error('The From datetime cannot exceed the To datetime. Please try again.');
+      this.toastr.error('The From datetime cannot exceed the To datetime. Please try again.', "Oops!");
       return false;
     }
     return true;

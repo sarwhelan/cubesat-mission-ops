@@ -109,6 +109,6 @@ export class ComponentTelemetryService {
   }
 
   private handleRequestError(error, eventType: string){
-    this.toastr.error(`Server error on ${eventType} Component Telemetry: ${error.statusText} (Status ${error.status})`);
+    this.toastr.error(`Error on ${eventType} Component Telemetry: ${error.statusText} (Status ${error.status})`, "Server error!");
   }
 }

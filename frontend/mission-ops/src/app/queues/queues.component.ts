@@ -245,7 +245,7 @@ export class QueuesComponent implements OnInit {
             this.toastr.success(additionSuccesses[i]);
           }
         } else {
-          this.toastr.error(this.additionFailureStr);
+          this.toastr.error(this.additionFailureStr, "Oops!");
         }
         this.additionFailureStr = "";
         this.additionSuccessStr = "";

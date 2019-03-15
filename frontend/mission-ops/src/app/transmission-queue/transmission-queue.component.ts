@@ -65,6 +65,6 @@ export class TransmissionQueueComponent implements OnInit {
   }
 
   handleSubmitError(error){
-    this.toastr.error(`Error transmitting to the ground station: ${error.statusText} (Status Code ${error.status})`);
+    this.toastr.error(`Error transmitting to the ground station: ${error.statusText} (Status Code ${error.status})`, "Ground station server error!");
   }
 }

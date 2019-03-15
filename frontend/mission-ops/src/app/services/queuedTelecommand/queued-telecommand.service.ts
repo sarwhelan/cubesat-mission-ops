@@ -90,6 +90,6 @@ export class QueuedTelecommandService {
   }
 
   private handleRequestError(error, eventType: string){
-    this.toastr.error(`Server error on ${eventType} Queued Telecommand: ${error.statusText} (Status ${error.status})`);
+    this.toastr.error(`Error on ${eventType} Queued Telecommand: ${error.statusText} (Status ${error.status})`, "Server error!");
   }
 }

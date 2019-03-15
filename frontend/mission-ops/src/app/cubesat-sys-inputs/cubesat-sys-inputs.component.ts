@@ -341,7 +341,7 @@ export class CubesatSysInputsComponent implements OnInit {
     this.compTelemetriesService.getComponentTelemetryWithType(this.selectedTelemetryType.telemetryTypeID)
       .subscribe(cts => {
         if (cts.length > 0) {
-          this.toastr.error('Error: cannot delete telemetry type when it is associated with an existing component telemetry.');
+          this.toastr.error('Error: cannot delete telemetry type when it is associated with an existing component telemetry.', "Oops!");
           this.deleteTelemetryTypeModal.close();
           return;
         }

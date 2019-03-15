@@ -106,6 +106,6 @@ export class ComponentService {
   }
 
   private handleRequestError(error, eventType: string){
-    this.toastr.error(`Server error on ${eventType} Component: ${error.statusText} (Status ${error.status})`);
+    this.toastr.error(`Error on ${eventType} Component: ${error.statusText} (Status ${error.status})`, "Server error!");
   }
 }

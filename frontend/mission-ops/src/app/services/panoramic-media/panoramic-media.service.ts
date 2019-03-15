@@ -115,6 +115,6 @@ export class PanoramicMediaService {
   }
 
   private handleRequestError(error, eventType: string){
-    this.toastr.error(`Server error on ${eventType} Panoramic Media: ${error.statusText} (Status ${error.status})`);
+    this.toastr.error(`Error on ${eventType} Panoramic Media: ${error.statusText} (Status ${error.status})`, "Server error!");
   }
 }

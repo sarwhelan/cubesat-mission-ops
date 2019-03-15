@@ -65,6 +65,6 @@ export class PresetTelecommandService {
   }
 
   private handleRequestError(error, eventType: string){
-    this.toastr.error(`Server error on ${eventType} Preset Telecommand: ${error.statusText} (Status ${error.status})`);
+    this.toastr.error(`Error on ${eventType} Preset Telecommand: ${error.statusText} (Status ${error.status})`, "Server error!");
   }
 }
