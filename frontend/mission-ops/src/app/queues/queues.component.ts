@@ -117,7 +117,7 @@ export class QueuesComponent implements OnInit {
       this.passService.createPass(result)
         .subscribe(pass => {
           this.getPasses();
-          this.toastr.success('Successfully created a new pass.');
+          this.toastr.success('Created a new pass.', "Success!");
         });
     }).catch((error) => {
       // Modal closed without submission
@@ -242,7 +242,7 @@ export class QueuesComponent implements OnInit {
         if (this.additionFailureStr === ""){
           var additionSuccesses = this.additionSuccessStr.split('\n');
           for (var i = 0; i < additionSuccesses.length-1; i++){
-            this.toastr.success(additionSuccesses[i]);
+            this.toastr.success(additionSuccesses[i], "Success!");
           }
         } else {
           this.toastr.error(this.additionFailureStr, "Oops!");
