@@ -11,7 +11,7 @@ const dateFormat = require('dateformat');
 @Component({
   selector: 'app-queued-telecommand',
   templateUrl: './queued-telecommand.component.html',
-  styleUrls: ['./queued-telecommand.component.scss', '../../../node_modules/font-awesome/scss/font-awesome.scss']
+  styleUrls: ['./queued-telecommand.component.scss']
 })
 export class QueuedTelecommandComponent implements OnInit {
 

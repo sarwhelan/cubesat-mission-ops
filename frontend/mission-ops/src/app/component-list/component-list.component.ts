@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-component-list',
   templateUrl: './component-list.component.html',
-  styleUrls: ['./component-list.component.scss','../../../node_modules/font-awesome/scss/font-awesome.scss']
+  styleUrls: ['./component-list.component.scss']
 })
 export class ComponentListComponent implements OnInit {
   components: CubeSatComp[];
