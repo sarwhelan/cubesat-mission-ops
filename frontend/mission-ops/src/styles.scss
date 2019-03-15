@@ -1,3 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css"; 
 @import '~ngx-toastr/toastr.css';
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Gothic+A1');
+
+* {
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Libre Baskerville', serif;
+    }
+    font-family: 'Gothic A1', sans-serif;
+    b {
+        font-family: 'Gothic A1 Semi-Bold', sans-serif;
+    }
+}
+
