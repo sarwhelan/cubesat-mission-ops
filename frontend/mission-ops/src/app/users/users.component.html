@@ -1,6 +1,12 @@
-<div class="container">
-  <h1>Users</h1>
-  <table class="table">
+<h2 class="mb-3">Manage Users</h2>
+<div class="row">
+  <div class="col mb-3">
+    <a class="btn btn-outline-success" role="button" routerLink="/users/create">
+      Add New User
+    </a>
+  </div>
+</div>
+  <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -23,9 +29,9 @@
               <input [ngModel]="user.administrator" type="checkbox" class="form-check-input" disabled>
             </div>
           </td>
-          <td class="text-right">
+          <td class="text-left">
             <div class="btn-group" role="group">
-              <a class="btn btn-outline-primary" href="/users/edit?id={{user.id}}" role="button">Edit</a>
+              <a class="btn btn-outline-primary" routerLink="/users/edit" [queryParams]="{ id: user.id }"role="button">Edit</a>
               <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
             </div>
           </td>
@@ -45,27 +51,19 @@
     </tbody>
   </table>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-auto">
-        <app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
-      </div>
-      <div class="col-sm-auto">
-        <select [(ngModel)]="userLimit" class="custom-select" style="width: auto">
-          <option value="5">5 items per page</option>
-          <option value="10">10 items per page</option>
-          <option value="25">25 items per page</option>
-          <option value="100">100 items per page</option>
-        </select>
-      </div>
-      <div class="col-sm text-right">
-        <a class="btn btn-outline-primary" role="button" href="/users/create">
-          New User
-        </a>
-      </div>
+  <div class="row justify-content-center">
+    <div class="col-sm-auto">
+      <app-pagination [maxPage]="pages" (pageChange)="pageChanged($event)"></app-pagination>
+    </div>
+    <div class="col-sm-auto">
+      <select [(ngModel)]="userLimit" class="custom-select" style="width: auto">
+        <option value="5">5 items per page</option>
+        <option value="10">10 items per page</option>
+        <option value="25">25 items per page</option>
+        <option value="100">100 items per page</option>
+      </select>
     </div>
   </div>
-</div>
 
 <app-modal #deleteUserModal>
   <ng-container modal-title>
