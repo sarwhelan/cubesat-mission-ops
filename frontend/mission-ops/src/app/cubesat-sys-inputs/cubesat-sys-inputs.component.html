@@ -1,8 +1,8 @@
-<h2>CubeSat System Inputs</h2>
+<h2 class="mb-3">CubeSat System Inputs</h2>
 <div class = "row">
   <div class = "col-md-3">
     <div class = "container">
-      <h4>Systems</h4>
+      <h4 class="mb-2">Systems</h4>
       <ng-container *ngIf="systems && systems.length > 0; else noAvailableSystems">
         <ul class="list-group">
           <li *ngFor="let system of systems"
@@ -16,14 +16,16 @@
       <ng-template #noAvailableSystems>
         <p>No systems have been registered.</p>
       </ng-template>
-        <button type="button" class="btn btn-outline-success" (click)="promptAddSystem()">Add <i class="fa fa-plus-square"></i></button>
-        <button type="button" class="btn btn-outline-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit <i class="fa fa-edit"></i></button>
-        <button type="button" class="btn btn-outline-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete <i class="fa fa-trash"></i></button>
+      <div class = "btn-group mt-3 w-100">
+          <button type="button" class="btn btn-outline-success" (click)="promptAddSystem()">Add</button>
+          <button type="button" class="btn btn-outline-info" (click)="promptEditSystem()" [disabled]="!selectedSystem">Edit</button>
+          <button type="button" class="btn btn-outline-danger" (click)="promptDeleteSystem()" [disabled]="!selectedSystem">Delete</button>
+      </div>
     </div>
   </div>
   <div class = "col-md-3">
     <div class = "container">
-      <h4>Components</h4>
+      <h4 class="mb-2">Components</h4>
       <div *ngIf = "selectedSystem && components && components.length > 0; else noSystem">
           <ul class="list-group">
               <li *ngFor="let component of components"
@@ -34,9 +36,11 @@
               </li>
             </ul>
       </div>
-      <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()" [disabled] = "!selectedSystem">Add <i class="fa fa-plus-square"></i></button>
-      <button type="button" class="btn btn-outline-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit <i class="fa fa-edit"></i></button>
-      <button type="button" class="btn btn-outline-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete <i class="fa fa-trash"></i></button>
+      <div class = "btn-group mt-3 w-100">
+          <button type="button" class="btn btn-outline-success" (click)="promptAddComponent()" [disabled] = "!selectedSystem">Add</button>
+          <button type="button" class="btn btn-outline-info" (click)="promptEditComponent()" [disabled]="!selectedComponent">Edit</button>
+          <button type="button" class="btn btn-outline-danger" (click)="promptDeleteComponent()" [disabled]="!selectedComponent">Delete</button>
+      </div>
       <ng-template #noSystem>
         <ng-container *ngIf = "selectedSystem && components && components.length == 0; else pleaseSelectSystem">
           <p>No components have been registered to this system.</p>
@@ -51,7 +55,7 @@
   </div>
   <div class = "col-md-6">
     <div class = "container">
-      <h4>Component Telemetry</h4>
+      <h4 class="mb-2">Component Telemetry</h4>
       <div *ngIf = "selectedComponent && compTelemetries && compTelemetries.length > 0; else noComponent">
           <ul class="list-group">
               <li *ngFor="let compTelem of compTelemetries"
@@ -60,16 +64,18 @@
               class="list-group-item">
                 {{compTelem.name}}
                 <div *ngIf = "compTelem.upperBound">
-                  <span class="badge badge-warning"> LB: {{compTelem.lowerBound}}</span>
+                  <span class="badge badge-warning mr-2"> LB: {{compTelem.lowerBound}}</span>
                   <span class="badge badge-warning"> UB: {{compTelem.upperBound}}</span>
                 </div>
                 <div class="badge badge-success"> TT: {{getTelemetryType(compTelem.telemetryTypeID).name}}</div>
               </li>
             </ul>
       </div>
-      <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()" [disabled] = "!selectedSystem || !selectedComponent">Add <i class="fa fa-plus-square"></i></button>
-      <button type="button" class="btn btn-outline-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit <i class="fa fa-edit"></i></button>
-      <button type="button" class="btn btn-outline-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete <i class="fa fa-trash"></i></button>
+      <div class = "btn-group mt-3 w-100">
+          <button type="button" class="btn btn-outline-success" (click)="promptAddCompTelem()" [disabled] = "!selectedSystem || !selectedComponent">Add</button>
+          <button type="button" class="btn btn-outline-info" (click)="promptEditCompTelem()" [disabled]="!selectedCompTelem">Edit</button>
+          <button type="button" class="btn btn-outline-danger" (click)="promptDeleteCompTelem()" [disabled]="!selectedCompTelem">Delete</button>
+      </div>
       <ng-template #noComponent>
         <ng-container *ngIf = "selectedComponent && compTelemetries && compTelemetries.length == 0; else pleaseSelectComp">
           <p>No component telemetry have been registered to this system.</p>
@@ -83,12 +89,11 @@
     </div>
   </div>
 </div>
-<br/>
-<br/>
-<div class = "row">
-  <div class = "col-md-3">
+<hr/>
+<div class = "row mt-3">
+  <div class = "col-md-4">
     <div class = "container">
-      <h4>Telemetry Types</h4>
+      <h4 class="mb-2">Telemetry Types</h4>
       <ng-container *ngIf = "telemetryTypes && telemetryTypes.length > 0; else noTelemetryTypes">
         <ul class = "list-group">
           <li *ngFor="let tt of telemetryTypes"
@@ -102,12 +107,13 @@
       <ng-template #noTelemetryTypes>
         <p>No telemetry types have been registered.</p>
       </ng-template>
-        <button type="button" class="btn btn-outline-success" (click)="promptAddTelemetryType()">Add <i class="fa fa-plus-square"></i></button>
-        <button type="button" class="btn btn-outline-info" (click)="promptEditTelemetryType()" [disabled]="!selectedTelemetryType">Edit <i class="fa fa-edit"></i></button>
-        <button type="button" class="btn btn-outline-danger" (click)="promptDeleteTelemetryType()" [disabled]="!selectedTelemetryType">Delete <i class="fa fa-trash"></i></button>
+      <div class = "btn-group mt-3 w-100">
+        <button type="button" class="btn btn-outline-success" (click)="promptAddTelemetryType()">Add</button>
+        <button type="button" class="btn btn-outline-info" (click)="promptEditTelemetryType()" [disabled]="!selectedTelemetryType">Edit</button>
+        <button type="button" class="btn btn-outline-danger" (click)="promptDeleteTelemetryType()" [disabled]="!selectedTelemetryType">Delete</button>
+        </div>
       </div>
     </div>
-  <div class = "col-md-9"></div>
 </div>
 
 <app-modal #deleteSystemModal>
