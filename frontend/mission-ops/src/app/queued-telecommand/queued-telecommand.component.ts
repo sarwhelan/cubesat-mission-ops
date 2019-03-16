@@ -19,6 +19,7 @@ export class QueuedTelecommandComponent implements OnInit {
   @Input() telecommands: Telecommand[];
   @Input() users: User[];
   @Input() orderRank: number;
+  @Input() isInPast: boolean;
 
   @Output() reloadQueuedTelecommands = new EventEmitter<number>();
   private telecommandDetails: Telecommand; 

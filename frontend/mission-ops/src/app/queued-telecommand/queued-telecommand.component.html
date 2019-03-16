@@ -11,7 +11,9 @@
         <b>{{telecommandDetails.name}}</b>
         &nbsp;
         {{getFormatedDate()}}
-        <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-outline-danger d-flex float-right"><i class = "fa fa-trash"></i></button>
+        <ng-container *ngIf="!isInPast">
+          <button (click)="deleteQueuedTelecommand()" type="button" class="btn btn-outline-danger d-flex float-right"><i class = "fa fa-trash"></i></button>
+        </ng-container>
     </span>
   </div>
   <div id="queuedTelecommandDetailsPane" [ngbCollapse]="isCollapsed">
