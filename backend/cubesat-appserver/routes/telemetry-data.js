@@ -4,12 +4,13 @@ const bodyParser = require('body-parser');
 const parseUrlencoded = bodyParser.urlencoded({extended: false});
 const parseJSON = bodyParser.json();
 var db = require('../database');
+var moment = require('moment');
 
 router.route('/')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
             if (req.query.startDate) {
-                var getParams = [new Date(req.query.startDate), new Date(req.query.endDate)];
+                var getParams = [moment(req.query.startDate).utc(false), moment(req.query.endDate).utc(false)];
                 console.log(getParams);
                 db.query("SELECT * FROM telemetryData WHERE collectionDateTime BETWEEN ? AND ?", getParams, function (error, results, fields) {
                     if (error) throw error;

@@ -18,6 +18,7 @@ import { CreatePassComponent } from '../create-pass/create-pass.component';
 
 import { ToastrService } from 'ngx-toastr';
 import { async } from '@angular/core/testing';
+import * as moment from 'moment';
 
 const dateFormat = require('dateformat');
 
@@ -132,17 +133,10 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommands = this.telecommands;
     modalRef.result.then((result) => {
       var userID = this.auth.getCurrentUser().id;
-      var executionTime = new Date(Date.UTC(
-        result.executionDate.year,
-        result.executionDate.month-1,
-        result.executionDate.day,
-        result.executionTime.hour,
-        result.executionTime.minute,
-        result.executionTime.second
-      ));
+      var executionDate = moment(result.executionDate).utc(true);
       var createQtc = (self, activePasses) => {
         var activeTelecommand = this.telecommands.find(x => x.telecommandID == result.telecommandID);
-        var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionTime);
+        var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, executionDate.toDate());
         if (transID === -1 || execID === -1) return of(null);
         var newQtc = new QueuedTelecommand(
           execID,
@@ -150,7 +144,7 @@ export class QueuesComponent implements OnInit {
           userID,
           result.telecommandID,
           result.priorityLevel,
-          executionTime,
+          executionDate.toDate(),
           result.commandParams,
         );
         this.additionSuccessStr = `Queued telecommand ${activeTelecommand.name} for transmission in pass ${transID} and execution in pass ${execID}.\n`;
@@ -172,15 +166,7 @@ export class QueuesComponent implements OnInit {
     modalRef.componentInstance.telecommandBatches = this.telecommandBatches;
     modalRef.result.then((result) => {
       var userID = this.auth.getCurrentUser().id;
-      console.log(result.executionDate, result.executionTime);
-      var executionTime = new Date(Date.UTC(
-        result.executionDate.year,
-        result.executionDate.month-1, // Indexed from 0. Why. WHY.
-        result.executionDate.day,
-        result.executionTime.hour,
-        result.executionTime.minute,
-        result.executionTime.second
-      ));
+      var executionDate = moment(result.executionDate).utc(true);
       this.presetTelecommandService.getPresetTelecommands(result.telecommandBatchID)
         .subscribe(ptcs => {
           var createQtc = (self, activePasses) => {
@@ -190,13 +176,12 @@ export class QueuesComponent implements OnInit {
             for (var i = 0; i < ptcs.length; i++){
               if (!isValid) continue;
 
-              var telecommandExecutionTime = new Date(executionTime.getTime());
-              telecommandExecutionTime.setUTCDate(executionTime.getUTCDate() + ptcs[i].dayDelay);
-              telecommandExecutionTime.setUTCHours(executionTime.getUTCHours() + ptcs[i].hourDelay);
-              telecommandExecutionTime.setUTCMinutes(executionTime.getUTCMinutes() + ptcs[i].minuteDelay);
-              telecommandExecutionTime.setUTCSeconds(executionTime.getUTCSeconds() + ptcs[i].secondDelay);
+              var telecommandExecutionTime = executionDate.clone().add(ptcs[i].dayDelay, 'days')
+                                                                  .add(ptcs[i].hourDelay, 'hours')
+                                                                  .add(ptcs[i].minuteDelay, 'minutes')
+                                                                  .add(ptcs[i].secondDelay, 'seconds');
               var activeTelecommand = this.telecommands.find(x => x.telecommandID == ptcs[i].telecommandID);
-              var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, telecommandExecutionTime);
+              var [transID, execID] = self.calculatePassIDs(activePasses, activeTelecommand, telecommandExecutionTime.toDate());
               if (transID === -1 || execID === -1) isValid = false;
               pQtcBatch.push(Object.values(new QueuedTelecommand(
                 execID,
@@ -204,7 +189,7 @@ export class QueuesComponent implements OnInit {
                 userID,
                 ptcs[i].telecommandID,
                 ptcs[i].priorityLevel,
-                telecommandExecutionTime,
+                telecommandExecutionTime.toDate(),
                 ptcs[i].commandParameters,
               )));
 
@@ -264,8 +249,8 @@ export class QueuesComponent implements OnInit {
     } 
     else {
       for (var i = 0; i < activePasses.length; i++) {
-        var activePassDateTime = new Date(activePasses[i].estimatedPassDateTime);
-        activePassDateTime.setUTCHours(activePassDateTime.getUTCHours() - activePassDateTime.getTimezoneOffset() / 60);
+        var activePassDateTime = moment(activePasses[i].estimatedPassDateTime).utc(true).toDate();
+        //activePassDateTime.setUTCHours(activePassDateTime.getUTCHours() - activePassDateTime.getTimezoneOffset() / 60);
         if (executionTime.getTime() > activePassDateTime.getTime()) continue;
         if (i == 0) {
           this.additionFailureStr = 'No pass exists to execute this command. Create a new pass and try again.';
@@ -301,7 +286,7 @@ export class QueuesComponent implements OnInit {
     }
 
     // Transmission
-    if (!this.sumExecutionResults) {
+    if (!this.sumTransmissionResults) {
       calcTransID = activePasses[0].passID;
     }
     else {

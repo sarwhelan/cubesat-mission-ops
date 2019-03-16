@@ -26,11 +26,11 @@ export class ComponentTelemetryDataService {
       );
   }
 
-  getTelemetryDataBetween(componentTelemetryID: number, startDate: Date, endDate: Date) : Observable<TelemetryData[]>
+  getTelemetryDataBetween(componentTelemetryID: number, startDate: number, endDate: number) : Observable<TelemetryData[]>
   {
     const params = {
-      'startDate': startDate.getTime().toString(),
-      'endDate': endDate.getTime().toString(),
+      'startDate': startDate.toString(),
+      'endDate': endDate.toString(),
     }
 
     return this.http.get<TelemetryData[]>(`${this.telemetryDataUrl}/${componentTelemetryID}`, {params: params})

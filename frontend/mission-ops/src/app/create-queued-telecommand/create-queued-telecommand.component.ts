@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Telecommand } from 'src/classes/telecommand';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-queued-telecommand',
@@ -42,24 +43,13 @@ export class CreateQueuedTelecommandComponent implements OnInit {
 
   private createForm() : void
   {
-    var today = new Date();
-    var executionDate = { 
-      year: today.getUTCFullYear(), 
-      month: today.getUTCMonth()+1, // UTC is zero-indexed. Why.
-      day: today.getUTCDate()
-    }
-    var executionTime = {
-      hour: 0, 
-      minute: 0, 
-      second: 0
-    };
+    var executionDate = moment().utc(false).add(1, 'days').hours(0).minutes(0).seconds(0);
 
     if (!this.isBatch) {
       this.createQtcForm = this.formBuilder.group({
         telecommandID: this.selectedTelecommand.telecommandID,
         priorityLevel: false,
         executionDate: executionDate,
-        executionTime: executionTime,
         commandParams: this.selectedTelecommand.command,
       });
     } else {
@@ -67,21 +57,12 @@ export class CreateQueuedTelecommandComponent implements OnInit {
         telecommandBatchID: this.selectedTelecommandBatch.batchID,
         priorityLevel: false,
         executionDate: executionDate,
-        executionTime: executionTime,
       });
     }
   }
 
   private isFormValid(){
-    var today = new Date();
-    var executionTime = new Date(Date.UTC(
-      this.createQtcForm.value.executionDate.year,
-      this.createQtcForm.value.executionDate.month-1, // Indexed from 0. Why. WHY.
-      this.createQtcForm.value.executionDate.day,
-      this.createQtcForm.value.executionTime.hour,
-      this.createQtcForm.value.executionTime.minute,
-      this.createQtcForm.value.executionTime.second
-    ));
+    var executionDate = moment(this.createQtcForm.value.executionDate).utc(true);
     var errorMessages: string[];
     errorMessages = ["Error: "];
     if (this.isBatch && !this.createQtcForm.value.telecommandBatchID)
@@ -94,7 +75,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
       errorMessages.push("A telecommand must be selected.");
     }
 
-    if (executionTime.getTime() <= today.getTime())
+    if (!executionDate.isAfter(moment()))
     {
       var addWord = "";
       if (this.isBatch) {

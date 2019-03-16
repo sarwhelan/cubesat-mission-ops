@@ -2,6 +2,7 @@
 @import "~bootstrap/dist/css/bootstrap.css"; 
 @import '~font-awesome/css/font-awesome.css';
 @import '~ngx-toastr/toastr.css';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Gothic+A1');
 
 * {
@@ -16,4 +17,9 @@
 
 .app {
     min-height: calc(100vh - 150px);
+}
+
+// Fix to bug in the ng-pick-datetime module where it won't display the popup when contained in a modal window.
+.cdk-overlay-container, .cdk-global-overlay-wrapper, .cdk-overlay-backdrop, .cdk-overlay-connected-position-bounding-box, .owl-dt-container {
+    z-index: 1999!important;
 }

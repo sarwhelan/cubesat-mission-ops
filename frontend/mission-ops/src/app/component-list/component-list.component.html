@@ -1,7 +1,20 @@
-<h2>Telemetry</h2>
+<h2 class="mb-3">Telemetry</h2>
+<div class = "row">
+  <div class = "col mb-3">
+    <form class = "d-flex" [formGroup] = "chooseDataRangeForm" (ngSubmit) = "submitDataRange()">
+      <label for ="startDate" class = "align-self-center pr-1 pt-1">From:</label>
+      <app-datetime-picker dateFormControlName = "startDate" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+      <label for ="endDate" class = "align-self-center pr-1 pl-2 pt-1">To:</label>
+      <app-datetime-picker dateFormControlName = "endDate" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
+      <button class = "btn btn-outline-success align-self-start ml-2" [disabled] = "!chooseDataRangeForm.valid">
+        Refresh <i class="fa fa-refresh"></i>
+      </button>
+    </form>
+  </div>
+</div>
 <div class = "row">
     <div class = "col-md-4">
-      <div class="list-group">
+      <div class="list-group mt-2">
           <div *ngFor="let sys of systems"
           (click)="onSelect(sys)"
           [class.active]="sys === selectedSystem"
@@ -23,18 +36,6 @@
         </div>
     </div>
     <div class = "col-md-8">
-      <div class = "row">
-        <form class = "d-flex" [formGroup] = "chooseDataRangeForm" (ngSubmit) = "submitDataRange()">
-              <label for ="startDate" class = "align-self-start" style="padding-right: 5px;padding-top: 5px;">From:</label>
-              <app-datetime-picker class = "border" dateFormControlName = "startDate" timeFormControlName = "startTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
-              <label for ="endDate" class = "align-self-start" style="padding-right: 5px;padding-top: 5px;padding-left:5px;">To:</label>
-              <app-datetime-picker class = "border" dateFormControlName = "endDate" timeFormControlName = "endTime" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
-              <button class = "btn btn-success align-self-start" style="margin-left:5px" [disabled] = "!chooseDataRangeForm.valid">
-                Refresh <i class="fa fa-refresh"></i>
-              </button>
-        </form>
-      </div>
-      <br/>
       <div class = "row">
         <div *ngIf = "selectedComponent">
             <app-component-telemetry [telemetryTypes] = "telemetryTypes" [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>

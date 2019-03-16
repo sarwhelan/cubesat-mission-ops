@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HighchartsChartModule } from 'highcharts-angular';
 import { ToastrModule } from 'ngx-toastr';
+import { MomentModule } from 'ngx-moment';
+import { OwlDateTimeModule, OWL_DATE_TIME_FORMATS } from 'ng-pick-datetime';
+import { OwlMomentDateTimeModule } from 'ng-pick-datetime-moment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -110,10 +113,12 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
     }),
+    MomentModule,
+    OwlDateTimeModule,
+    OwlMomentDateTimeModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
     CreateSystemComponent, 

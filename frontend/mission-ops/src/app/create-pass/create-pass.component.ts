@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pass } from 'src/classes/pass';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-pass',
@@ -21,24 +22,13 @@ export class CreatePassComponent implements OnInit {
 
   private createForm() : void
   {
-    var today = new Date();
-    var passDate = { 
-      year: today.getUTCFullYear(), 
-      month: today.getUTCMonth()+1, // UTC is zero-indexed. Why.
-      day: today.getUTCDate()
-    }
-    var passTime = {
-      hour: 0, 
-      minute: 0, 
-      second: 0
-    };
+    var passDate = moment().utc(false).add(1, 'days').hours(0).minutes(0).seconds(0);
 
     var availablePower = 100;
     var availableBandwidth = 1500;
 
     this.createPassForm = this.formBuilder.group({
       passDate: passDate,
-      passTime: passTime,
       availablePower: availablePower,
       availableBandwidth: availableBandwidth,
     });
@@ -46,9 +36,9 @@ export class CreatePassComponent implements OnInit {
 
   private isFormValid(newPass: Pass) : boolean
   {
+    var today = new Date().getTime();
     var errorMessages: string[];
     errorMessages = ["Error: "];
-    var today = new Date().getTime();
     if (newPass.estimatedPassDateTime.getTime() <= today){
       errorMessages.push("Pass must exist in the future. Provide a date and time that exceed the current time.");
     }
@@ -75,15 +65,8 @@ export class CreatePassComponent implements OnInit {
 
   submitPass() : void
   {
-    var newPassDate = new Date(Date.UTC(
-      this.createPassForm.value.passDate.year,
-      this.createPassForm.value.passDate.month-1,
-      this.createPassForm.value.passDate.day,
-      this.createPassForm.value.passTime.hour,
-      this.createPassForm.value.passTime.minute,
-      this.createPassForm.value.passTime.second,
-    ));
-    var newPass = new Pass(newPassDate, this.createPassForm.value.availablePower, this.createPassForm.value.availableBandwidth);
+    var newPassDate = moment(this.createPassForm.value.passDate).utc(true);
+    var newPass = new Pass(newPassDate.toDate(), this.createPassForm.value.availablePower, this.createPassForm.value.availableBandwidth);
     if (!this.isFormValid(newPass)) return;
     this.newPassErrorMsgs = [];
     this.activeModal.close(newPass);

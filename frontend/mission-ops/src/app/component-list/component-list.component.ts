@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { TelemetryTypesService } from 'src/app/services/telemetry-types/telemetry-types.service';
 import { TelemetryType } from 'src/classes/telemetry-type';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-component-list',
@@ -37,27 +38,10 @@ export class ComponentListComponent implements OnInit {
   private createForm() : void
   {
     var today = new Date();
-    var endDate = { 
-      year: today.getUTCFullYear(), 
-      month: today.getUTCMonth()+1, // UTC is zero-indexed. Why.
-      day: today.getUTCDate()
-    }
-    var startDate = { 
-      year: today.getUTCFullYear(), 
-      month: today.getUTCMonth(),
-      day: today.getUTCDate()
-    }
-    var defaultTime = {
-      hour: 0, 
-      minute: 0, 
-      second: 0
-    };
 
     this.dateRangeObj = {
-      startDate: startDate,
-      startTime: defaultTime,
-      endDate: endDate,
-      endTime: defaultTime,
+      startDate: moment().utc(false).subtract(1, 'months').hours(0).minutes(0).seconds(0),
+      endDate: moment().utc(false).hours(0).minutes(0).seconds(0),
     }
 
     this.chooseDataRangeForm = this.formBuilder.group(this.dateRangeObj);
@@ -65,24 +49,9 @@ export class ComponentListComponent implements OnInit {
 
   private isDateRangeValid() : boolean
   {
-    var startDate = new Date(Date.UTC(
-      this.chooseDataRangeForm.value.startDate.year,
-      this.chooseDataRangeForm.value.startDate.month-1,
-      this.chooseDataRangeForm.value.startDate.day,
-      this.chooseDataRangeForm.value.startTime.hour,
-      this.chooseDataRangeForm.value.startTime.minute,
-      this.chooseDataRangeForm.value.startTime.second,
-      ));
-    var endDate = new Date(Date.UTC(
-      this.chooseDataRangeForm.value.endDate.year,
-      this.chooseDataRangeForm.value.endDate.month-1,
-      this.chooseDataRangeForm.value.endDate.day,
-      this.chooseDataRangeForm.value.endTime.hour,
-      this.chooseDataRangeForm.value.endTime.minute,
-      this.chooseDataRangeForm.value.endTime.second,
-      ));
-    
-    if (startDate.getTime() > endDate.getTime()){
+    var startDate = moment(this.chooseDataRangeForm.value.startDate).utc(true);
+    var endDate = moment(this.chooseDataRangeForm.value.endDate).utc(true);
+    if (!endDate.isAfter(startDate)){
       this.toastr.error('The From datetime cannot exceed the To datetime. Please try again.', "Oops!");
       return false;
     }
@@ -91,7 +60,12 @@ export class ComponentListComponent implements OnInit {
 
   submitDataRange() {
     if (!this.isDateRangeValid()) return;
-    this.dateRangeObj = this.chooseDataRangeForm.value;
+    var startDate = moment(this.chooseDataRangeForm.value.startDate).utc(true);
+    var endDate = moment(this.chooseDataRangeForm.value.endDate).utc(true);
+    this.dateRangeObj = {
+      startDate: startDate,
+      endDate: endDate,
+    }
   }
 
   onSelect(system: System) : void {
