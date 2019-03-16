@@ -14,31 +14,33 @@
 </div>
 <div class = "row">
     <div class = "col-md-4">
-      <div class="list-group mt-2">
-          <div *ngFor="let sys of systems"
-          (click)="onSelect(sys)"
-          [class.active]="sys === selectedSystem"
-          class="list-group-item">
-            {{sys.systemName}}
-            <ng-container *ngIf = "sys === selectedSystem">
-                <ng-container *ngIf = "components && components.length > 0; else noComponents">
-                  <ul class = "list-group" style="color:black;">
-                      <li *ngFor="let comp of components"
-                        (click) = "onSelectComp(comp)"
-                        [class.active]="comp === selectedComponent"
-                        class = "list-group-item">
-                        {{comp.name}}
-                      </li>
-                    </ul>
-                </ng-container>
-              </ng-container>
+      <div class="list-group list-group-flush mt-2 accordion" id = "systemAccordion">
+        <div *ngFor = "let sys of systems">
+          <div class = "card">
+            <div class = "card-header list-group-item mb-0" [id]="'heading-'+sys.systemID" [class.active]="sys === selectedSystem"
+            (click)="onSelect(sys)" type="button" [attr.aria-expanded]="!isCollapsed" [attr.aria-controls]="sys.systemID">
+                {{sys.systemName}}
             </div>
+          <div [id]="sys.systemID" [ngbCollapse] = "sys != selectedSystem">
+            <div class="card-body">
+                <ng-container *ngIf = "components && components.length > 0; else noComponents">
+                  <div *ngFor="let comp of components"
+                    (click) = "onSelectComp(comp)"
+                    [class.active]="comp === selectedComponent"
+                    class="list-group-item mb-0 border">
+                    {{comp.name}}
+                  </div>
+                </ng-container>
+            </div>
+          </div>
+          </div>
         </div>
+      </div>
     </div>
     <div class = "col-md-8">
       <div class = "mb-2">
         <div *ngIf = "selectedComponent">
-            <app-component-telemetry class = "mb-1" [telemetryTypes] = "telemetryTypes" [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
+            <app-component-telemetry [telemetryTypes] = "telemetryTypes" [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
         </div>
       </div>
   </div>
