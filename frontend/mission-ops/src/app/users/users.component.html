@@ -31,7 +31,7 @@
           </td>
           <td class="text-left">
             <div class="btn-group" role="group">
-              <a class="btn btn-outline-primary" routerLink="/users/edit" [queryParams]="{ id: user.id }"role="button">Edit</a>
+              <a class="btn btn-outline-info" routerLink="/users/edit" [queryParams]="{ id: user.id }"role="button">Edit</a>
               <button (click)="promptDeleteUser(user)" class="btn btn-outline-danger" [attr.disabled]="auth.getCurrentUser().email === user.email ? '' : null">Delete</button>
             </div>
           </td>
