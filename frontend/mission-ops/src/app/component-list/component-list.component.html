@@ -14,7 +14,7 @@
 </div>
 <div class = "row">
     <div class = "col-md-4">
-      <div class="list-group list-group-flush mt-2 accordion" id = "systemAccordion">
+      <div class="list-group list-group-flush mt-2 accordion border" id = "systemAccordion">
         <div *ngFor = "let sys of systems">
           <div class = "card">
             <div class = "card-header list-group-item mb-0" [id]="'heading-'+sys.systemID" [class.active]="sys === selectedSystem"
@@ -22,7 +22,7 @@
                 {{sys.systemName}}
             </div>
           <div [id]="sys.systemID" [ngbCollapse] = "sys != selectedSystem">
-            <div class="card-body">
+            <div class="card-body border">
                 <ng-container *ngIf = "components && components.length > 0; else noComponents">
                   <div *ngFor="let comp of components"
                     (click) = "onSelectComp(comp)"
