@@ -1,4 +1,4 @@
-<h2>Queues</h2>
+<h2 class="mb-3">Queues</h2>
 <div class = "row">
   <div class = "col">
       <div class="btn-group" role="group">
@@ -14,7 +14,7 @@
     <ngb-tabset activeId="ngb-tab-1">
       <ngb-tab title="Past">
         <ng-template ngbTabContent>
-          <ul class="list-group">
+          <ul class="list-group mt-2">
             <ng-container *ngIf = "pastPasses && pastPasses.length > 0; else noPastPasses">
               <li *ngFor="let pass of pastPassesObs | async"
               (click)="onSelect(pass)"
@@ -41,7 +41,7 @@
       </ngb-tab>
       <ngb-tab title="Future">
           <ng-template ngbTabContent>
-            <ul class="list-group">
+            <ul class="list-group mt-2">
               <ng-container *ngIf = "futurePasses && futurePasses.length > 0; else noFuturePasses">
                   <li *ngFor="let pass of futurePassesObs | async"
                   (click)="onSelect(pass)"
@@ -88,15 +88,13 @@
 
 <ng-template #noPastPasses>
   <ng-container *ngIf = "pastPasses && pastPasses.length == 0; else spinner">
-    <br/>
-    <p class = "font-weight-bolder">No past passes are available to view.</p>
+    <p class = "font-weight-bolder mt-2">No past passes are available to view.</p>
   </ng-container>
 </ng-template>
 
 <ng-template #noFuturePasses>
   <ng-container *ngIf = "futurePasses && futurePasses.length == 0; else spinner">
-    <br/>
-    <p class = "font-weight-bolder">No future passes are available to view.</p>
+    <p class = "font-weight-bolder mt-2">No future passes are available to view.</p>
   </ng-container>
 </ng-template>
 

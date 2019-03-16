@@ -1,18 +1,17 @@
 <div class="col">
   <div *ngIf="selectedPass">
     <ng-container *ngIf="!selectedPass.passHasOccurred"> 
-      <br/>
-      <div class = "row d-flex justify-content-center">
-      <button class = "btn btn-success" (click) = "submitTransmissionQueueToGroundStation()">
-        Save to Ground Station
+      <div class = "row d-flex justify-content-center mt-2">
+      <button class = "btn btn-outline-success" (click) = "submitTransmissionQueueToGroundStation()">
+        Save to Ground Station <i class="fa fa-upload"></i>
       </button>
     </div>
-    <br/>
     </ng-container>
-    <ul class = "list-group">
+    <ul class = "list-group mt-2">
       <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length > 0; else noTelecommands">
-        <div *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index">
-          <app-queued-telecommand class="list-group-item border border-primary" 
+        <li *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index"
+        class="list-group-item border border-primary">
+          <app-queued-telecommand
               [queuedTelecommand] = "queuedTelecommand" 
               [telecommands] = "telecommands"
               [users] = "users"
@@ -20,7 +19,7 @@
               [isInPast]="selectedPass.passHasOccurred"
               (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
           </app-queued-telecommand>
-        </div>
+        </li>
       </ng-container>
     </ul>
   </div>
@@ -28,8 +27,9 @@
 
 <ng-template #noTelecommands>
   <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length == 0; else spinner">
-    <br/>
-    <p class = "font-weight-bolder">No telecommands are being transmitted during this pass.</p>
+    <div class="row justify-content-center">
+      <p><b>No telecommands are being transmitted during this pass.</b></p>
+    </div>
   </ng-container>
 </ng-template>
 

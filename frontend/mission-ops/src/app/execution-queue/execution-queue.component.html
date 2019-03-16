@@ -1,17 +1,18 @@
 <div class="col">
   <div *ngIf="selectedPass">
-    <ul class = "list-group">
+    <ul class = "list-group mt-2">
       <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length > 0; else noTelecommands">
-        <div *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index">
-          <app-queued-telecommand class="list-group-item border border-primary" 
+          <li *ngFor="let queuedTelecommand of passQueuedTelecommands, let i = index"
+          class = "list-group-item border border-primary">
+            <app-queued-telecommand
               [queuedTelecommand] = "queuedTelecommand" 
               [telecommands] = "telecommands"
               [users] = "users"
               [orderRank] = "i + 1"
               [isInPast] = "selectedPass.passHasOccurred"
               (reloadQueuedTelecommands)="reloadQueuedTelecommands($event)">
-          </app-queued-telecommand>
-        </div>
+            </app-queued-telecommand>
+          </li>
       </ng-container>
     </ul>
   </div>
@@ -20,8 +21,9 @@
 
 <ng-template #noTelecommands>
   <ng-container *ngIf = "passQueuedTelecommands && passQueuedTelecommands.length == 0; else spinner">
-    <br/>
-    <p class = "font-weight-bolder">No telecommands are being executed during this pass.</p>
+    <div class="row justify-content-center">
+      <p class = "mt-2"><b>No telecommands are being executed during this pass.</b></p>
+    </div>
   </ng-container>
 </ng-template>
     
