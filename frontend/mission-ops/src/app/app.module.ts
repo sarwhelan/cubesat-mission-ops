@@ -51,6 +51,7 @@ import { MediaLibraryComponent } from './media-library/media-library.component';
 import { MediaViewComponent } from './media-view/media-view.component';
 import { SortableDirective } from 'src/app/services/anomalies/sortable.directive';
 import { CreateTelemetryTypeComponent } from './create-telemetry-type/create-telemetry-type.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { CreateTelemetryTypeComponent } from './create-telemetry-type/create-tel
     MediaViewComponent,
     SortableDirective,
     CreateTelemetryTypeComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
