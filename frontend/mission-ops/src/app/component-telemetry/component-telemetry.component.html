@@ -2,7 +2,7 @@
   <div *ngIf="componentTelemetries && componentTelemetries.length > 0; else noTelemetries">
     <ul class="list-group">
         <li *ngFor="let componentTelemetry of componentTelemetries"
-        class="list-group-item" style="margin:auto">
+        class="list-group-item mb-2 mx-auto">
           <app-telemetry-data [telemetryTypes] = "telemetryTypes" [componentTelemetry] = "componentTelemetry" [dateRangeObj] = "dateRangeObj"></app-telemetry-data>
         </li>
       </ul>

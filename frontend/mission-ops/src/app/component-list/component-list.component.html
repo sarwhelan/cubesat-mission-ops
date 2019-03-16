@@ -36,9 +36,9 @@
         </div>
     </div>
     <div class = "col-md-8">
-      <div class = "row">
+      <div class = "mb-2">
         <div *ngIf = "selectedComponent">
-            <app-component-telemetry [telemetryTypes] = "telemetryTypes" [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
+            <app-component-telemetry class = "mb-1" [telemetryTypes] = "telemetryTypes" [component] = "selectedComponent" [dateRangeObj] = "dateRangeObj"></app-component-telemetry>
         </div>
       </div>
   </div>
