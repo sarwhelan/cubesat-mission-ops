@@ -11,7 +11,7 @@
       <div class = "form-group">
         <label for = "system">User</label>
         <input type = "text"
-          [value] = "auth.getCurrentUser()?.email"
+          [value] = "auth.getCurrentUser()?.name"
           class = "form-control"
           name = "user"
           readonly/>
@@ -74,7 +74,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class = "btn btn-success"
+    <button class = "btn btn-outline-success"
             [disabled] = "!createQtcForm.valid">
               {{modalSubmit}}
     </button>

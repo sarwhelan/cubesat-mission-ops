@@ -2,8 +2,8 @@
     <button (click)="hide()" type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="alert-heading">{{heading}}</h4>
-    <ul *ngIf="listBody; else simpleBody" class="mb-0">
+    <p class="alert-heading"><b>{{heading}}</b></p>
+    <ul *ngIf="listBody; else simpleBody" class="my-0">
       <li *ngFor="let item of bodyList">{{item}}</li>
     </ul>
     <ng-template #simpleBody>

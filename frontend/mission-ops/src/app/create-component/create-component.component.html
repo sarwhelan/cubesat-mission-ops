@@ -26,7 +26,7 @@
       <app-alert [alertStyle]="'danger'"></app-alert>
     </div>
   <div class="modal-footer">
-    <button [ngClass] = "isEditing ? 'btn btn-info' : 'btn btn-success'"
+    <button [ngClass] = "isEditing ? 'btn btn-outline-info' : 'btn btn-outline-success'"
       [disabled] = "!createCompForm.valid">
       {{modalSubmit}}
     </button>

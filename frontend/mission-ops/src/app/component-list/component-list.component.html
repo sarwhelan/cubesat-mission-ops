@@ -2,7 +2,7 @@
 <div class = "row">
   <div class = "col mb-3">
     <form class = "d-flex" [formGroup] = "chooseDataRangeForm" (ngSubmit) = "submitDataRange()">
-      <label for ="startDate" class = "align-self-center pr-1 pt-1">From:</label>
+      <label for ="startDate" class = "align-self-center px-1 pt-1">From:</label>
       <app-datetime-picker dateFormControlName = "startDate" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>
       <label for ="endDate" class = "align-self-center pr-1 pl-2 pt-1">To:</label>
       <app-datetime-picker dateFormControlName = "endDate" [formGroup] = "chooseDataRangeForm"></app-datetime-picker>

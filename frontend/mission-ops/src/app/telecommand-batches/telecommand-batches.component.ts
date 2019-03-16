@@ -32,7 +32,7 @@ export class TelecommandBatchesComponent implements OnInit {
   }
 
   addNewTelecommandBatch() : void{
-    var newTelecommandBatch = new TelecommandBatch("new Telecommand Batch");
+    var newTelecommandBatch = new TelecommandBatch("New Telecommand Batch");
     this.telecommandBatchService.createNewTelecommandBatch(newTelecommandBatch)
       .subscribe(results =>{
         this.getTelecommandBatches();

@@ -26,8 +26,8 @@
         <label style="color:red;">{{error}}</label>
         <br />
       </div>
-      <button *ngIf="!viewingExistingTelecommand" (click)="saveTelecommand()" type="button" class="btn btn-outline-success">Save Changes</button>
+      <button *ngIf="!viewingExistingTelecommand" (click)="saveTelecommand()" type="button" class="btn btn-outline-info mr-1">Save Changes</button>
       <button *ngIf="selectedTelecommand && viewingExistingTelecommand" (click)="archiveTelecommand()" type="button" class="btn btn-outline-danger">Archive Telecommand</button>
-      <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-outline-warning">Discard Telecommand</button>
+      <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-outline-danger">Discard Telecommand</button>
     </div>
 </div>
