@@ -21,18 +21,19 @@
   </div>
   <div class="col">
     <div *ngIf="selectedBatch">
-        <form class="form">
+        <form>
           <div class="form-group">
             <label>Batch Name</label>
             <div class="input-group">
-              <input [(ngModel)] = "selectedBatch.name" class="form-control mr-1" name = "selectedBatchName">
-              <button type="button"
-              class="btn btn-outline-success"
-              (click)="saveBatchName()">Save Name</button>
+              <input [(ngModel)] = "selectedBatch.name" class="form-control" name = "selectedBatchName">
+              <div class="input-group-append">
+                <button type="button"
+                class="btn btn-outline-success"
+                (click)="saveBatchName()">Save Name</button>
+              </div>
             </div>
           </div>
         </form>
-        <br/>
         <ul class="list-group">
             <app-preset-telecommand-details
             class="list-group-item border border-primary"
@@ -41,17 +42,18 @@
             (reloadPresetTelecommands)="reloadPresetTelecommands($event)">
           </app-preset-telecommand-details>
         </ul>
-        <form class="form-inline" style="padding-top:10px;padding-bottom: 10px;">
-          <label class="mr-1"><b>New Telecommand: </b></label>
-          <app-telecommand-dropdown
-          [telecommands] = "telecommands"
-          [selectedTelecommand] = "selectedTelecommand"
-          (newSelectedTelecommand) = "updateSelectedTelecommand($event)"
-          class="mr-1">
-          </app-telecommand-dropdown>
-          <button type="button"
-          class="btn btn-outline-success"
-          (click)="addNewPresetTelecommand()">Add Telecommand To Batch</button>
+        <form class="form-inline my-3">
+            <label class="mr-1">New Telecommand: </label>
+            <div class="input-group">
+              <app-telecommand-dropdown
+              [telecommands] = "telecommands"
+              [selectedTelecommand] = "selectedTelecommand"
+              (newSelectedTelecommand) = "updateSelectedTelecommand($event)">
+              </app-telecommand-dropdown>
+              <button type="button"
+              class="btn btn-outline-success ml-1"
+              (click)="addNewPresetTelecommand()">Add Telecommand To Batch</button>
+          </div>
         </form>
         <button type="button"
         class="btn btn-outline-danger"
