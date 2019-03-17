@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
 
     if (errorList.length > 0) {
       this.processing = false;
-      this.loginAlert.showList('Error', errorList, 'danger');
+      this.loginAlert.show('Error', errorList, 'danger');
       return;
     }
 
@@ -128,7 +128,7 @@ export class LoginComponent implements OnInit {
     }
 
     if (errorList.length > 0) {
-      this.resetPwdAlert.showList('Error', errorList);
+      this.resetPwdAlert.show('Error', errorList);
       this.processingNewPassword = false;
       return;
     }

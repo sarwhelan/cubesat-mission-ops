@@ -40,7 +40,7 @@ export class NewPasswordComponent implements OnInit, IObservable<string> {
     }
 
     if (errorList.length > 0) {
-      this.alert.showList('Error', errorList);
+      this.alert.show('Error', errorList);
       this.processing = false;
       return;
     }

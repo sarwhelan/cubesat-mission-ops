@@ -42,39 +42,38 @@ export class AlertComponent implements OnInit {
 
   /**
    * Shows the alert and sets its properties to the provided values.
-   * Displays the body as a simple paragraph.
+   * If the passed body is an array containing two or more strings, it is
+   * displayed as a list. Otherwise, it is displayed as a paragraph.
    *
    * @param {string} heading The heading for the alert to display.
-   * @param {string} body The body of the alert.
+   * @param {string | Array<string>} body The body of the alert.
    * @param {string} [alertStyle] The style to set the alert to. Can be any valid bootstrap style (primary, secondary, success, etc).
    * @memberof AlertComponent
    */
-  public show(heading: string, body: string, alertStyle?: string): void {
-    this.listBody = false;
+  public show(heading: string, body: string | Array<string>, alertStyle?: string): void {
     this.heading = heading;
-    this.body = body;
     if (alertStyle) {
       this.alertStyle = alertStyle;
     }
-    this.showAlert = true;
-  }
 
-  /**
-   * Shows the alert and sets its properties to the provided values.
-   * Displays the body as an unordered list.
-   *
-   * @param {string} heading The heading for the alert to display.
-   * @param {Array<string>} body The list of items that make up the body of the alert.
-   * @param {string} [alertStyle] The style to set the alert to. Can be any valid bootstrap style (primary, secondary, success, etc).
-   * @memberof AlertComponent
-   */
-  public showList(heading: string, body: Array<string>, alertStyle?: string): void {
-    this.listBody = true;
-    this.heading = heading;
-    this.bodyList = body;
-    if (alertStyle) {
-      this.alertStyle = alertStyle;
+    if (Array.isArray(body)) {
+      if (body.length > 1 ) {
+        // More than one message, so display as a list
+        this.listBody = true;
+        this.bodyList = body;
+      } else {
+        // One or zero items, so display as simple alert
+        this.listBody = false;
+        this.body = body[0] || '';  // Assign body[0] to this.body if it exists, otherwise use empty string
+      }
+    } else if (typeof(body) === 'string') {
+      this.listBody = false;
+      this.body = body;
+    } else {
+      console.log('Body passed to alert.show() is not a string or string[]');
+      this.body = '';
     }
+
     this.showAlert = true;
   }
   
