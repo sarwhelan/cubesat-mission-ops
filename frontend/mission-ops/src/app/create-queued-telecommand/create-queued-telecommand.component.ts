@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Telecommand } from 'src/classes/telecommand';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
+import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({
   selector: 'app-create-queued-telecommand',
@@ -17,7 +19,8 @@ export class CreateQueuedTelecommandComponent implements OnInit {
   modalTitle: string;
   modalSubmit: string;
   isBatch: boolean;
-  newQtcErrorMsgs: string[];
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
 
   public telecommands: Telecommand[];
   public telecommandBatches: TelecommandBatch[];
@@ -82,8 +85,10 @@ export class CreateQueuedTelecommandComponent implements OnInit {
       this.createQtcForm.value.executionTime.minute,
       this.createQtcForm.value.executionTime.second
     ));
-    var errorMessages: string[];
-    errorMessages = ["Error: "];
+
+    this.alert.hide();
+    var errorMessages: string[] = [];
+
     if (this.isBatch && !this.createQtcForm.value.telecommandBatchID)
     {
       errorMessages.push("A telecommand batch must be selected.");
@@ -108,11 +113,10 @@ export class CreateQueuedTelecommandComponent implements OnInit {
       errorMessages.push("Command parameters must be specified and be valid JSON.");
     }
 
-    if (errorMessages.length > 1) {
-      this.newQtcErrorMsgs = errorMessages;
+    if (errorMessages.length > 0) {
+      this.alert.show('Error', errorMessages);
       return false;
     } else {
-      this.newQtcErrorMsgs = [];
       return true;
     }
   }

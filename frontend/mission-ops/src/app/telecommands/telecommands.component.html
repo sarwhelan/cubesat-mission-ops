@@ -22,10 +22,7 @@
     </div>
     <div class="col">
       <app-telecommand-details [telecommand] = "selectedTelecommand" [existingTelecommand] = "viewingExistingTelecommand"></app-telecommand-details>      
-      <div *ngFor="let error of newTelecommandErrorMessages">
-        <label style="color:red;">{{error}}</label>
-        <br />
-      </div>
+      <app-alert [alertStyle]="'danger'"></app-alert>
       <button *ngIf="!viewingExistingTelecommand" (click)="saveTelecommand()" type="button" class="btn btn-outline-success">Save Changes</button>
       <button *ngIf="selectedTelecommand && viewingExistingTelecommand" (click)="archiveTelecommand()" type="button" class="btn btn-outline-danger">Archive Telecommand</button>
       <button *ngIf="selectedTelecommand && !viewingExistingTelecommand" (click)="discardTelecommand()" type="button" class="btn btn-outline-warning">Discard Telecommand</button>
