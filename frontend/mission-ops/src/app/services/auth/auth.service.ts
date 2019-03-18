@@ -50,7 +50,7 @@ export class AuthService {
   
   private get currentUser(): User {
     if (!this._currentUser) {
-      this._currentUser = new User(JSON.parse(sessionStorage.getItem('currentUser')));
+      this._currentUser = new User(JSON.parse(sessionStorage.getItem('currentUser')) || {});
     }
     return this._currentUser;
   }
