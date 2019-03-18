@@ -19,8 +19,8 @@ if (process.env.NODE_ENV == 'production') {
 /*
 * Data dump constants.
 */
-define("DATA_DUMP_BACKUP_DIR", '/home/dzagar/Desktop/dumptest');
-define("DATA_DUMP_WATCH_DIR", "/home/dzagar/Desktop/watchtest");
+define("DATA_DUMP_BACKUP_DIR", '/media/pi/Lexar/CubeSat/data_dump');
+define("DATA_DUMP_WATCH_DIR", "/home/pi/Desktop/watchtest");
 
 /*
 * Queue path constants.
@@ -30,8 +30,8 @@ if (process.env.NODE_ENV !== 'production') {
 	define("QUEUE_BACKUP_DIR", `${__dirname}/test/queue/queuedumptest`);
 }
 else {
-    define("CURR_QUEUE_DIR", "/home/dzagar/Desktop/queue/");
-    define("QUEUE_BACKUP_DIR", "/home/dzagar/Desktop/queuedumptest");
+    define("CURR_QUEUE_DIR", "/home/pi/Desktop/queue/");
+    define("QUEUE_BACKUP_DIR", "/media/pi/Lexar/CubeSat/queue/");
 }
 
 /**
