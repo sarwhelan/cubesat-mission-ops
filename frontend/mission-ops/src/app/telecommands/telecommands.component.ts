@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
 import { Telecommand } from 'src/classes/telecommand';
 import { TelecommandService } from 'src/app/services/telecommand/telecommand.service';
+import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({
   selector: 'app-telecommands',
@@ -11,7 +13,8 @@ export class TelecommandsComponent implements OnInit {
   telecommands: Telecommand[];
   selectedTelecommand: Telecommand;
   viewingExistingTelecommand: boolean;
-  newTelecommandErrorMessages: string[];
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
   
   constructor(private telecommandService: TelecommandService) { }
 
@@ -23,7 +26,7 @@ export class TelecommandsComponent implements OnInit {
   onSelect(telecommand: Telecommand): void {
     this.selectedTelecommand = telecommand;
     this.viewingExistingTelecommand = true;
-    this.newTelecommandErrorMessages = [];
+    this.alert.hide();
   }
 
   addNewTelecommand(): void{
@@ -31,7 +34,7 @@ export class TelecommandsComponent implements OnInit {
     this.viewingExistingTelecommand = false;
     this.telecommands.push(newTelecommand);
     this.selectedTelecommand = this.telecommands[this.telecommands.length - 1];
-    this.newTelecommandErrorMessages = [];
+    this.alert.hide();
   }  
 
   saveTelecommand() : void
@@ -81,8 +84,8 @@ export class TelecommandsComponent implements OnInit {
 
   checkIsValidTelecommand(newTelecommand: Telecommand) : boolean{
 
-    var errorMessages: string[];
-    errorMessages = ["Error: "];
+    this.alert.hide();
+    var errorMessages: string[] = [];
 
     if (!newTelecommand.name)
     {
@@ -105,13 +108,11 @@ export class TelecommandsComponent implements OnInit {
     }
 
     // if there is an error than display it and return false
-    if (errorMessages.length != 1)
+    if (errorMessages.length > 0)
     {
-      this.newTelecommandErrorMessages = errorMessages;
+      this.alert.show('Error', errorMessages);
       return false;
     }
-
-    this.newTelecommandErrorMessages = [];
     return true;
   }
 

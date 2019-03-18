@@ -21,10 +21,7 @@
           <input type = "text" class = "form-control" formControlName="availableBandwidth" [formGroup] = "createPassForm">
         </div>
       </div>
-      <div *ngFor="let error of newPassErrorMsgs">
-        <label style="color:red;">{{error}}</label>
-        <br />
-      </div>
+      <app-alert [alertStyle]="'danger'"></app-alert>
     </div>
     <div class="modal-footer">
       <button class = "btn btn-outline-success"

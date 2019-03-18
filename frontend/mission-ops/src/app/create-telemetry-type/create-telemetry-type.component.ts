@@ -57,11 +57,7 @@ export class CreateTelemetryTypeComponent implements OnInit {
     }
 
     if (errorMessages.length > 0) {
-      if (errorMessages.length > 1) {
-        this.alert.showList('Error', errorMessages);
-      } else {
-        this.alert.show('Error', errorMessages[0]);
-      }
+      this.alert.show('Error', errorMessages);
 
       return false;
     }

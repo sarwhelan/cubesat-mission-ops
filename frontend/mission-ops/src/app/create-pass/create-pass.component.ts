@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Pass } from 'src/classes/pass';
 import * as moment from 'moment';
+import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({
   selector: 'app-create-pass',
@@ -11,8 +13,10 @@ import * as moment from 'moment';
 })
 export class CreatePassComponent implements OnInit {
 
-  @Input() createPassForm: FormGroup;
-  newPassErrorMsgs: string[];
+  @Input() 
+  private createPassForm: FormGroup;
+  @ViewChild(AlertComponent)
+  private alert: AlertComponent;
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
 
@@ -36,9 +40,10 @@ export class CreatePassComponent implements OnInit {
 
   private isFormValid(newPass: Pass) : boolean
   {
+    this.alert.hide();
+    var errorMessages: string[] = [];
+
     var today = new Date().getTime();
-    var errorMessages: string[];
-    errorMessages = ["Error: "];
     if (newPass.estimatedPassDateTime.getTime() <= today){
       errorMessages.push("Pass must exist in the future. Provide a date and time that exceed the current time.");
     }
@@ -53,12 +58,11 @@ export class CreatePassComponent implements OnInit {
       errorMessages.push("The available bandwidth of a pass must be a positive number.");
     }
 
-    if (errorMessages.length > 1)
+    if (errorMessages.length > 0)
     {
-      this.newPassErrorMsgs = errorMessages;
+      this.alert.show('Error', errorMessages);
       return false;
     } else {
-      this.newPassErrorMsgs = [];
       return true;
     }
   }
@@ -68,7 +72,6 @@ export class CreatePassComponent implements OnInit {
     var newPassDate = moment(this.createPassForm.value.passDate).utc(true);
     var newPass = new Pass(newPassDate.toDate(), this.createPassForm.value.availablePower, this.createPassForm.value.availableBandwidth);
     if (!this.isFormValid(newPass)) return;
-    this.newPassErrorMsgs = [];
     this.activeModal.close(newPass);
   }
 

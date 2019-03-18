@@ -123,7 +123,7 @@ export class ModifyUserComponent implements OnInit {
     }
 
     if (errorList.length > 0) {
-      this.passwordChangeAlert.showList('Error', errorList);
+      this.passwordChangeAlert.show('Error', errorList);
       this.passwordProcessing = false;
       return;
     }
