@@ -1,3 +1,6 @@
+/**
+ * Node modules required.
+ */
 const dotenv = require('dotenv');
 dotenv.config();
 const AWS = require('aws-sdk');

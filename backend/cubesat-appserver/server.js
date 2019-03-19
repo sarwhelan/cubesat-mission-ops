@@ -1,16 +1,22 @@
-// application server outlining the routes utilized by the
-// frontend web application as well as the ground station server
+/**
+ * Application server outlining the routes utilized by the
+ * frontend web application, as well as the ground station server.
+ */
 
+/**
+ * Node modules required.
+ */
 const express = require('express');
 const app = express();
 
+/**
+ * Internal imports.
+ */
 var telecommands = require('./routes/telecommands');
 var presetTelecommands = require('./routes/presetTelecommands');
 var telecommandBatches = require('./routes/telecommandBatches');
 var passes = require('./routes/passes');
 var queuedTelecommands = require('./routes/queuedTelecommands');
-var template = require('./routes/template');
-var db_template = require('./routes/db-template');
 var cubesat_dump = require('./routes/cubesat_dump');
 var components = require('./routes/components');
 var componentTelemetry = require('./routes/component-telemetry');
@@ -25,6 +31,9 @@ var anomalies = require('./routes/anomalies');
 var media = require('./routes/media');
 const logger = require('./logger');
 
+/**
+ * Constants.
+ */
 const port = 3000;
 
 app.use(function (request, response, next) {
@@ -41,8 +50,6 @@ app.use('/telecommands', telecommands);
 app.use('/telecommand-batches', telecommandBatches);
 app.use('/passes', passes);
 app.use('/queued-telecommands', queuedTelecommands);
-app.use('/template', template);
-app.use('/db-template', db_template);
 app.use('/cubesat_dump', cubesat_dump);
 app.use('/components', components);
 app.use('/component-telemetry', componentTelemetry);

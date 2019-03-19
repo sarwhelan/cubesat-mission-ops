@@ -1,7 +1,14 @@
-﻿const dotenv = require('dotenv');
+﻿/**
+ * Node modules required.
+ */
+const dotenv = require('dotenv');
 dotenv.config();
 var mysql = require('mysql');
 
+/**
+ * Defines the MySQL pool to use in conjunction with 
+ * the application server.
+ */
 var pool  = mysql.createPool({
   connectionLimit : 10,
   port            : process.env.DB_PORT,

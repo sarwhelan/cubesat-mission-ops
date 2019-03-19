@@ -1,13 +1,24 @@
+/**
+ * Node modules required.
+ */
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const parseUrlencoded = bodyParser.urlencoded({extended: false});
 const parseJSON = bodyParser.json();
+
+/**
+ * Internal imports.
+ */
 var db = require('../database');
 
+/**
+ * Root path requests.
+ */
 router.route('/')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
+            // Returns all images saved in the database.
             db.query('SELECT imageID, queuedTelecommandID, metadata, tags, name, favorited, type FROM images', function(error, results, fields) {
                 if (error) {
                     throw error;
@@ -34,9 +45,14 @@ router.route('/')
         }
     });
 
+/**
+ * Path requests with a given ID.
+ * GET: Handles with an Image ID.
+ */
 router.route('/:id')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
+            // Returns image data from given image ID.
             const queryInput = [req.params.id];
             db.query('SELECT data, dataType FROM images WHERE imageID = ?', queryInput, function(error, results, fields) {
                 if (error) {
@@ -58,9 +74,13 @@ router.route('/:id')
         }
     });
 
+/**
+ * Path requests with a given ID, specifically for preview.
+ */
 router.route('/:id/preview')
     .get(parseUrlencoded, parseJSON, (req, res) => {
         try {
+            // Returns image preview data from given image ID.
             const queryInput = [req.params.id];
             db.query('SELECT previewData, previewDataType FROM images WHERE imageID = ?', queryInput, function(error, results, fields) {
                 if (error) {

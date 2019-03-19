@@ -1,5 +1,5 @@
 /**
- * Created by Abdelkader on 2015-03-18.
+ * Application server logger.
  */
 module.exports = function(request, response, next) {
     
