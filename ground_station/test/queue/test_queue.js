@@ -1,6 +1,8 @@
-/*
-* Some rudimentary tests for the queue routes.
-*/
+/**
+ * THESE TESTS DON'T WORK ANYMORE.
+ * But they hopefully provide a loose framework for unit testing the queue.
+ */
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const chaiFiles = require('chai-files');
