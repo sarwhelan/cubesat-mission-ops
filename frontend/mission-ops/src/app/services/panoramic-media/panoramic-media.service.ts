@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, never } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
-import { environment as env } from 'src/environments/environment';
 
+import { environment as env } from 'src/environments/environment';
 import { PanoramicMedia } from 'src/classes/panoramic-media';
 import { PagedList } from 'src/classes/paged-list';
 import { ToastrService } from 'ngx-toastr';

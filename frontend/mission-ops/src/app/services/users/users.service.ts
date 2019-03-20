@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { environment as env } from 'src/environments/environment';
 
+import { environment as env } from 'src/environments/environment';
 import { User } from 'src/classes/user';
 import { PagedList } from 'src/classes/paged-list';
 

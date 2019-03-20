@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+
 import { SystemService } from 'src/app/services/system/system.service';
 import { System } from 'src/classes/system';
 import { Component as CubeSatComp } from 'src/classes/component';
@@ -8,11 +11,9 @@ import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { TelemetryType } from 'src/classes/telemetry-type';
 import { TelemetryTypesService } from 'src/app/services/telemetry-types/telemetry-types.service';
 import { CreateSystemComponent } from '../create-system/create-system.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateComponentComponent } from '../create-component/create-component.component';
 import { CreateComponentTelemetryComponent } from '../create-component-telemetry/create-component-telemetry.component';
 import { ModalComponent } from '../modal/modal.component';
-import { ToastrService } from 'ngx-toastr';
 import { CreateTelemetryTypeComponent } from '../create-telemetry-type/create-telemetry-type.component';
 
 /**

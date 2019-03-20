@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+
 import { Telecommand } from 'src/classes/telecommand';
 
 @Component({

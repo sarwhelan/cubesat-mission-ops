@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+
 import { Pass } from 'src/classes/pass';
-import { PassService } from 'src/app/services/pass/pass.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
 import { QueuedTelecommandService } from 'src/app/services/queuedTelecommand/queued-telecommand.service';
-import { Observable } from 'rxjs';
 import { Telecommand } from 'src/classes/telecommand';
 import { UsersService } from 'src/app/services/users/users.service';
 import { User } from 'src/classes/user';

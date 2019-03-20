@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 import { Pass } from 'src/classes/pass';
-import * as moment from 'moment';
 import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({

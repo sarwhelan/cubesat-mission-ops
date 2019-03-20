@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
 import { TelecommandBatchService } from 'src/app/services/telecommandBatch/telecommand-batch.service';
 import { PresetTelecommand } from 'src/classes/presetTelecommand';

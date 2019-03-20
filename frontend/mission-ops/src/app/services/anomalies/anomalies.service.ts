@@ -1,11 +1,11 @@
-import {Injectable, PipeTransform} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-import { environment as env } from 'src/environments/environment';
-
-import { Anomaly } from 'src/classes/anomaly';
+import { Injectable, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap, mergeMap } from 'rxjs/operators';
+
+import { environment as env } from 'src/environments/environment';
+import { Anomaly } from 'src/classes/anomaly';
 import { SortDirection } from './sortable.directive';
 
 interface SearchResult {

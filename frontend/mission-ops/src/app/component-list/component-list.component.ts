@@ -1,13 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
+
 import { Component as CubeSatComp } from 'src/classes/component';
 import { ComponentService } from 'src/app/services/component/component.service';
 import { SystemService } from 'src/app/services/system/system.service';
 import { System } from 'src/classes/system';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { TelemetryTypesService } from 'src/app/services/telemetry-types/telemetry-types.service';
 import { TelemetryType } from 'src/classes/telemetry-type';
-import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
 
 /**
  * The poorly-named telemetry dashboard component.

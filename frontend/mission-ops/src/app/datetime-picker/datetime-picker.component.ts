@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DateTimeAdapter, OWL_DATE_TIME_LOCALE, OWL_DATE_TIME_FORMATS } from 'ng-pick-datetime';
-import { MomentDateTimeAdapter, OWL_MOMENT_DATE_TIME_FORMATS } from 'ng-pick-datetime-moment';
+import { MomentDateTimeAdapter } from 'ng-pick-datetime-moment';
 
 export const MY_MOMENT_FORMATS = {
     parseInput: 'l LT',

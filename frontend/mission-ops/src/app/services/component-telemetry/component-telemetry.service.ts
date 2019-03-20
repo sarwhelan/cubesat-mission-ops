@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, never } from 'rxjs';
-import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { HttpClient } from '@angular/common/http';
-import { environment as env } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, retry } from 'rxjs/operators';
+
+import { environment as env } from 'src/environments/environment';
+import { ComponentTelemetry } from 'src/classes/component-telemetry';
 
 /**
  * Service handling all {@link ComponentTelemetry} app server routing.

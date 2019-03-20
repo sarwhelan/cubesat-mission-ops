@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, BehaviorSubject, never } from 'rxjs';
-import { Pass } from '../../../classes/pass';
 import { HttpClient } from '@angular/common/http';
-import { PassSum } from 'src/classes/pass-sum';
-import { mergeMap, switchMap, delay, retry, catchError } from 'rxjs/operators';
-import { environment as env } from 'src/environments/environment';
+import { mergeMap, switchMap, retry, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+
+import { environment as env } from 'src/environments/environment';
+import { Pass } from '../../../classes/pass';
+import { PassSum } from 'src/classes/pass-sum';
 
 interface State {
   page: number;

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, never } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subscription } from 'src/classes/subscription';
-import { environment as env } from 'src/environments/environment';
 import { retry, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+
+import { environment as env } from 'src/environments/environment';
+import { Subscription } from 'src/classes/subscription';
 
 @Injectable({
   providedIn: 'root'

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, never } from 'rxjs';
-import { TelemetryType } from 'src/classes/telemetry-type';
 import { HttpClient } from '@angular/common/http';
-import { environment as env } from 'src/environments/environment';
 import { catchError, retry } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+
+import { environment as env } from 'src/environments/environment';
+import { TelemetryType } from 'src/classes/telemetry-type';
 
 @Injectable({
   providedIn: 'root'

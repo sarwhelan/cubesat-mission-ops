@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 import { Telecommand } from 'src/classes/telecommand';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
-import * as moment from 'moment';
 import { AlertComponent } from 'src/app/alert/alert.component';
 
 @Component({

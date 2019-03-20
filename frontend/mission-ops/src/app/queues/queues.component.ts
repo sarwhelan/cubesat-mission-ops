@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, forkJoin, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { async } from '@angular/core/testing';
+import * as moment from 'moment';
+const dateFormat = require('dateformat');
+
 import { Pass } from '../../classes/pass';
 import { PassService } from '../services/pass/pass.service';
-import { NgbModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { CreateQueuedTelecommandComponent } from '../create-queued-telecommand/create-queued-telecommand.component';
 import { TelecommandService } from 'src/app/services/telecommand/telecommand.service';
 import { Telecommand } from 'src/classes/telecommand';
 import { QueuedTelecommandService } from 'src/app/services/queuedTelecommand/queued-telecommand.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { QueuedTelecommand } from 'src/classes/queuedTelecommand';
-import { Observable, forkJoin, empty, of } from 'rxjs';
-import { mergeMap, delay } from 'rxjs/operators';
 import { TelecommandBatchService } from 'src/app/services/telecommandBatch/telecommand-batch.service';
 import { TelecommandBatch } from 'src/classes/telecommandBatch';
 import { PresetTelecommandService } from 'src/app/services/presetTelecommand/preset-telecommand.service';
 import { PassSum } from 'src/classes/pass-sum';
 import { CreatePassComponent } from '../create-pass/create-pass.component';
 
-import { ToastrService } from 'ngx-toastr';
-import { async } from '@angular/core/testing';
-import * as moment from 'moment';
-
-const dateFormat = require('dateformat');
 
 @Component({
   selector: 'app-queues',

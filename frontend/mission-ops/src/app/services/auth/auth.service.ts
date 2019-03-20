@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession, CognitoAccessToken, CognitoIdToken, CognitoRefreshToken } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
-import { environment as env } from 'src/environments/environment';
 
+import { environment as env } from 'src/environments/environment';
 import { User } from 'src/classes/user';
 
 /**

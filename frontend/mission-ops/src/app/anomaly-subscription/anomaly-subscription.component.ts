@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionsService } from 'src/app/services/subscriptions/subscriptions.service';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
+import { SubscriptionsService } from 'src/app/services/subscriptions/subscriptions.service';
 import { Subscription } from 'src/classes/subscription';
 import { System } from 'src/classes/system';
 import { SystemService } from 'src/app/services/system/system.service';
-import { Observable } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-anomaly-subscription',

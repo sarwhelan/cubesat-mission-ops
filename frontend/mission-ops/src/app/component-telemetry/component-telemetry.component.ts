@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+
 import { ComponentTelemetryService } from 'src/app/services/component-telemetry/component-telemetry.service';
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { Component as CubeSatComp } from 'src/classes/component';
