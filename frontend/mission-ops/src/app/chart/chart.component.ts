@@ -4,6 +4,12 @@ import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
 
 NoDataToDisplay(Highcharts);
 
+/**
+ * A component for populating and displaying a Highcharts chart
+ * with telemetry data.
+ * 
+ * @class ChartComponent
+ */
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -21,9 +27,21 @@ export class ChartComponent implements OnInit {
   private _name: string;
   private _labels: string[];
 
+  /**
+   * The start date of the values to be populated.
+   */
   @Input() startDate: Date;
+
+  /**
+   * The end date of the values to be populated.
+   */
   @Input() endDate: Date;
 
+  /**
+   * The data points in the chart.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get values() {
     return this._values;
@@ -32,6 +50,12 @@ export class ChartComponent implements OnInit {
     this._values = val;
   }
 
+  /**
+   * The minimum value allowed; the lower bound.
+   * This can be null depending on the component telemetry.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get minValue() {
     return this._minValue;
@@ -40,6 +64,12 @@ export class ChartComponent implements OnInit {
     this._minValue = val;
   }
 
+  /**
+   * The maximum value allowed; the upper bound.
+   * This can be null depending on the component telemetry.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get maxValue() {
     return this._maxValue;
@@ -48,6 +78,11 @@ export class ChartComponent implements OnInit {
     this._maxValue = val;
   }
 
+  /**
+   * The title of the graph.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get title() {
     return this._title;
@@ -56,6 +91,11 @@ export class ChartComponent implements OnInit {
     this._title = val;
   }
 
+  /**
+   * The name of the series.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get name() {
     return this._name;
@@ -64,6 +104,11 @@ export class ChartComponent implements OnInit {
     this._name = val;
   }
 
+  /**
+   * The x-axis label.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get xAxis() {
     return this._xAxis;
@@ -72,7 +117,11 @@ export class ChartComponent implements OnInit {
     this._xAxis = val;
   }
 
-  // TODO: Set y-axis using telemetryType table info.
+  /**
+   * The y-axis label.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get yAxis() {
     return this._yAxis;
@@ -81,6 +130,11 @@ export class ChartComponent implements OnInit {
     this._yAxis = val;
   }
 
+  /**
+   * The x-axis data labels to display.
+   * 
+   * @memberof ChartComponent
+   */
   @Input()
   private get labels() {
     return this._labels;
@@ -99,18 +153,30 @@ export class ChartComponent implements OnInit {
 }
 
 ngOnChanges(changes: SimpleChanges) {
+  // If the change includes a change in the values collection and the graph exists with a
+  // valid start and end date, rebuild the graph.
   if (changes.values && this.Highcharts && this.Highcharts.charts.length > 0 && this.startDate && this.endDate) {
     this.buildChart();
   }
 }
 
+/**
+ * Builds the graph using the Input values listed above.
+ * 
+ * @memberof ChartComponent
+ */
 buildChart() : void
 {
+  // Map the time labels to the Date value.
   var msLabels = this.labels.map(x => new Date(x).getTime());
+  
+  // Create lines for the min and max values.
   var maxValues = new Array(this.values.length).fill(this.maxValue);
   var minValues = new Array(this.values.length).fill(this.minValue);
   var zones;
 
+  // If it has a max value, create the zones that
+  // will highlight a value outside the allowed range.
   if (this.maxValue) {
     zones = [{
       value: this.minValue,
@@ -123,6 +189,7 @@ buildChart() : void
   } else {
     zones = [];
   }
+
   this.chartOptions = {
     title: {
       text: this.title
@@ -145,6 +212,7 @@ buildChart() : void
     tooltip: {
       crosshairs: [true],
       formatter: function(){
+        // On hover, displays the datetime and the value of the data point.
         return new Date(this.x).toUTCString() + "<br/>" + this.y;
       }
     },
