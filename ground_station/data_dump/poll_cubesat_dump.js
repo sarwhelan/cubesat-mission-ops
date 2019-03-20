@@ -62,8 +62,8 @@ var callback = function(event) {
 		// Send outgoing POST with dump data to app server.
 		var options = {
 			host: constants.APP_SERVER_HOST,
-			port: "3000",
-			path: "/cubesat_dump",
+			port: constants.APP_SERVER_PORT,
+			path: constants.APP_SERVER_DUMP_ROUTE,
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

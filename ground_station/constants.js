@@ -21,6 +21,8 @@ define("PORT", 3700);
  */
 if (process.env.NODE_ENV == 'production') {
     define("APP_SERVER_HOST", '10.0.0.81');
+    define("APP_SERVER_PORT", '3000');
+    define("APP_SERVER_DUMP_ROUTE", '/cubesat_dump');
 }
 
 /**
