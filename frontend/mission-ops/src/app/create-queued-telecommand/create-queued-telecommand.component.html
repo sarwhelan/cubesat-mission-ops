@@ -37,6 +37,14 @@
                     class = "form-control"
                     [value] = "selectedTelecommand.command">
           </textarea>
+        </div>        
+        <div class = "form-check-inline">
+          <input type = "checkbox"
+            class = "form-check-input"
+            formControlName = "priorityLevel"/>
+          <label for = "priorityLevel">
+            High Priority
+          </label>
         </div>
       </div>
       <ng-template #batch>
@@ -55,14 +63,6 @@
           </select>
         </div>
       </ng-template>
-      <div class = "form-check-inline">
-        <input type = "checkbox"
-          class = "form-check-input"
-          formControlName = "priorityLevel"/>
-        <label for = "priorityLevel">
-          High Priority
-        </label>
-      </div>
       <div class = "form-group">
         <label for = "executionDate">Execution Datetime</label>
         <app-datetime-picker dateFormControlName = "executionDate" timeFormControlName = "executionTime" [formGroup] = "createQtcForm"></app-datetime-picker>

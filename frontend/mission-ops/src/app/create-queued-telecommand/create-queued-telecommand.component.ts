@@ -51,7 +51,7 @@ export class CreateQueuedTelecommandComponent implements OnInit {
     if (!this.isBatch) {
       this.createQtcForm = this.formBuilder.group({
         telecommandID: this.selectedTelecommand.telecommandID,
-        priorityLevel: false,
+        priorityLevel: this.selectedTelecommand.defaultPriorityLevel,
         executionDate: executionDate,
         commandParams: this.selectedTelecommand.command,
       });
