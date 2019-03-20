@@ -36,7 +36,6 @@ export class TelemetryDataComponent implements OnInit {
   constructor(private telemetryDataService: ComponentTelemetryDataService) { }
 
   ngOnInit() {
-    console.log('init telemetry data');
     this._componentTelemetry = this._componentTelemetry;
     var telemetryType = this.telemetryTypes.find(x => x.telemetryTypeID == this.componentTelemetry.telemetryTypeID);
     this.telemetryTypeUnit = `${telemetryType.name} (${telemetryType.telemetryUnit})`;
@@ -45,18 +44,14 @@ export class TelemetryDataComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.dateRangeObj) {
-      console.log('on change', this.dateRangeObj);
       this._componentTelemetry = this._componentTelemetry;
       this.getTelemetryData(this.componentTelemetry.componentTelemetryID);
     }
   }
 
   getTelemetryData(componentTelemetryID: number): void {
-    console.log('get telemetry data from ' + componentTelemetryID);
-    console.log(this.dateRangeObj);
     this.startDate = new Date(this.dateRangeObj.startDate.utc(false).format());
     this.endDate = new Date(this.dateRangeObj.endDate.utc(false).format());
-    console.log(this.startDate, this.endDate)
     this.telemetryDataService.getTelemetryDataBetween(componentTelemetryID, this.startDate.getTime(), this.endDate.getTime())
       .subscribe(telemetryData => {
         this.telemetryData = telemetryData;

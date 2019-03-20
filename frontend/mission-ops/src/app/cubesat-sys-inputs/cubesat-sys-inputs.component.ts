@@ -75,7 +75,6 @@ export class CubesatSysInputsComponent implements OnInit {
         });
     }).catch((error) => {
       // Modal closed without submission
-      console.log(error);
     });
   }
 
@@ -89,7 +88,6 @@ export class CubesatSysInputsComponent implements OnInit {
         .subscribe(_ => { });
     }).catch((error) => {
       // Modal closed without submission
-      console.log(error);
     });
   }
 
@@ -107,7 +105,6 @@ export class CubesatSysInputsComponent implements OnInit {
         });
      }).catch((error) => {
        // Modal closed without submission
-       console.log(error);
      });
    }
 
@@ -124,7 +121,6 @@ export class CubesatSysInputsComponent implements OnInit {
         .subscribe(sys => { });
      }).catch((error) => {
        // Modal closed without submission
-       console.log(error);
      })
    }
 
@@ -144,7 +140,6 @@ export class CubesatSysInputsComponent implements OnInit {
         })
      }).catch((error) => {
       // Modal closed without submission
-      console.log(error);
     });
    }
 
@@ -163,7 +158,6 @@ export class CubesatSysInputsComponent implements OnInit {
         .subscribe(sys => { });
      }).catch((error) => {
        // Modal closed without submission
-       console.log(error);
      })
    }
 
@@ -185,7 +179,6 @@ export class CubesatSysInputsComponent implements OnInit {
         })
      }).catch((error) => {
        // Modal closed without submission
-       console.log(error);
      });
    }
 
@@ -206,7 +199,6 @@ export class CubesatSysInputsComponent implements OnInit {
         .subscribe(compTelem => { })
      }).catch((error) => {
        // Modal closed without submission
-       console.log(error);
      });
    }
 
@@ -380,7 +372,6 @@ export class CubesatSysInputsComponent implements OnInit {
   deleteComponent() : void
   {
     if(!this.selectedComponent){
-      console.log('no selected comp');
       return;
     }
     this.componentService.removeComponent(this.selectedComponent)
@@ -399,7 +390,6 @@ export class CubesatSysInputsComponent implements OnInit {
   deleteCompTelem() : void
   {
     if (!this.selectedCompTelem) {
-      console.log('no selected comp telem');
       return;
     }
     this.compTelemetriesService.removeComponentTelemetry(this.selectedCompTelem)

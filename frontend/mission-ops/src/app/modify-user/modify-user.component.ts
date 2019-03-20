@@ -39,7 +39,7 @@ export class ModifyUserComponent implements OnInit {
     this.users.getUser(userId).subscribe((u) => {
       this.user = u;
     }, (err) => {
-      console.log(err);
+      // Catch and no rethrow.
     });
   }
 

@@ -97,9 +97,6 @@ export class LoginComponent implements OnInit {
         // TODO: expand this to actually support MFA if needed.
         this.processing = false;
 
-        console.log('mfa required');
-        console.log(challengeName);
-        console.log(challengeParameters);
         return '';
       },
       newPasswordRequired: () => {

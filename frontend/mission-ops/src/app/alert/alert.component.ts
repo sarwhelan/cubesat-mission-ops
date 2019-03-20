@@ -70,7 +70,6 @@ export class AlertComponent implements OnInit {
       this.listBody = false;
       this.body = body;
     } else {
-      console.log('Body passed to alert.show() is not a string or string[]');
       this.body = '';
     }
 

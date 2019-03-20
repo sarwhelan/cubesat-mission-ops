@@ -106,7 +106,6 @@ export class AnomaliesService {
         let anomalies = sort(result, sortColumn, sortDirection);
 
         // 2. filter
-        console.log("searchTerm is: " + searchTerm);
         anomalies = anomalies.filter(anomaly => matches(anomaly, searchTerm, this.pipe));
         const total = anomalies.length;
 

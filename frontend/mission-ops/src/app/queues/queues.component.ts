@@ -122,7 +122,6 @@ export class QueuesComponent implements OnInit {
         });
     }).catch((error) => {
       // Modal closed without submission
-      console.log(error);
     });
   }
 
@@ -155,7 +154,6 @@ export class QueuesComponent implements OnInit {
       this.createQueuedTelecommands(createQtc);
     }).catch((error) => {
       // Modal closed without submission
-      console.log(error);
     });
   }
 
@@ -206,7 +204,6 @@ export class QueuesComponent implements OnInit {
         });
     }).catch((error) => {
       // Modal closed without submission
-      console.log(error);
     });
   }
 
@@ -269,7 +266,6 @@ export class QueuesComponent implements OnInit {
           }
           calcExecID = activePass.passID;
           if (!passSum) {
-            console.log('pushed from exec', activeTelecommand);
             this.sumExecutionResults.push({passID: calcExecID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
           }
           break;
@@ -303,7 +299,6 @@ export class QueuesComponent implements OnInit {
           }
           calcTransID = activePasses[i].passID;
           if (!passSum) {
-            console.log('pushed from trans', activeTelecommand);
             this.sumTransmissionResults.push({passID: calcTransID, sumBandwidth: activeTelecommand.bandwidthUsage, sumPower: activeTelecommand.powerConsumption});
           }
           break;
@@ -328,8 +323,6 @@ export class QueuesComponent implements OnInit {
     sumExecutionResultToModify.sumPower += activeTelecommand.powerConsumption;
     this.sumExecutionResults[sumExecutionResultsIndex] = sumExecutionResultToModify;
 
-    console.log(this.sumExecutionResults);
-    console.log(this.sumTransmissionResults);
     return [calcTransID, calcExecID];
   }
 }

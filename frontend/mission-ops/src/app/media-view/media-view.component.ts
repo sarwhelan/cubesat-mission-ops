@@ -24,7 +24,6 @@ export class MediaViewComponent implements OnInit {
           this.errorMsg = `No payload data with id ${mediaId} found`;
         }
       }, (err) => {
-        console.log(err);
         this.errorMsg = 'Something went wrong';
       });
     } else {
