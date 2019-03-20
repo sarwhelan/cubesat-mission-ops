@@ -8,32 +8,108 @@ import { TelemetryType } from 'src/classes/telemetry-type';
 import { ComponentTelemetry } from 'src/classes/component-telemetry';
 import { AlertComponent } from 'src/app/alert/alert.component';
 
+/**
+ * The component describing the modal window for creating/editing a
+ * ComponentTelemetry object.
+ */
 @Component({
   selector: 'app-create-component-telemetry',
   templateUrl: './create-component-telemetry.component.html',
   styleUrls: ['./create-component-telemetry.component.scss']
 })
+
 export class CreateComponentTelemetryComponent implements OnInit {
 
-  @Input()
-  createCompTelemForm: FormGroup;
+  /**
+   * The form group to associate the ComponentTelemetry to.
+   */
+  @Input() createCompTelemForm: FormGroup;
+  
+  /**
+   * The System that the ComponentTelemetry will be associated with.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   public system: System;
+
+  /**
+   * The Component that the ComponentTelemetry will be associated with.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   public component: CubeSatComp;
+
+  /**
+   * The collection of TelemetryTypes that the ComponentTelemetry 
+   * can be associated with.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   public telemetryTypes: TelemetryType[];
+  
+  /**
+   * If the component is modifying an existing ComponentTelemetry,
+   * or creating a new ComponentTelemetry.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   isEditing: boolean;
+
+  /**
+   * If the ComponentTelemetry has upper/lower bounds associated
+   * with it.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   hasBounds: boolean;
+
+  /**
+   * If the ComponentTelemetry is being edited (isEditing is true), the
+   * ComponentTelemetry to be modified. Can be null (if creating new).
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   selectedCompTelem: ComponentTelemetry;
+  
+  /**
+   * The title of the modal, which changes depending on if we
+   * are editing an existing ComponentTelemetry or creating a new one.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   modalTitle: string;
+
+  /**
+   * The text of the modal submit button, which changes depending on 
+   * if we are editing an existing ComponentTelemetry or creating a new one.
+   * 
+   * @memberof CreateComponentTelemetryComponent
+   */
   modalSubmit: string;
+
+  /**
+   * The currently selected TelemetryType in the modal window dropdown.
+   */
   selectedTelemetryType: TelemetryType;
+  
+  /**
+   * Previews errors in the form to the user.
+   */
   @ViewChild(AlertComponent)
   private alert: AlertComponent;
 
+  /**
+   * Constructs a new instance of the CreateComponentTelemetryComponent.
+   * @param activeModal 
+   * @param formBuilder 
+   */
   constructor(public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder) 
     { }
 
   ngOnInit() {
+    // Assigns an appropriate title and button text, depending on the
+    // isEditing value.
     if (!this.isEditing) {
       this.modalTitle = "Add New Component Telemetry";
       this.modalSubmit = "Add New Component Telemetry";
@@ -48,6 +124,12 @@ export class CreateComponentTelemetryComponent implements OnInit {
     this.createForm();
   }
 
+  /**
+   * Creates the form to edit or create a ComponentTelemetry.
+   * 
+   * @private
+   * @memberof CreateComponentTelemetryComponent
+   */
   private createForm() : void
   {
     this.createCompTelemForm = this.formBuilder.group({
@@ -59,6 +141,13 @@ export class CreateComponentTelemetryComponent implements OnInit {
     });
   }
 
+  /**
+   * Checks if the form fields are all valid. If they are not, 
+   * an Alert will show to the user and returns false.
+   * 
+   * @private
+   * @memberof CreateComponentTelemetryComponent
+   */
   private isFormValid(newCompTelem: ComponentTelemetry) : boolean
   {
     this.alert.hide();
@@ -103,6 +192,13 @@ export class CreateComponentTelemetryComponent implements OnInit {
     return true;
   }
 
+  /**
+   * Updates the selected TelemetryType object, because dropdowns
+   * are weird.
+   * 
+   * @param id The ID of the selected TelemetryType.
+   * @memberof CreateComponentTelemetryComponent
+   */
   updateTelemetryType(id: number) : void
   {
     this.selectedTelemetryType = this.telemetryTypes.find(x => x.telemetryTypeID == id);
@@ -119,6 +215,13 @@ export class CreateComponentTelemetryComponent implements OnInit {
     }
   }
 
+  /**
+   * Submits a new ComponentTelemetry back as the modal result if new,
+   * otherwise edits the current ComponentTelemetry and returns it as the
+   * modal result.
+   * 
+   * @memberof CreateComponentComponent
+   */
   submitNewCompTelem() : void
   {
     this.alert.hide();
@@ -135,7 +238,7 @@ export class CreateComponentTelemetryComponent implements OnInit {
       this.activeModal.close(newCT);
     }
 
-    // if we are editing an existing component
+    // If we are editing an existing component
     else {
       this.selectedCompTelem.name = this.createCompTelemForm.value.name;
       this.selectedCompTelem.telemetryTypeID = this.createCompTelemForm.value.telemetryTypeID;
@@ -150,6 +253,9 @@ export class CreateComponentTelemetryComponent implements OnInit {
     this.activeModal.close(this.createCompTelemForm.value);
   }
 
+  /**
+   * Closes the modal window.
+   */
   closeModal() : void
   {
     this.activeModal.close('closed');
