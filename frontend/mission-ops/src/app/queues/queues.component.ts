@@ -316,12 +316,20 @@ export class QueuesComponent implements OnInit {
       }
     }
 
-    console.log(calcTransID, calcExecID, this.sumExecutionResults);
-    this.sumTransmissionResults.find(x => x.passID == calcTransID).sumBandwidth += activeTelecommand.bandwidthUsage;
-    this.sumTransmissionResults.find(x => x.passID == calcTransID).sumPower += activeTelecommand.powerConsumption;
-    this.sumExecutionResults.find(x => x.passID == calcExecID).sumBandwidth += activeTelecommand.bandwidthUsage;
-    this.sumExecutionResults.find(x => x.passID == calcExecID).sumPower += activeTelecommand.powerConsumption;
+    // gets the index of the stored values to change
+    var sumTransmissionResultsIndex = this.sumTransmissionResults.findIndex(x => x.passID == calcTransID);
+    var sumExecutionResultsIndex = this.sumExecutionResults.findIndex(x => x.passID == calcExecID);
 
+    var sumTransmissionResultToModify = this.sumTransmissionResults[sumTransmissionResultsIndex]
+    sumTransmissionResultToModify.sumBandwidth += activeTelecommand.bandwidthUsage;
+    this.sumTransmissionResults[sumTransmissionResultsIndex] = sumTransmissionResultToModify;
+
+    var sumExecutionResultToModify = this.sumExecutionResults[sumExecutionResultsIndex];
+    sumExecutionResultToModify.sumPower += activeTelecommand.powerConsumption;
+    this.sumExecutionResults[sumExecutionResultsIndex] = sumExecutionResultToModify;
+
+    console.log(this.sumExecutionResults);
+    console.log(this.sumTransmissionResults);
     return [calcTransID, calcExecID];
   }
 }
