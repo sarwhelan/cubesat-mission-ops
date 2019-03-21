@@ -4,6 +4,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 
 import { HeaderItem } from 'src/classes/headerItem';
 
+/**
+ * The navigation header of the application.
+ * 
+ * @class HeaderComponent
+ */
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -11,7 +16,20 @@ import { HeaderItem } from 'src/classes/headerItem';
 })
 export class HeaderComponent implements OnInit {
 
+  /**
+   * The currently selected item in the header,
+   * if any.
+   * 
+   * @memberof HeaderComponent
+   */
   activeHeader: HeaderItem;
+
+  /**
+   * The current items in the navigation bar, with
+   * their associated route, as a HeaderItem.
+   * 
+   * @memberof HeaderComponent
+   */
   headers: HeaderItem[] = [
     new HeaderItem("Queue", "/queue"),
     new HeaderItem("Telecommands", "/telecommands"),
@@ -21,6 +39,12 @@ export class HeaderComponent implements OnInit {
     new HeaderItem("Payload Data", "/payloadData"),
   ];
 
+  /**
+   * For responsiveness, states whether or not the hamburger
+   * menu is open or closed.
+   * 
+   * @memberof HeaderComponent
+   */
   isCollapsed = true;
 
   constructor(private router: Router, private auth: AuthService) {  

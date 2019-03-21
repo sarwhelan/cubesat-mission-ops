@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * A generic footer containing the current year.
+ * 
+ * @class FooterComponent
+ */
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -7,6 +12,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
+  /**
+   * The current year in UTC.
+   * 
+   * @memberof FooterComponent
+   */
   currentYear: number;
 
   constructor() { }
